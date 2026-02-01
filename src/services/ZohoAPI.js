@@ -23,50 +23,124 @@ class ZohoAPI {
     // Fetch all products with dimensions and weights
     async fetchProducts() {
         if (!this.isInitialized) {
-            // Return mock data for development
-            return this.getMockProducts();
+            console.warn('Zoho SDK not initialized - waiting or using mock');
+            // Try to re-init if not initialized
+            await this.init();
+            if (!this.isInitialized) return this.getMockProducts();
         }
 
         try {
-            const response = await ZOHO.CRM.API.getAllRecords({
+            console.log('🔍 Fetching records from Zoho CRM...');
+
+            const allProducts = [];
+
+            // 1. Fetch Parent MTP SKUs
+            let parentProducts = [];
+            try {
+                const mtpResponse = await ZOHO.CRM.API.getAllRecords({
+                    Entity: "Parent_MTP_SKU",
+                    sort_order: "asc",
+                    per_page: 200
+                });
+
+                parentProducts = (mtpResponse.data || []).map(parent => ({
+                    id: parent.id,
+                    productCode: parent.Name || parent.MTP_SKU_Code || `MTP-${parent.id}`,
+                    productName: parent.MTP_SKU_Name || parent.Name || 'Unnamed Parent SKU',
+                    productType: 'parent',
+                    mtpSkuName: parent.Name || 'N/A',
+                    mtpSkuId: parent.id,
+                    parentId: null, // Parents have no parent
+
+                    // Parent-level weight data (if applicable)
+                    boxes: [],
+                    billedTotalWeight: parseFloat(parent.Total_Weight) || 0,
+
+                    // Audit fields (empty until audit upload)
+                    lastAuditedWeight: parseFloat(parent.Last_Audited_Total_Weight) || 0,
+                    weightVariance: parseFloat(parent.Weight_Variance) || 0,
+                    weightCategoryBilled: parent.Weight_Category_Billed || '',
+                    weightCategoryAudited: parent.Weight_Category_Audited || '',
+                    categoryMismatch: parent.Category_Mismatch || false,
+                    lastAuditDate: parent.Last_Audit_Date || null,
+
+                    // Audit upload state
+                    auditedWeight: null,
+                    auditedBoxes: [],
+                    variations: null,
+                    hasAudit: false,
+
+                    raw: parent
+                }));
+
+                allProducts.push(...parentProducts);
+                console.log(`✅ Fetched ${parentProducts.length} parent MTP SKUs`);
+            } catch (e) {
+                console.warn('Could not fetch Parent_MTP_SKU module:', e);
+            }
+
+            // 2. Fetch Child Products
+            const productResponse = await ZOHO.CRM.API.getAllRecords({
                 Entity: "Products",
                 sort_order: "asc",
                 per_page: 200
             });
 
-            if (response.data) {
-                return response.data.map(product => ({
-                    id: product.id,
-                    productCode: product.Product_Code,
-                    productName: product.Product_Name,
+            if (productResponse.data) {
+                const childProducts = productResponse.data.map(product => {
+                    const mtpLookup = product.MTP_SKU;
 
-                    // Box Dimensions subform data
-                    boxes: (product.Bill_Dimension_Weight || []).map(box => ({
-                        boxNumber: box.Box_Number,
-                        measurement: box.Box_Measurement,
-                        length: box.Length || 0,
-                        width: box.Width || 0,
-                        height: box.Height || 0,
-                        weightMeasurement: box.Weight_Measurement,
-                        weight: box.Weight || 0
-                    })),
+                    return {
+                        id: product.id,
+                        productCode: product.Product_Code,
+                        productName: product.Product_Name,
+                        productType: 'child',
+                        mtpSkuName: mtpLookup?.name || '',
+                        mtpSkuId: mtpLookup?.id || '',
+                        parentId: mtpLookup?.id || null, // Link to parent
 
-                    // Total weight (formula field)
-                    billedTotalWeight: product.Total_Weight || 0,
+                        // Box Dimensions subform data
+                        boxes: (product.Bill_Dimension_Weight || []).map(box => ({
+                            boxNumber: box.Box_Number,
+                            measurement: box.Box_Measurement,
+                            length: parseFloat(box.Length) || 0,
+                            width: parseFloat(box.Width) || 0,
+                            height: parseFloat(box.Height) || 0,
+                            weightMeasurement: box.Weight_Measurement,
+                            weight: parseFloat(box.Weight) || 0
+                        })),
 
-                    // Audit tracking fields
-                    lastAuditedWeight: product.Last_Audited_Total_Weight || 0,
-                    weightVariance: product.Weight_Variance || 0,
-                    weightCategoryBilled: product.Weight_Category_Billed || '',
-                    weightCategoryAudited: product.Weight_Category_Audited || '',
-                    categoryMismatch: product.Category_Mismatch || false,
-                    lastAuditDate: product.Last_Audit_Date || null
-                }));
+                        // Total weight from formula field
+                        billedTotalWeight: parseFloat(product.Total_Weight) || 0,
+
+                        // Audit tracking fields
+                        lastAuditedWeight: parseFloat(product.Last_Audited_Total_Weight) || 0,
+                        weightVariance: parseFloat(product.Weight_Variance) || 0,
+                        weightCategoryBilled: product.Weight_Category_Billed || '',
+                        weightCategoryAudited: product.Weight_Category_Audited || '',
+                        categoryMismatch: product.Category_Mismatch || false,
+                        lastAuditDate: product.Last_Audit_Date || null,
+
+                        // Audit upload state (initially empty)
+                        auditedWeight: null,
+                        auditedBoxes: [],
+                        variations: null,
+                        hasAudit: false,
+
+                        // Real CRM reference
+                        raw: product
+                    };
+                });
+
+                allProducts.push(...childProducts);
+                console.log(`✅ Fetched ${childProducts.length} child products`);
             }
-            return [];
+
+            console.log(`📦 Total products loaded: ${allProducts.length} (${parentProducts.length} parents, ${allProducts.length - parentProducts.length} children)`);
+            return allProducts;
         } catch (error) {
             console.error('Error fetching products:', error);
-            return [];
+            return this.getMockProducts(); // Fallback to mock on error in dev
         }
     }
 
@@ -78,14 +152,19 @@ class ZohoAPI {
         }
 
         try {
+            const apiData = {
+                id: productId,
+                Last_Audited_Total_Weight: auditData.auditedWeight,
+                Weight_Variance: auditData.variance,
+                Weight_Category_Billed: auditData.billedCategory,
+                Weight_Category_Audited: auditData.auditedCategory,
+                Category_Mismatch: auditData.categoryMismatch,
+                Last_Audit_Date: new Date().toISOString().split('T')[0]
+            };
+
             const response = await ZOHO.CRM.API.updateRecord({
                 Entity: "Products",
-                APIData: {
-                    id: productId,
-                    Last_Audited_Weight: auditData.auditedWeight,
-                    Weight_Variance: auditData.variance,
-                    Last_Audit_Date: new Date().toISOString().split('T')[0]
-                }
+                APIData: apiData
             });
             return response;
         } catch (error) {

@@ -1,104 +1,90 @@
 // Weight Audit Comparison Component
-import React, { useState, useEffect, Fragment } from 'react';
-import ZohoAPI from '../services/ZohoAPI';
-import AutoSaveService from '../services/AutoSaveService';
-import { calculateAuditWithCategories } from '../services/WeightCategoryCalculator';
+import React, { useState, Fragment } from 'react';
+import { useData } from '../context/DataContext';
 import { parseDimensionAudit, calculateDimensionVariations } from '../services/DimensionAuditParser';
 import SaveStatus from './SaveStatus';
 import './WeightAudit.css';
 
-const autoSave = new AutoSaveService(ZohoAPI);
-
 const WeightAudit = () => {
-    const [products, setProducts] = useState([]);
+    const {
+        products,
+        isLoading,
+        setLoading,
+        updateProduct,
+        refreshData,
+        summary
+    } = useData();
+
     const [auditResults, setAuditResults] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [courierSlab, setCourierSlab] = useState('STANDARD');
-
-    useEffect(() => {
-        loadProducts();
-        ZohoAPI.init();
-    }, []);
-
-    const loadProducts = async () => {
-        setIsLoading(true);
-        try {
-            const data = await ZohoAPI.fetchProducts();
-            setProducts(data);
-        } catch (error) {
-            console.error('Error loading products:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const [activeTab, setActiveTab] = useState('ALL');
+    const [expandedId, setExpandedId] = useState(null);
 
     const handleAuditUpload = async (file) => {
-        setIsLoading(true);
+        setLoading(true);
         try {
             console.log('📤 Upload started:', file.name);
 
-            // Parse dimension audit file (Audit_Dimensions.csv or DimentionsMasterAudit.xlsx)
+            // Parse dimension audit file
             const auditedProducts = await parseDimensionAudit(file);
-            console.log('✅ Parsed products:', auditedProducts.length);
+            console.log('✅ Parsed audited rows:', auditedProducts.length);
 
-            // Calculate variations between CRM data and audited data
+            // Calculate variations compared to CURRENT products in state
             const results = calculateDimensionVariations(products, auditedProducts);
-            console.log('✅ Calculated variations:', results.length);
+
+            // Update products with audit data
+            results.forEach(result => {
+                if (result.hasAudit) {
+                    const productIndex = products.findIndex(p => p.id === result.id);
+                    if (productIndex !== -1) {
+                        products[productIndex] = { ...products[productIndex], ...result };
+                    }
+                }
+            });
 
             setAuditResults(results);
 
             // Show success message
             const withChanges = results.filter(r => r.hasAudit && r.variations).length;
-            alert(`✅ Upload successful!\n\n${withChanges} products matched with audit data.\n\nReview the changes below and click "Save to Zoho CRM" to update.`);
+            alert(`✅ Upload successful!\n\n${withChanges} products matched with audit data.\n\nSwitch to "Audited" or "Variances" tab to review.`);
 
         } catch (error) {
             console.error('❌ Error processing audit:', error);
-            alert(`Failed to process audit file.\n\nError: ${error.message}\n\nPlease ensure it's in the correct format (Audit_Dimensions.csv or DimentionsMasterAudit.xlsx)`);
+            alert(`Failed to process audit file.\n\nError: ${error.message}`);
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
     const handleSaveToZoho = async () => {
-        if (auditResults.length === 0) {
-            alert('No audit data to save. Please upload an audit file first.');
+        const auditedProducts = products.filter(p => p.hasAudit && p.variations);
+        if (auditedProducts.length === 0) {
+            alert('No audited products to sync.');
             return;
         }
 
-        const confirmed = window.confirm(
-            `Save ${auditResults.filter(r => r.hasAudit).length} products to Zoho CRM?\n\n` +
-            `This will update:\n` +
-            `- Last Audited Weight\n` +
-            `- Weight Variance\n` +
-            `- Category Mismatch flags\n` +
-            `- Last Audit Date\n\n` +
-            `Continue?`
-        );
-
+        const confirmed = window.confirm(`Sync ${auditedProducts.length} audited products to Zoho CRM?`);
         if (!confirmed) return;
 
-        setIsLoading(true);
+        setLoading(true);
         try {
-            const updates = auditResults
-                .filter(r => r.hasAudit && r.variations)
-                .map(r => ({
-                    productId: r.id,
-                    auditedWeight: r.auditedWeight,
-                    variance: r.variations.totalWeightDelta,
-                    billedCategory: r.billedCategory || '',
-                    auditedCategory: r.auditedCategory || '',
-                    categoryMismatch: r.variations.hasDimensionChanges || r.variations.hasWeightChange
-                }));
+            for (const result of auditedProducts) {
+                updateProduct({
+                    id: result.id,
+                    skuCode: result.productCode,
+                    auditedWeight: result.auditedWeight,
+                    weightVariance: result.variations.totalWeightDelta,
+                    weightCategoryBilled: result.weightCategoryBilled,
+                    weightCategoryAudited: result.weightCategoryAudited,
+                    categoryMismatch: result.variations.hasDimensionChanges || result.variations.hasWeightChange
+                });
+            }
 
-            console.log('💾 Saving to Zoho:', updates.length, 'products');
-            await autoSave.batchUpdateProducts(updates);
-
-            alert(`✅ Successfully saved ${updates.length} products to Zoho CRM!`);
+            alert('✅ Updates queued for Zoho CRM sync!');
         } catch (error) {
-            console.error('❌ Error saving to Zoho:', error);
-            alert(`Failed to save to Zoho CRM.\n\nError: ${error.message}`);
+            console.error('❌ Bulk save failed:', error);
+            alert('Failed to queue updates.');
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
@@ -110,45 +96,61 @@ const WeightAudit = () => {
                 {boxes.map((box, idx) => (
                     <div key={idx} className="box-item">
                         <span className="box-number">Box {box.boxNumber}:</span>
-                        <span className="box-dims">{box.length}×{box.width}×{box.height} {box.measurement}</span>
-                        <span className="box-weight">{box.weight} {box.weightMeasurement}</span>
+                        <span className="box-dims">{box.length}×{box.width}×{box.height} cm</span>
+                        <span className="box-weight">{box.weight} kg</span>
                     </div>
                 ))}
             </div>
         );
     };
 
-    const [activeTab, setActiveTab] = useState('ALL');
-    const [expandedId, setExpandedId] = useState(null);
+    // Tab filtering
+    const getFilteredProducts = () => {
+        switch (activeTab) {
+            case 'PARENTS':
+                return products.filter(p => p.productType === 'parent');
+            case 'CHILDREN':
+                return products.filter(p => p.productType === 'child');
+            case 'AUDITED':
+                return products.filter(p => p.hasAudit === true);
+            case 'VARIANCES':
+                return products.filter(p => p.hasAudit && (p.variations?.hasWeightChange || p.variations?.hasDimensionChanges));
+            case 'ALL':
+            default:
+                return products;
+        }
+    };
 
-    const displayData = auditResults.length > 0 ? auditResults : products;
+    const displayData = getFilteredProducts();
+    const hasAnyAuditData = products.some(p => p.hasAudit);
 
-    const filteredData = activeTab === 'VARIANCES'
-        ? displayData.filter(p => p.hasAudit && (p.variations?.hasWeightChange || p.variations?.hasDimensionChanges))
-        : displayData;
+    const toggleExpand = (id) => {
+        setExpandedId(expandedId === id ? null : id);
+    };
 
-    const varianceCount = displayData.filter(p => p.hasAudit && (p.variations?.hasWeightChange || p.variations?.hasDimensionChanges)).length;
+    // Count products by type
+    const parentCount = products.filter(p => p.productType === 'parent').length;
+    const childCount = products.filter(p => p.productType === 'child').length;
+    const auditedCount = products.filter(p => p.hasAudit).length;
+    const varianceCount = products.filter(p => p.hasAudit && (p.variations?.hasWeightChange || p.variations?.hasDimensionChanges)).length;
 
     return (
         <div className="weight-audit">
             <SaveStatus />
 
             <div className="audit-header">
-                <div>
-                    <h2>Weight Audit Tool</h2>
-                    <p className="subtitle">{displayData.length} products loaded</p>
+                <div className="header-info">
+                    <h2>Weight Audit - Live CRM Data</h2>
+                    <p className="subtitle">
+                        {isLoading ? 'Syncing with Zoho...' : `${products.length} Total Products | ${parentCount} Parents | ${childCount} Children`}
+                    </p>
                 </div>
                 <div className="audit-actions">
-                    <select
-                        value={courierSlab}
-                        onChange={(e) => setCourierSlab(e.target.value)}
-                        className="courier-select"
-                    >
-                        <option value="STANDARD">Standard Slabs</option>
-                        <option value="COURIER_A">Courier A</option>
-                    </select>
+                    <button className="btn btn-secondary" onClick={refreshData} disabled={isLoading}>
+                        🔄 Refresh CRM
+                    </button>
                     <label className="btn btn-primary">
-                        📤 Upload Audit File
+                        📤 Upload Audit Excel
                         <input
                             type="file"
                             accept=".xlsx,.xls,.csv"
@@ -156,13 +158,13 @@ const WeightAudit = () => {
                             onChange={(e) => e.target.files?.[0] && handleAuditUpload(e.target.files[0])}
                         />
                     </label>
-                    {auditResults.length > 0 && (
+                    {hasAnyAuditData && (
                         <button
                             className="btn btn-success"
                             onClick={handleSaveToZoho}
                             disabled={isLoading}
                         >
-                            💾 Save to Zoho CRM
+                            💾 Sync to ZOHO
                         </button>
                     )}
                 </div>
@@ -173,41 +175,62 @@ const WeightAudit = () => {
                     className={`tab-item ${activeTab === 'ALL' ? 'active' : ''}`}
                     onClick={() => setActiveTab('ALL')}
                 >
-                    All Products ({displayData.length})
+                    All Products ({products.length})
+                </button>
+                <button
+                    className={`tab-item ${activeTab === 'PARENTS' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('PARENTS')}
+                >
+                    Parent SKUs ({parentCount})
+                </button>
+                <button
+                    className={`tab-item ${activeTab === 'CHILDREN' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('CHILDREN')}
+                >
+                    Child Products ({childCount})
+                </button>
+                <button
+                    className={`tab-item ${activeTab === 'AUDITED' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('AUDITED')}
+                    disabled={!hasAnyAuditData}
+                >
+                    Audited ({auditedCount})
                 </button>
                 <button
                     className={`tab-item ${activeTab === 'VARIANCES' ? 'active' : ''}`}
                     onClick={() => setActiveTab('VARIANCES')}
+                    disabled={!hasAnyAuditData}
                 >
-                    Variances Found ({varianceCount})
+                    Variances ({varianceCount})
                 </button>
             </div>
 
-            {isLoading ? (
-                <div className="loading">Loading...</div>
-            ) : (
-                <div className="audit-table-container">
-                    <table className="audit-table">
-                        <thead>
+            <div className="audit-table-container">
+                <table className="audit-table">
+                    <thead>
+                        <tr>
+                            <th>MTP SKU</th>
+                            <th>Product Code</th>
+                            <th>Type</th>
+                            <th>Billed Weight</th>
+                            {hasAnyAuditData && <th>Audited Weight</th>}
+                            {hasAnyAuditData && <th>Weight Δ</th>}
+                            {hasAnyAuditData && <th>Dim Δ</th>}
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {displayData.length === 0 ? (
                             <tr>
-                                <th>Product Code</th>
-                                <th>Product Name</th>
-                                <th>Billed Weight</th>
-                                <th>Audited Weight</th>
-                                <th>Weight Δ</th>
-                                <th>Dimension Δ</th>
-                                <th>Status</th>
+                                <td colSpan={hasAnyAuditData ? 8 : 5} className="text-center py-4">
+                                    {isLoading ? 'Loading data...' : 'No products found matching this filter.'}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {filteredData.map((product) => {
+                        ) : (
+                            displayData.map((product) => {
                                 const hasVariance = product.variations?.hasWeightChange;
                                 const hasDimensionChange = product.variations?.hasDimensionChanges;
                                 const isExpanded = product.id === expandedId;
-
-                                const toggleExpand = (id) => {
-                                    setExpandedId(expandedId === id ? null : id);
-                                };
 
                                 return (
                                     <Fragment key={product.id}>
@@ -216,100 +239,108 @@ const WeightAudit = () => {
                                             onClick={() => toggleExpand(product.id)}
                                             style={{ cursor: 'pointer' }}
                                         >
+                                            <td className="mtp-sku-name">{product.mtpSkuName || '-'}</td>
                                             <td className="product-code">
                                                 <span className={`expand-icon ${isExpanded ? 'open' : ''}`}>▶</span>
                                                 {product.productCode}
                                             </td>
-                                            <td>{product.productName}</td>
-                                            <td className="weight">{product.billedTotalWeight} kg</td>
-                                            <td className="weight audited">
-                                                {product.auditedWeight ? `${product.auditedWeight} kg` : '-'}
+                                            <td>
+                                                <span className={`type-badge ${product.productType === 'parent' ? 'type-parent' : 'type-child'}`}>
+                                                    {product.productType === 'parent' ? '👨 Parent' : '👶 Child'}
+                                                </span>
                                             </td>
-                                            <td className={`variance ${hasVariance ? (product.variations.totalWeightDelta > 0 ? 'positive' : 'negative') : ''}`}>
-                                                {product.variations?.totalWeightDelta ?
-                                                    `${product.variations.totalWeightDelta > 0 ? '+' : ''}${product.variations.totalWeightDelta.toFixed(2)} kg (${product.variations.totalWeightDeltaPercent}%)`
-                                                    : '-'
-                                                }
-                                            </td>
-                                            <td className="dimension-variations">
-                                                {product.variations?.boxes?.length > 0 ? (
-                                                    <div className="box-variations">
-                                                        {product.variations.boxes.map((box, idx) => (
-                                                            <div key={idx} className={`box-var-item ${box.hasDimensionChange ? 'has-change' : ''}`}>
-                                                                <span className="box-label">B{box.boxNumber}:</span>
-                                                                {box.hasDimensionChange ? (
-                                                                    <span className="dims-change">
-                                                                        {box.deltaLength !== 0 && `L${box.deltaLength > 0 ? '+' : ''}${box.deltaLength}`}
-                                                                        {box.deltaWidth !== 0 && ` W${box.deltaWidth > 0 ? '+' : ''}${box.deltaWidth}`}
-                                                                        {box.deltaHeight !== 0 && ` H${box.deltaHeight > 0 ? '+' : ''}${box.deltaHeight}`}
-                                                                    </span>
-                                                                ) : (
-                                                                    <span className="no-change">✓</span>
-                                                                )}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                ) : '-'}
-                                            </td>
+                                            <td className="weight">{product.billedTotalWeight.toFixed(2)} kg</td>
+                                            {hasAnyAuditData && (
+                                                <td className="weight audited">
+                                                    {product.auditedWeight ? `${product.auditedWeight.toFixed(2)} kg` : '-'}
+                                                </td>
+                                            )}
+                                            {hasAnyAuditData && (
+                                                <td className={`variance ${hasVariance ? (product.variations.totalWeightDelta > 0 ? 'positive' : 'negative') : ''}`}>
+                                                    {product.variations?.totalWeightDelta ?
+                                                        `${product.variations.totalWeightDelta > 0 ? '+' : ''}${product.variations.totalWeightDelta.toFixed(2)} kg`
+                                                        : '-'
+                                                    }
+                                                </td>
+                                            )}
+                                            {hasAnyAuditData && (
+                                                <td className="dimension-variations">
+                                                    {product.variations?.boxes?.length > 0 ? (
+                                                        <div className="box-variations">
+                                                            {product.variations.boxes.map((box, idx) => (
+                                                                <div key={idx} className={`box-var-item ${box.hasDimensionChange ? 'has-change' : ''}`}>
+                                                                    <span className="box-label">B{box.boxNumber}:</span>
+                                                                    {box.hasDimensionChange ? <span className="dims-change">Δ</span> : <span className="no-change">✓</span>}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    ) : '-'}
+                                                </td>
+                                            )}
                                             <td>
                                                 {hasDimensionChange ? (
-                                                    <span className="status-badge status-warning">⚠️ Dim Change</span>
+                                                    <span className="status-badge status-warning">⚠️ Dim Var</span>
                                                 ) : hasVariance ? (
-                                                    <span className="status-badge status-info">ℹ️ Weight Δ</span>
+                                                    <span className="status-badge status-secondary">ℹ️ Wht Var</span>
                                                 ) : product.hasAudit ? (
-                                                    <span className="status-badge status-success">✓ OK</span>
+                                                    <span className="status-badge status-success">✓ Matched</span>
+                                                ) : product.lastAuditDate ? (
+                                                    <span className="status-badge status-info">✓ Prev Audit</span>
                                                 ) : (
-                                                    <span className="status-badge status-pending">Pending</span>
+                                                    <span className="status-badge status-pending">No Audit</span>
                                                 )}
                                             </td>
                                         </tr>
                                         {isExpanded && (
                                             <tr className="comparison-detail-row">
-                                                <td colSpan="7">
+                                                <td colSpan={hasAnyAuditData ? 8 : 5}>
                                                     <div className="comparison-grid">
                                                         <div className="comparison-section crm">
-                                                            <h4>ZOHO CRM (CURRENT)</h4>
+                                                            <div className="section-header">ZOHO CRM (CURRENT)</div>
                                                             <div className="data-box">
                                                                 <div className="data-label">Total Weight: <span>{product.billedTotalWeight} kg</span></div>
+                                                                <div className="data-label">Product Type: <span>{product.productType}</span></div>
                                                                 {renderBoxDetails(product.boxes)}
                                                             </div>
                                                         </div>
-                                                        <div className="comparison-arrow">→</div>
-                                                        <div className="comparison-section audit">
-                                                            <h4>AUDITED LOGISTICS (NEW)</h4>
-                                                            <div className="data-box highlighted">
-                                                                <div className="data-label">Audited Weight:
-                                                                    <span className={hasVariance ? (product.variations.totalWeightDelta > 0 ? 'text-danger' : 'text-success') : ''}>
-                                                                        {product.auditedWeight} kg
-                                                                    </span>
+                                                        {product.hasAudit && (
+                                                            <>
+                                                                <div className="comparison-arrow">→</div>
+                                                                <div className="comparison-section audit">
+                                                                    <div className="section-header">AUDIT DATA (UPLOADED)</div>
+                                                                    <div className="data-box highlighted">
+                                                                        <div className="data-label">Audited Weight:
+                                                                            <span className={hasVariance ? (product.variations.totalWeightDelta > 0 ? 'text-danger' : 'text-success') : ''}>
+                                                                                {product.auditedWeight?.toFixed(2) || '-'} kg
+                                                                            </span>
+                                                                        </div>
+                                                                        <div className="box-details">
+                                                                            {(product.auditedBoxes || []).map((box, idx) => {
+                                                                                const variation = product.variations?.boxes?.find(b => b.boxNumber === box.boxNumber);
+                                                                                return (
+                                                                                    <div key={idx} className={`box-item ${variation?.hasDimensionChange ? 'box-changed' : ''}`}>
+                                                                                        <span className="box-number">Box {box.boxNumber}:</span>
+                                                                                        <span className="box-dims">{box.length}×{box.width}×{box.height} cm</span>
+                                                                                        <span className="box-weight">{box.weight} kg</span>
+                                                                                    </div>
+                                                                                );
+                                                                            })}
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="box-details">
-                                                                    {product.auditedBoxes?.map((box, idx) => {
-                                                                        const variation = product.variations.boxes.find(b => b.boxNumber === box.boxNumber);
-                                                                        return (
-                                                                            <div key={idx} className={`box-item ${variation?.hasDimensionChange ? 'box-changed' : ''}`}>
-                                                                                <span className="box-number">Box {box.boxNumber}:</span>
-                                                                                <span className="box-dims">
-                                                                                    {box.length}×{box.width}×{box.height}
-                                                                                </span>
-                                                                                <span className="box-weight">{box.weight} kg</span>
-                                                                            </div>
-                                                                        );
-                                                                    })}
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>
                                         )}
                                     </Fragment>
                                 );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+                            })
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

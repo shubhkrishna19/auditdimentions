@@ -25,6 +25,11 @@
     flex-shrink: 0;
 }
 
+.header-info {
+    display: flex;
+    flex-direction: column;
+}
+
 .audit-header h2 {
     margin: 0;
     padding: 0;
@@ -196,6 +201,15 @@
     font-weight: 600;
     font-size: 13px;
     color: #3498db;
+}
+
+.mtp-sku-name {
+    font-weight: 600;
+    color: #1a3a5f;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .box-details {
@@ -377,6 +391,43 @@
     border-color: #b3d9ff;
     border-bottom: 2px solid white;
     margin-bottom: -1px;
+}
+
+.tab-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: #bdc3c7;
+}
+
+/* Product Type Badge */
+.type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.type-parent {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.type-child {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+/* Comparison Section Header */
+.section-header {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #5d6d7e;
+    font-weight: 800;
+    margin-bottom: 12px;
+    text-transform: uppercase;
 }
 
 /* Expandable Row Styling */

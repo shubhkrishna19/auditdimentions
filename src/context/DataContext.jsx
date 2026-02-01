@@ -1,6 +1,9 @@
-// Data Context for Dimensions Audit Authenticator
-import { createContext, useContext, useReducer, useEffect } from 'react';
+import { createContext, useContext, useReducer, useEffect, useRef } from 'react';
 import { AuditStatus } from '../models/Product';
+import ZohoAPI from '../services/ZohoAPI';
+import AutoSaveService from '../services/AutoSaveService';
+
+const autoSave = new AutoSaveService(ZohoAPI);
 
 const STORAGE_KEY = 'dimensions_audit_data';
 
@@ -114,35 +117,42 @@ const DataContext = createContext(null);
 export const DataProvider = ({ children }) => {
     const [state, dispatch] = useReducer(dataReducer, initialState);
 
-    // Load data from localStorage on mount
+    // Initialize Zoho and Fetch Data
     useEffect(() => {
-        try {
-            const savedData = localStorage.getItem(STORAGE_KEY);
-            if (savedData) {
-                const parsed = JSON.parse(savedData);
-                dispatch({ type: ACTIONS.SET_PRODUCTS, payload: parsed.products || [] });
-                if (parsed.settings) {
-                    dispatch({ type: ACTIONS.SET_SETTINGS, payload: parsed.settings });
+        const initZoho = async () => {
+            dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+            try {
+                await ZohoAPI.init();
+                const products = await ZohoAPI.fetchProducts();
+                dispatch({ type: ACTIONS.SET_PRODUCTS, payload: products });
+            } catch (error) {
+                console.error('Zoho initialization/fetch failed:', error);
+                dispatch({ type: ACTIONS.SET_ERROR, payload: 'Failed to connect to Zoho CRM' });
+
+                // Fallback to localStorage if available
+                const savedData = localStorage.getItem(STORAGE_KEY);
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    dispatch({ type: ACTIONS.SET_PRODUCTS, payload: parsed.products || [] });
                 }
+            } finally {
+                dispatch({ type: ACTIONS.SET_LOADING, payload: false });
             }
-        } catch (error) {
-            console.error('Failed to load saved data:', error);
-        }
+        };
+
+        initZoho();
     }, []);
 
-    // Save to localStorage on changes
+    // Save settings (only) to localStorage on changes
     useEffect(() => {
-        if (state.products.length > 0) {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                    products: state.products,
-                    settings: state.settings
-                }));
-            } catch (error) {
-                console.error('Failed to save data:', error);
-            }
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                settings: state.settings
+            }));
+        } catch (error) {
+            console.error('Failed to save settings:', error);
         }
-    }, [state.products, state.settings]);
+    }, [state.settings]);
 
     // Filter products based on current filter
     const filteredProducts = state.products.filter(product => {
@@ -173,7 +183,26 @@ export const DataProvider = ({ children }) => {
         setError: (error) => dispatch({ type: ACTIONS.SET_ERROR, payload: error }),
         setProducts: (products) => dispatch({ type: ACTIONS.SET_PRODUCTS, payload: products }),
         addProducts: (products) => dispatch({ type: ACTIONS.ADD_PRODUCTS, payload: products }),
-        updateProduct: (product) => dispatch({ type: ACTIONS.UPDATE_PRODUCT, payload: product }),
+        updateProduct: (product) => {
+            // Update local state
+            dispatch({ type: ACTIONS.UPDATE_PRODUCT, payload: product });
+
+            // Queue for Auto-Save to CRM
+            if (product.id) {
+                autoSave.queueSave(product.id, {
+                    auditedWeight: product.auditedWeight || 0,
+                    variance: product.weightVariance || 0,
+                    billedCategory: product.weightCategoryBilled || '',
+                    auditedCategory: product.weightCategoryAudited || '',
+                    categoryMismatch: product.categoryMismatch || false
+                });
+            }
+        },
+        refreshData: async () => {
+            dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+            const products = await ZohoAPI.fetchProducts();
+            dispatch({ type: ACTIONS.SET_PRODUCTS, payload: products });
+        },
         setFilter: (filter) => dispatch({ type: ACTIONS.SET_FILTER, payload: filter }),
         setSettings: (settings) => dispatch({ type: ACTIONS.SET_SETTINGS, payload: settings }),
         clearData: () => {
