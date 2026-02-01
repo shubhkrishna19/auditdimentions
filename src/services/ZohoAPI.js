@@ -24,7 +24,6 @@ class ZohoAPI {
     async fetchProducts() {
         if (!this.isInitialized) {
             console.warn('Zoho SDK not initialized - waiting or using mock');
-            // Try to re-init if not initialized
             await this.init();
             if (!this.isInitialized) return this.getMockProducts();
         }
@@ -34,29 +33,24 @@ class ZohoAPI {
 
             const allProducts = [];
 
-            // 1. Fetch Parent MTP SKUs
+            // 1. Fetch Parent MTP SKUs with pagination
             let parentProducts = [];
             try {
-                const mtpResponse = await ZOHO.CRM.API.getAllRecords({
-                    Entity: "Parent_MTP_SKU",
-                    sort_order: "asc",
-                    per_page: 200
-                });
+                console.log('📥 Fetching Parent MTP SKUs...');
+                const allParents = await this.fetchAllRecords("Parent_MTP_SKU");
 
-                parentProducts = (mtpResponse.data || []).map(parent => ({
+                parentProducts = allParents.map(parent => ({
                     id: parent.id,
                     productCode: parent.Name || parent.MTP_SKU_Code || `MTP-${parent.id}`,
                     productName: parent.MTP_SKU_Name || parent.Name || 'Unnamed Parent SKU',
                     productType: 'parent',
                     mtpSkuName: parent.Name || 'N/A',
                     mtpSkuId: parent.id,
-                    parentId: null, // Parents have no parent
+                    parentId: null,
 
-                    // Parent-level weight data (if applicable)
                     boxes: [],
                     billedTotalWeight: parseFloat(parent.Total_Weight) || 0,
 
-                    // Audit fields (empty until audit upload)
                     lastAuditedWeight: parseFloat(parent.Last_Audited_Total_Weight) || 0,
                     weightVariance: parseFloat(parent.Weight_Variance) || 0,
                     weightCategoryBilled: parent.Weight_Category_Billed || '',
@@ -64,7 +58,6 @@ class ZohoAPI {
                     categoryMismatch: parent.Category_Mismatch || false,
                     lastAuditDate: parent.Last_Audit_Date || null,
 
-                    // Audit upload state
                     auditedWeight: null,
                     auditedBoxes: [],
                     variations: null,
@@ -79,68 +72,85 @@ class ZohoAPI {
                 console.warn('Could not fetch Parent_MTP_SKU module:', e);
             }
 
-            // 2. Fetch Child Products
-            const productResponse = await ZOHO.CRM.API.getAllRecords({
-                Entity: "Products",
-                sort_order: "asc",
-                per_page: 200
+            // 2. Fetch Child Products with pagination
+            console.log('📥 Fetching Child Products...');
+            const allChildRecords = await this.fetchAllRecords("Products");
+
+            const childProducts = allChildRecords.map(product => {
+                const mtpLookup = product.MTP_SKU;
+
+                return {
+                    id: product.id,
+                    productCode: product.Product_Code,
+                    productName: product.Product_Name,
+                    productType: 'child',
+                    mtpSkuName: mtpLookup?.name || '',
+                    mtpSkuId: mtpLookup?.id || '',
+                    parentId: mtpLookup?.id || null,
+
+                    boxes: (product.Bill_Dimension_Weight || []).map(box => ({
+                        boxNumber: box.Box_Number,
+                        measurement: box.Box_Measurement,
+                        length: parseFloat(box.Length) || 0,
+                        width: parseFloat(box.Width) || 0,
+                        height: parseFloat(box.Height) || 0,
+                        weightMeasurement: box.Weight_Measurement,
+                        weight: parseFloat(box.Weight) || 0
+                    })),
+
+                    billedTotalWeight: parseFloat(product.Total_Weight) || 0,
+
+                    lastAuditedWeight: parseFloat(product.Last_Audited_Total_Weight) || 0,
+                    weightVariance: parseFloat(product.Weight_Variance) || 0,
+                    weightCategoryBilled: product.Weight_Category_Billed || '',
+                    weightCategoryAudited: product.Weight_Category_Audited || '',
+                    categoryMismatch: product.Category_Mismatch || false,
+                    lastAuditDate: product.Last_Audit_Date || null,
+
+                    auditedWeight: null,
+                    auditedBoxes: [],
+                    variations: null,
+                    hasAudit: false,
+
+                    raw: product
+                };
             });
 
-            if (productResponse.data) {
-                const childProducts = productResponse.data.map(product => {
-                    const mtpLookup = product.MTP_SKU;
+            allProducts.push(...childProducts);
+            console.log(`✅ Fetched ${childProducts.length} child products`);
 
-                    return {
-                        id: product.id,
-                        productCode: product.Product_Code,
-                        productName: product.Product_Name,
-                        productType: 'child',
-                        mtpSkuName: mtpLookup?.name || '',
-                        mtpSkuId: mtpLookup?.id || '',
-                        parentId: mtpLookup?.id || null, // Link to parent
-
-                        // Box Dimensions subform data
-                        boxes: (product.Bill_Dimension_Weight || []).map(box => ({
-                            boxNumber: box.Box_Number,
-                            measurement: box.Box_Measurement,
-                            length: parseFloat(box.Length) || 0,
-                            width: parseFloat(box.Width) || 0,
-                            height: parseFloat(box.Height) || 0,
-                            weightMeasurement: box.Weight_Measurement,
-                            weight: parseFloat(box.Weight) || 0
-                        })),
-
-                        // Total weight from formula field
-                        billedTotalWeight: parseFloat(product.Total_Weight) || 0,
-
-                        // Audit tracking fields
-                        lastAuditedWeight: parseFloat(product.Last_Audited_Total_Weight) || 0,
-                        weightVariance: parseFloat(product.Weight_Variance) || 0,
-                        weightCategoryBilled: product.Weight_Category_Billed || '',
-                        weightCategoryAudited: product.Weight_Category_Audited || '',
-                        categoryMismatch: product.Category_Mismatch || false,
-                        lastAuditDate: product.Last_Audit_Date || null,
-
-                        // Audit upload state (initially empty)
-                        auditedWeight: null,
-                        auditedBoxes: [],
-                        variations: null,
-                        hasAudit: false,
-
-                        // Real CRM reference
-                        raw: product
-                    };
-                });
-
-                allProducts.push(...childProducts);
-                console.log(`✅ Fetched ${childProducts.length} child products`);
-            }
-
-            console.log(`📦 Total products loaded: ${allProducts.length} (${parentProducts.length} parents, ${allProducts.length - parentProducts.length} children)`);
+            console.log(`📦 Total products loaded: ${allProducts.length} (${parentProducts.length} parents, ${childProducts.length} children)`);
             return allProducts;
         } catch (error) {
             console.error('Error fetching products:', error);
-            return this.getMockProducts(); // Fallback to mock on error in dev
+            return this.getMockProducts();
+        }
+    }
+
+    // Helper method to fetch all records with pagination
+    async fetchAllRecords(moduleName, page = 1, allRecords = []) {
+        try {
+            const response = await ZOHO.CRM.API.getAllRecords({
+                Entity: moduleName,
+                sort_order: "asc",
+                per_page: 200,
+                page: page
+            });
+
+            if (response.data && response.data.length > 0) {
+                allRecords.push(...response.data);
+                console.log(`  📄 Page ${page}: ${response.data.length} records (Total: ${allRecords.length})`);
+
+                // Check if there are more records
+                if (response.info && response.info.more_records) {
+                    return this.fetchAllRecords(moduleName, page + 1, allRecords);
+                }
+            }
+
+            return allRecords;
+        } catch (error) {
+            console.error(`Error fetching ${moduleName} page ${page}:`, error);
+            return allRecords; // Return what we have so far
         }
     }
 
