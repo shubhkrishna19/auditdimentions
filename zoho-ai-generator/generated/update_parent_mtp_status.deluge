@@ -1,0 +1,71 @@
+// Deluge Function: Update Parent MTP SKU Status
+// Trigger: Workflow on Products module
+// When: Live_Status field is modified
+// Action: Update parent MTP SKU's ProductActive field
+
+string automation.updateParentMTPStatus(int productId) {
+    // Get the current Product record
+    productRecord = zoho.crm.getRecordById("Products", productId);
+    
+    // Get the parent MTP SKU
+    parentMTPSKU = productRecord.get("MTP_SKU");
+    
+    if(parentMTPSKU == null || parentMTPSKU.isEmpty())
+    {
+        info "No parent MTP SKU found for Product: " + productId;
+        return "No parent MTP SKU found";
+    }
+    
+    parentId = parentMTPSKU.get("id");
+    info "Parent MTP SKU ID: " + parentId;
+    
+    // Search for all Products that belong to this parent
+    searchCriteria = "(MTP_SKU:equals:" + parentId + ")";
+    childProducts = zoho.crm.searchRecords("Products", searchCriteria);
+    
+    if(childProducts == null || childProducts.isEmpty())
+    {
+        info "No child products found for parent: " + parentId;
+        // Update parent to NA
+        updateMap = Map();
+        updateMap.put("ProductActive", "NA");
+        zoho.crm.updateRecord("Parent_MTP_SKU", parentId, updateMap);
+        return "Parent updated to NA (no children)";
+    }
+    
+    // Check if ANY child has Live_Status = 'Y'
+    hasLiveChild = false;
+    
+    for each child in childProducts
+    {
+        liveStatus = child.get("Live_Status");
+        info "Child Product " + child.get("id") + " Live_Status: " + liveStatus;
+        
+        if(liveStatus == "Y")
+        {
+            hasLiveChild = true;
+            info "Found live child!";
+            break;
+        }
+    }
+    
+    // Update parent based on children's status
+    updateMap = Map();
+    
+    if(hasLiveChild)
+    {
+        updateMap.put("ProductActive", "Y");
+        info "Setting parent to Y (Live)";
+    }
+    else
+    {
+        updateMap.put("ProductActive", "NA");
+        info "Setting parent to NA (Not Available)";
+    }
+    
+    // Update the parent MTP SKU record
+    response = zoho.crm.updateRecord("Parent_MTP_SKU", parentId, updateMap);
+    info "Parent update response: " + response;
+    
+    return "Parent MTP SKU updated successfully";
+}

@@ -1,0 +1,475 @@
+/* Weight Audit Component Styles - Bluewud Theme */
+.weight-audit {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    background: #f0f8ff;
+    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* UI is contained, scrolling happens in components */
+}
+
+.audit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 16px 24px;
+    background: white;
+    border-bottom: 1px solid #b3d9ff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    flex-shrink: 0;
+}
+
+.audit-header h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a3a5f;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    margin: 4px 0 0 0;
+    padding: 0;
+    font-size: 13px;
+    color: #5d6d7e;
+    font-weight: 500;
+}
+
+.audit-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.courier-select {
+    padding: 8px 16px;
+    border: 1px solid #b3d9ff;
+    border-radius: 4px;
+    font-size: 13px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #2c5f8d;
+    font-weight: 600;
+}
+
+.courier-select:hover {
+    border-color: #3498db;
+    background: #f0f8ff;
+}
+
+.courier-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #1a3a5f;
+    color: white;
+    box-shadow: 0 2px 4px rgba(26, 58, 95, 0.2);
+}
+
+.btn-primary:hover {
+    background: #122a45;
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    background: #0d1e32;
+    transform: translateY(0);
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+    box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+}
+
+.btn-success:hover {
+    background: #1e8449;
+    transform: translateY(-1px);
+}
+
+.btn-success:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.loading {
+    text-align: center;
+    padding: 80px;
+    font-size: 18px;
+    color: #2c5f8d;
+    background: white;
+    margin: 20px;
+    border-radius: 8px;
+    border: 1px solid #b3d9ff;
+}
+
+.audit-table-container {
+    background: white;
+    border: 1px solid #b3d9ff;
+    box-shadow: 0 1px 3px rgba(52, 152, 219, 0.08);
+    overflow: auto;
+    margin: 24px;
+    border-radius: 6px;
+    flex: 1;
+}
+
+.audit-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+}
+
+.audit-table thead {
+    background: #e3f2fd;
+    border-bottom: 1px solid #b3d9ff;
+}
+
+.audit-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #e3f2fd;
+    box-shadow: inset 0 -1px 0 #b3d9ff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    color: #1a3a5f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.audit-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e3f2fd;
+    vertical-align: top;
+    color: #333;
+}
+
+.audit-table tbody tr {
+    transition: background-color 0.15s;
+}
+
+.audit-table tbody tr:hover {
+    background: #f0f8ff;
+}
+
+.audit-table tbody tr.category-mismatch {
+    background: #fff8e1;
+    border-left: 3px solid #ff9800;
+}
+
+.audit-table tbody tr.category-mismatch:hover {
+    background: #fff3cd;
+}
+
+.product-code {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    font-size: 13px;
+    color: #3498db;
+}
+
+.box-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 180px;
+}
+
+.box-item {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    padding: 4px 8px;
+    background: #f9fafb;
+    border-radius: 2px;
+    border-left: 2px solid #e8eaed;
+}
+
+.box-number {
+    font-weight: 700;
+    color: #1a1a1a;
+    min-width: 50px;
+}
+
+.box-dims {
+    color: #666;
+    font-family: 'Courier New', monospace;
+}
+
+.box-weight {
+    color: #667eea;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+.text-muted {
+    color: #999;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.weight {
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+}
+
+.weight.audited {
+    color: #11998e;
+}
+
+.category {
+    font-size: 11px;
+    padding: 3px 8px;
+    background: #f0f2f5;
+    border-radius: 2px;
+    display: inline-block;
+    font-weight: 500;
+    color: #666;
+}
+
+.variance {
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.variance.positive {
+    color: #d32f2f;
+}
+
+.variance.negative {
+    color: #388e3c;
+}
+
+/* Dimension Variations Display */
+.dimension-variations {
+    min-width: 150px;
+}
+
+.box-variations {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.box-var-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    padding: 2px 6px;
+    background: #f9fafb;
+    border-radius: 2px;
+}
+
+.box-var-item.has-change {
+    background: #fff8e1;
+    border-left: 2px solid #ff9800;
+}
+
+.box-label {
+    font-weight: 600;
+    color: #666;
+    min-width: 20px;
+}
+
+.dims-change {
+    color: #f57c00;
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+}
+
+.no-change {
+    color: #2e7d32;
+    font-size: 10px;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-success {
+    background: #d4edda;
+    color: #27ae60;
+}
+
+.status-warning {
+    background: #fff8e1;
+    color: #f57c00;
+}
+
+.status-info {
+    background: #e3f2fd;
+    color: #3498db;
+}
+
+.status-pending {
+    background: #f5f5f5;
+    color: #757575;
+}
+
+/* Tabs Styling */
+.audit-tabs {
+    display: flex;
+    gap: 2px;
+    margin: 16px 24px 0;
+    border-bottom: 1px solid #b3d9ff;
+}
+
+.tab-item {
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5d6d7e;
+    cursor: pointer;
+    border-radius: 4px 4px 0 0;
+    transition: all 0.2s;
+}
+
+.tab-item:hover {
+    color: #2c5f8d;
+    background: rgba(52, 152, 219, 0.05);
+}
+
+.tab-item.active {
+    color: #1a3a5f;
+    background: white;
+    border-color: #b3d9ff;
+    border-bottom: 2px solid white;
+    margin-bottom: -1px;
+}
+
+/* Expandable Row Styling */
+.expand-icon {
+    display: inline-block;
+    font-size: 10px;
+    margin-right: 8px;
+    transition: transform 0.2s;
+}
+
+.expand-icon.open {
+    transform: rotate(90deg);
+}
+
+.expanded-row {
+    background: #f0f8ff !important;
+    border-left: 4px solid #1a3a5f;
+}
+
+.comparison-detail-row {
+    background: #f8fbff;
+}
+
+.comparison-grid {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: white;
+    border: 1px solid #e3f2fd;
+    margin: 10px 40px 24px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.comparison-section {
+    flex: 1;
+}
+
+.comparison-section h4 {
+    margin: 0 0 12px 0;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #5d6d7e;
+    font-weight: 800;
+}
+
+.comparison-arrow {
+    font-size: 24px;
+    color: #b3d9ff;
+    font-weight: 300;
+}
+
+.data-box {
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 6px;
+    border: 1px solid #e8eaed;
+}
+
+.data-box.highlighted {
+    background: #fffdf5;
+    border-color: #ffe082;
+}
+
+.data-label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.data-label span {
+    float: right;
+    font-family: 'Courier New', monospace;
+    color: #1a3a5f;
+}
+
+.box-changed {
+    border-left: 3px solid #ff9800 !important;
+    background: #fff8e1 !important;
+}
+
+.text-danger {
+    color: #d32f2f;
+}
+
+.text-success {
+    color: #388e3c;
+}
+
+/* Override optgroup hidden behavior in some browsers */
+optgroup {
+    display: table-row-group;
+}

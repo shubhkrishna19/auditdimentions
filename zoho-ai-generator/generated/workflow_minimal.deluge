@@ -1,0 +1,32 @@
+string automation.updateParentMTPStatus(int productId) {
+    productRecord = zoho.crm.getRecordById("Products",productId);
+    parentMTPSKU = productRecord.get("MTP_SKU");
+    if(parentMTPSKU == null || parentMTPSKU.isEmpty()) {
+        return "No parent found";
+    }
+    parentId = parentMTPSKU.get("id");
+    searchCriteria = "(MTP_SKU:equals:" + parentId + ")";
+    childProducts = zoho.crm.searchRecords("Products",searchCriteria);
+    if(childProducts == null || childProducts.isEmpty()) {
+        updateMap = Map();
+        updateMap.put("ProductActive","NA");
+        zoho.crm.updateRecord("Parent_MTP_SKU",parentId,updateMap);
+        return "Updated to NA";
+    }
+    hasLiveChild = false;
+    for each child in childProducts {
+        liveStatus = child.get("Live_Status");
+        if(liveStatus == "Y") {
+            hasLiveChild = true;
+            break;
+        }
+    }
+    updateMap = Map();
+    if(hasLiveChild) {
+        updateMap.put("ProductActive","Y");
+    } else {
+        updateMap.put("ProductActive","NA");
+    }
+    zoho.crm.updateRecord("Parent_MTP_SKU",parentId,updateMap);
+    return "Success";
+}

@@ -1,0 +1,24 @@
+// Deluge Function: Bulk Import Product Dimensions
+// One-time use to populate Length, Width, Height from Excel
+
+string automation.bulkImportDimensions() {
+    // Note: Upload your Excel file to Zoho CRM Files first
+    // Excel format: Product_Code | Length | Width | Height
+    
+    fileId = "YOUR_FILE_ID"; // Replace with actual file ID after upload
+    
+    // Get file content
+    fileResponse = zoho.crm.getFile(fileId);
+    
+    if(fileResponse == null) {
+        return "File not found";
+    }
+    
+    // Parse Excel (simplified - adjust based on actual file structure)
+    // In practice, you'll use Zoho's CSV import or parse the file
+    
+    // For now, we'll use a simpler approach:
+    // Use Zoho's built-in Import feature instead
+    
+    return "Use Zoho Import: Products → Import → Map columns → Import";
+}

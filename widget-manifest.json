@@ -1,0 +1,34 @@
+{
+    "name": "Weight Audit Tool",
+    "description": "Compare billed vs audited product weights with courier category analysis",
+    "version": "1.0.0",
+    "author": "Dimensions Audit",
+    "hosting": "external",
+    "permissions": {
+        "modules": [
+            "Products"
+        ],
+        "operations": [
+            "read",
+            "update"
+        ],
+        "subforms": [
+            "Bill_Dimension_Weight"
+        ]
+    },
+    "settings": {
+        "width": "100%",
+        "height": "800px",
+        "resizable": true,
+        "fullscreen": false
+    },
+    "modules": {
+        "Products": {
+            "locations": [
+                "related_list",
+                "custom_button"
+            ],
+            "label": "Weight Audit"
+        }
+    }
+}

@@ -1,0 +1,13 @@
+# System
+.agent
+.gemini
+.vscode
+.idea
+.DS_Store
+node_modules
+dist
+dist-ssr
+*.local
+*.log
+~$*
+*.xlsx.tmp

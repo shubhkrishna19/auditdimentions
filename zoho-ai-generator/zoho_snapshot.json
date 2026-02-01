@@ -1,0 +1,3538 @@
+{
+  "timestamp": "2026-01-30T09:28:21.180Z",
+  "modules": {
+    "Products": {
+      "fields": [
+        {
+          "api_name": "Owner",
+          "display_label": "Product Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Product_Name",
+          "display_label": "Product Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Product_Code",
+          "display_label": "Product Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Product_Active",
+          "display_label": "Product Active",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Manufacturer",
+          "display_label": "Manufacturer",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Product_Category",
+          "display_label": "Product Category",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sales_Start_Date",
+          "display_label": "Sales Start Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sales_End_Date",
+          "display_label": "Sales End Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Support_Expiry_Date",
+          "display_label": "Support Expiry Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Unit_Price",
+          "display_label": "Unit Price",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Commission_Rate",
+          "display_label": "Commission Rate",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Usage_Unit",
+          "display_label": "Usage Unit",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Qty_Ordered",
+          "display_label": "Qty Ordered",
+          "data_type": "double",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Qty_in_Stock",
+          "display_label": "Qty in Stock",
+          "data_type": "double",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Reorder_Level",
+          "display_label": "Reorder Level",
+          "data_type": "double",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Handler",
+          "display_label": "Handler",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Qty_in_Demand",
+          "display_label": "Qty in Demand",
+          "data_type": "double",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Inventory",
+          "display_label": "Inventory",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Product_Sub_Category",
+          "display_label": "Product Sub Category",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Color_Finish",
+          "display_label": "Color/Finish",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Ususal_Price",
+          "display_label": "Ususal Price",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Channel_Price",
+          "display_label": "Channel Price",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "OEM_Price",
+          "display_label": "OEM Price",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Deal_Price",
+          "display_label": "Deal Price",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Ship_Mode",
+          "display_label": "Ship Mode",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Bill_Dimension_Weight",
+          "display_label": "Box Dimensions",
+          "data_type": "subform",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Total_Weight",
+          "display_label": "Total Weight",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Installation_Mode",
+          "display_label": "Installation Mode",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "CRM_ID",
+          "display_label": "CRM ID",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Live_Status",
+          "display_label": "Live Status",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tax_Rate",
+          "display_label": "Tax Rate",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "MTP_SKU",
+          "display_label": "MTP SKU",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Parent_MTP_SKU",
+              "crypt": false,
+              "id": "4301492000076159291"
+            },
+            "display_label": "MTP SKU"
+          }
+        },
+        {
+          "api_name": "Installation_Price",
+          "display_label": "Installation Price",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 41,
+      "sampleRecords": []
+    },
+    "Contacts": {
+      "fields": [
+        {
+          "api_name": "Owner",
+          "display_label": "Contact Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Lead_Source",
+          "display_label": "Lead Source",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "First_Name",
+          "display_label": "First Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Name",
+          "display_label": "Last Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Name",
+          "display_label": "Account Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Accounts",
+              "crypt": false,
+              "id": "4301492000000002177"
+            },
+            "display_label": "Contacts"
+          }
+        },
+        {
+          "api_name": "Email",
+          "display_label": "Email",
+          "data_type": "email",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Department",
+          "display_label": "Department",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Phone",
+          "display_label": "Phone",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Home_Phone",
+          "display_label": "Home Phone",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Other_Phone",
+          "display_label": "Other Phone",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mobile",
+          "display_label": "Mobile",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Date_of_Birth",
+          "display_label": "Date of Birth",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Full_Name",
+          "display_label": "Full Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mailing_Street",
+          "display_label": "Mailing Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Other_Street",
+          "display_label": "Other Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mailing_City",
+          "display_label": "Mailing City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Other_City",
+          "display_label": "Other City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mailing_State",
+          "display_label": "Mailing State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Other_State",
+          "display_label": "Other State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mailing_Zip",
+          "display_label": "Mailing Zip",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Other_Zip",
+          "display_label": "Other Zip",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mailing_Country",
+          "display_label": "Mailing Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Other_Country",
+          "display_label": "Other Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Skype_ID",
+          "display_label": "Skype ID",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Salutation",
+          "display_label": "Salutation",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Secondary_Email",
+          "display_label": "Secondary Email",
+          "data_type": "email",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Twitter",
+          "display_label": "Twitter",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Unsubscribed_Mode",
+          "display_label": "Unsubscribed Mode",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Unsubscribed_Time",
+          "display_label": "Unsubscribed Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Change_Log_Time__s",
+          "display_label": "Change Log Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Enriched_Time__s",
+          "display_label": "Last Enriched Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Enrich_Status__s",
+          "display_label": "Enrich Status",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Amazon_Email",
+          "display_label": "Amazon Email",
+          "data_type": "email",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mobile_2",
+          "display_label": "Mobile 2",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Customer_ID1",
+          "display_label": "Customer ID",
+          "data_type": "autonumber",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Visited_Time",
+          "display_label": "Last Visited Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "First_Visited_URL",
+          "display_label": "First Visited URL",
+          "data_type": "website",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Average_Time_Spent_Minutes",
+          "display_label": "Average Time Spent (Minutes)",
+          "data_type": "double",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Number_Of_Chats",
+          "display_label": "Number Of Chats",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Referrer",
+          "display_label": "Referrer",
+          "data_type": "website",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Visitor_Score",
+          "display_label": "Visitor Score",
+          "data_type": "bigint",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "First_Visited_Time",
+          "display_label": "First Visited Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Days_Visited",
+          "display_label": "Days Visited",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Type",
+          "display_label": "Contact Type",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Data_Source",
+          "display_label": "Data Source",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 53,
+      "sampleRecords": []
+    },
+    "Accounts": {
+      "fields": [
+        {
+          "api_name": "Owner",
+          "display_label": "Account Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Rating",
+          "display_label": "Rating",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Name",
+          "display_label": "Account Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Phone",
+          "display_label": "Phone",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Site",
+          "display_label": "Account Site",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Fax",
+          "display_label": "Fax",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Parent_Account",
+          "display_label": "Parent Account",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Accounts",
+              "crypt": false,
+              "id": "4301492000000002177"
+            },
+            "display_label": "Member Accounts"
+          }
+        },
+        {
+          "api_name": "Website",
+          "display_label": "Website",
+          "data_type": "website",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Ticker_Symbol",
+          "display_label": "Ticker Symbol",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Type",
+          "display_label": "Account Type",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Ownership",
+          "display_label": "Ownership",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Industry",
+          "display_label": "Industry",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Employees",
+          "display_label": "Employees",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Annual_Revenue",
+          "display_label": "Annual Revenue",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "SIC_Code",
+          "display_label": "SIC Code",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Street",
+          "display_label": "Billing Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Street",
+          "display_label": "Shipping Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_City",
+          "display_label": "Billing City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_City",
+          "display_label": "Shipping City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_State",
+          "display_label": "Billing State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_State",
+          "display_label": "Shipping State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Code",
+          "display_label": "Billing Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Code",
+          "display_label": "Shipping Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Country",
+          "display_label": "Billing Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Country",
+          "display_label": "Shipping Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Currency",
+          "display_label": "Currency",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Exchange_Rate",
+          "display_label": "Exchange Rate",
+          "data_type": "double",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Record_Image",
+          "display_label": "Record Image",
+          "data_type": "profileimage",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Change_Log_Time__s",
+          "display_label": "Change Log Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Enriched_Time__s",
+          "display_label": "Last Enriched Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Enrich_Status__s",
+          "display_label": "Enrich Status",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_First_Name",
+          "display_label": "Contact First Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Email",
+          "display_label": "Contact Email",
+          "data_type": "email",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Last_Name",
+          "display_label": "Contact Last Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Phone",
+          "display_label": "Contact Phone",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Customer_ID",
+          "display_label": "Customer",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Contacts",
+              "crypt": false,
+              "id": "4301492000000002179"
+            },
+            "display_label": "Customer"
+          }
+        },
+        {
+          "api_name": "Priority",
+          "display_label": "Account's Priority",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Customer_ID1",
+          "display_label": "Customer ID",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Status",
+          "display_label": "Account Status",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_No",
+          "display_label": "Account No",
+          "data_type": "autonumber",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Email",
+          "display_label": "Email",
+          "data_type": "email",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mobile",
+          "display_label": "Mobile",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "GST_No",
+          "display_label": "GST No.",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 51,
+      "sampleRecords": []
+    },
+    "Leads": {
+      "fields": [
+        {
+          "api_name": "Owner",
+          "display_label": "Lead Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Company",
+          "display_label": "Company",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "First_Name",
+          "display_label": "First Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Name",
+          "display_label": "Last Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Designation",
+          "display_label": "Designation",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Email",
+          "display_label": "Email",
+          "data_type": "email",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Phone",
+          "display_label": "Phone",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Fax",
+          "display_label": "Fax",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Mobile",
+          "display_label": "Mobile",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Website",
+          "display_label": "Website",
+          "data_type": "website",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Lead_Source",
+          "display_label": "Lead Source",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Lead_Status",
+          "display_label": "Lead Status",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Industry",
+          "display_label": "Industry",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "No_of_Employees",
+          "display_label": "No of Employees",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Annual_Revenue",
+          "display_label": "Annual Revenue",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Rating",
+          "display_label": "Rating",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Full_Name",
+          "display_label": "Full Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Street",
+          "display_label": "Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "City",
+          "display_label": "City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "State",
+          "display_label": "State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Zip_Code",
+          "display_label": "Zip Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Country",
+          "display_label": "Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Skype_ID",
+          "display_label": "Skype ID",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Email_Opt_Out",
+          "display_label": "Email Opt Out",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Salutation",
+          "display_label": "Salutation",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Secondary_Email",
+          "display_label": "Secondary Email",
+          "data_type": "email",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Currency",
+          "display_label": "Currency",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Exchange_Rate",
+          "display_label": "Exchange Rate",
+          "data_type": "double",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Twitter",
+          "display_label": "Twitter",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Lead_Conversion_Time",
+          "display_label": "Lead Conversion Time",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Unsubscribed_Mode",
+          "display_label": "Unsubscribed Mode",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Unsubscribed_Time",
+          "display_label": "Unsubscribed Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Converted_Account",
+          "display_label": "Converted Account",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": true,
+          "lookup": {
+            "module": {
+              "api_name": "Accounts",
+              "crypt": false,
+              "id": "4301492000000002177"
+            },
+            "display_label": null
+          }
+        },
+        {
+          "api_name": "Converted_Contact",
+          "display_label": "Converted Contact",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": true,
+          "lookup": {
+            "module": {
+              "api_name": "Contacts",
+              "crypt": false,
+              "id": "4301492000000002179"
+            },
+            "display_label": null
+          }
+        },
+        {
+          "api_name": "Converted_Deal",
+          "display_label": "Converted Deal",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": true,
+          "lookup": {
+            "module": {
+              "api_name": "Deals",
+              "crypt": false,
+              "id": "4301492000000002181"
+            },
+            "display_label": null
+          }
+        },
+        {
+          "api_name": "Change_Log_Time__s",
+          "display_label": "Change Log Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Enriched_Time__s",
+          "display_label": "Last Enriched Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Enrich_Status__s",
+          "display_label": "Enrich Status",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Visited_Time",
+          "display_label": "Last Visited Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "First_Visited_URL",
+          "display_label": "First Visited URL",
+          "data_type": "website",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Average_Time_Spent_Minutes",
+          "display_label": "Average Time Spent (Minutes)",
+          "data_type": "double",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Number_Of_Chats",
+          "display_label": "Number Of Chats",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Referrer",
+          "display_label": "Referrer",
+          "data_type": "website",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Visitor_Score",
+          "display_label": "Visitor Score",
+          "data_type": "bigint",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "First_Visited_Time",
+          "display_label": "First Visited Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Days_Visited",
+          "display_label": "Days Visited",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Lead_Types",
+          "display_label": "Lead Types",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Data_Source",
+          "display_label": "Data Source",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Due_Date",
+          "display_label": "Due Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Number_Of_Drawers",
+          "display_label": "Number Of Drawers",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Product_Name",
+          "display_label": "Product Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Probable_Order_Value",
+          "display_label": "Probable Order Value",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Quantity",
+          "display_label": "Quantity",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 61,
+      "sampleRecords": []
+    },
+    "Deals": {
+      "fields": [
+        {
+          "api_name": "Owner",
+          "display_label": "Potential Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Amount",
+          "display_label": "Amount",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Deal_Name",
+          "display_label": "Potential Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Closing_Date",
+          "display_label": "Closing Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Name",
+          "display_label": "Account Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Accounts",
+              "crypt": false,
+              "id": "4301492000000002177"
+            },
+            "display_label": "Deals"
+          }
+        },
+        {
+          "api_name": "Stage",
+          "display_label": "Stage",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Type",
+          "display_label": "Type",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Probability",
+          "display_label": "Probability",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Next_Step",
+          "display_label": "Next Step",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Lead_Source",
+          "display_label": "Lead Source",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Campaign_Source",
+          "display_label": "Campaign Source",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Campaigns",
+              "crypt": false,
+              "id": "4301492000000002183"
+            },
+            "display_label": "Deals"
+          }
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Name",
+          "display_label": "Contact Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Contacts",
+              "crypt": false,
+              "id": "4301492000000002179"
+            },
+            "display_label": "Deals"
+          }
+        },
+        {
+          "api_name": "Expected_Revenue",
+          "display_label": "Expected Revenue",
+          "data_type": "currency",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Currency",
+          "display_label": "Currency",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Exchange_Rate",
+          "display_label": "Exchange Rate",
+          "data_type": "double",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Lead_Conversion_Time",
+          "display_label": "Lead Conversion Time",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sales_Cycle_Duration",
+          "display_label": "Sales Cycle Duration",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Overall_Sales_Duration",
+          "display_label": "Overall Sales Duration",
+          "data_type": "integer",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Change_Log_Time__s",
+          "display_label": "Change Log Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "test161__Commission",
+          "display_label": "Commission",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "test161__Sales",
+          "display_label": "Commission Info",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "test161__Commission_Sales",
+              "crypt": false,
+              "id": "4301492000027013007"
+            },
+            "display_label": "Deals"
+          }
+        },
+        {
+          "api_name": "Lead_Types",
+          "display_label": "Lead Types",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Priority",
+          "display_label": "Deal's Priority",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Lead",
+          "display_label": "Lead",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Leads",
+              "crypt": false,
+              "id": "4301492000000002175"
+            },
+            "display_label": "Deal"
+          }
+        }
+      ],
+      "fieldCount": 32,
+      "sampleRecords": []
+    },
+    "Invoices": {
+      "fields": [
+        {
+          "api_name": "Invoice_Number",
+          "display_label": "Invoice Number",
+          "data_type": "autonumber",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Subject",
+          "display_label": "Subject",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Invoice_Date",
+          "display_label": "Invoice Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Name",
+          "display_label": "Account Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Accounts",
+              "crypt": false,
+              "id": "4301492000000002177"
+            },
+            "display_label": "Invoices"
+          }
+        },
+        {
+          "api_name": "Owner",
+          "display_label": "Invoice Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sub_Total",
+          "display_label": "Sub Total",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tax",
+          "display_label": "Tax",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Adjustment",
+          "display_label": "Adjustment",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Grand_Total",
+          "display_label": "Grand Total",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Street",
+          "display_label": "Billing Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Street",
+          "display_label": "Shipping Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_City",
+          "display_label": "Billing City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_City",
+          "display_label": "Shipping City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_State",
+          "display_label": "Billing State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_State",
+          "display_label": "Shipping State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Code",
+          "display_label": "Billing Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Code",
+          "display_label": "Shipping Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Country",
+          "display_label": "Billing Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Country",
+          "display_label": "Shipping Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Terms_and_Conditions",
+          "display_label": "Terms and Conditions",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Name",
+          "display_label": "Contact Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Contacts",
+              "crypt": false,
+              "id": "4301492000000002179"
+            },
+            "display_label": "Invoices"
+          }
+        },
+        {
+          "api_name": "Discount",
+          "display_label": "Discount",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Currency",
+          "display_label": "Currency",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Exchange_Rate",
+          "display_label": "Exchange Rate",
+          "data_type": "double",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Invoiced_Items",
+          "display_label": "Invoiced Items",
+          "data_type": "subform",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 33,
+      "sampleRecords": []
+    },
+    "Quotes": {
+      "fields": [
+        {
+          "api_name": "Quote_Number",
+          "display_label": "Quote Number",
+          "data_type": "autonumber",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Subject",
+          "display_label": "Subject",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Deal_Name",
+          "display_label": "Potential Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Deals",
+              "crypt": false,
+              "id": "4301492000000002181"
+            },
+            "display_label": "Quotes"
+          }
+        },
+        {
+          "api_name": "Quote_Stage",
+          "display_label": "Quote Stage",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Valid_Till",
+          "display_label": "Valid Till",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Team",
+          "display_label": "Team",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Name",
+          "display_label": "Contact Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Contacts",
+              "crypt": false,
+              "id": "4301492000000002179"
+            },
+            "display_label": "Quotes"
+          }
+        },
+        {
+          "api_name": "Carrier",
+          "display_label": "Carrier",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Name",
+          "display_label": "Account Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Accounts",
+              "crypt": false,
+              "id": "4301492000000002177"
+            },
+            "display_label": "Quotes"
+          }
+        },
+        {
+          "api_name": "Owner",
+          "display_label": "Quote Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sub_Total",
+          "display_label": "Sub Total",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tax",
+          "display_label": "Tax",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Adjustment",
+          "display_label": "Adjustment",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Grand_Total",
+          "display_label": "Grand Total",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Street",
+          "display_label": "Billing Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Street",
+          "display_label": "Shipping Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_City",
+          "display_label": "Billing City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_City",
+          "display_label": "Shipping City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_State",
+          "display_label": "Billing State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_State",
+          "display_label": "Shipping State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Code",
+          "display_label": "Billing Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Code",
+          "display_label": "Shipping Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Country",
+          "display_label": "Billing Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Country",
+          "display_label": "Shipping Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Terms_and_Conditions",
+          "display_label": "Terms and Conditions",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Discount",
+          "display_label": "Discount",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Currency",
+          "display_label": "Currency",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Exchange_Rate",
+          "display_label": "Exchange Rate",
+          "data_type": "double",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Quoted_Items",
+          "display_label": "Quoted Items",
+          "data_type": "subform",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 37,
+      "sampleRecords": []
+    },
+    "Purchase_Orders": {
+      "fields": [
+        {
+          "api_name": "PO_Number",
+          "display_label": "PO Number",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Subject",
+          "display_label": "Subject",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Vendor_Name",
+          "display_label": "Vendor Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Vendors",
+              "crypt": false,
+              "id": "4301492000000002215"
+            },
+            "display_label": "Purchase Orders"
+          }
+        },
+        {
+          "api_name": "Requisition_No",
+          "display_label": "Requisition No",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tracking_Number",
+          "display_label": "Tracking Number",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Name",
+          "display_label": "Contact Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Contacts",
+              "crypt": false,
+              "id": "4301492000000002179"
+            },
+            "display_label": "Purchase Orders"
+          }
+        },
+        {
+          "api_name": "PO_Date",
+          "display_label": "PO Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Due_Date",
+          "display_label": "Due Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Carrier",
+          "display_label": "Carrier",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Excise_Duty",
+          "display_label": "Excise Duty",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sales_Commission",
+          "display_label": "Sales Commission",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Status",
+          "display_label": "Status",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Owner",
+          "display_label": "Purchase Order Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sub_Total",
+          "display_label": "Sub Total",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tax",
+          "display_label": "Tax",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Adjustment",
+          "display_label": "Adjustment",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Grand_Total",
+          "display_label": "Grand Total",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Street",
+          "display_label": "Billing Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Street",
+          "display_label": "Shipping Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_City",
+          "display_label": "Billing City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_City",
+          "display_label": "Shipping City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_State",
+          "display_label": "Billing State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_State",
+          "display_label": "Shipping State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Code",
+          "display_label": "Billing Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Code",
+          "display_label": "Shipping Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Country",
+          "display_label": "Billing Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Country",
+          "display_label": "Shipping Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Terms_and_Conditions",
+          "display_label": "Terms and Conditions",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Discount",
+          "display_label": "Discount",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Currency",
+          "display_label": "Currency",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Exchange_Rate",
+          "display_label": "Exchange Rate",
+          "data_type": "double",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Purchase_Items",
+          "display_label": "Purchase Items",
+          "data_type": "subform",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 40,
+      "sampleRecords": []
+    },
+    "Sales_Orders": {
+      "fields": [
+        {
+          "api_name": "SO_Number",
+          "display_label": "SO Number",
+          "data_type": "autonumber",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Subject",
+          "display_label": "Subject",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Deal_Name",
+          "display_label": "Potential Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Deals",
+              "crypt": false,
+              "id": "4301492000000002181"
+            },
+            "display_label": "Sales Orders"
+          }
+        },
+        {
+          "api_name": "Customer_No",
+          "display_label": "Customer No",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Purchase_Order",
+          "display_label": "Purchase Order",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Quote_Name",
+          "display_label": "Quote Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Quotes",
+              "crypt": false,
+              "id": "4301492000000002219"
+            },
+            "display_label": "Sales Orders"
+          }
+        },
+        {
+          "api_name": "Due_Date",
+          "display_label": "Due Date",
+          "data_type": "date",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Pending",
+          "display_label": "Pending",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Contact_Name",
+          "display_label": "Contact Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Contacts",
+              "crypt": false,
+              "id": "4301492000000002179"
+            },
+            "display_label": "Sales Orders"
+          }
+        },
+        {
+          "api_name": "Carrier",
+          "display_label": "Carrier",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Excise_Duty",
+          "display_label": "Excise Duty",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sales_Commission",
+          "display_label": "Sales Commission",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Status",
+          "display_label": "Status",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Account_Name",
+          "display_label": "Account Name",
+          "data_type": "lookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {
+            "module": {
+              "api_name": "Accounts",
+              "crypt": false,
+              "id": "4301492000000002177"
+            },
+            "display_label": "Sales Orders"
+          }
+        },
+        {
+          "api_name": "Owner",
+          "display_label": "Sales Order Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Sub_Total",
+          "display_label": "Sub Total",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tax",
+          "display_label": "Tax",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Adjustment",
+          "display_label": "Adjustment",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Grand_Total",
+          "display_label": "Grand Total",
+          "data_type": "formula",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Street",
+          "display_label": "Billing Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Street",
+          "display_label": "Shipping Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_City",
+          "display_label": "Billing City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_City",
+          "display_label": "Shipping City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_State",
+          "display_label": "Billing State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_State",
+          "display_label": "Shipping State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Code",
+          "display_label": "Billing Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Code",
+          "display_label": "Shipping Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Billing_Country",
+          "display_label": "Billing Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Shipping_Country",
+          "display_label": "Shipping Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Terms_and_Conditions",
+          "display_label": "Terms and Conditions",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Discount",
+          "display_label": "Discount",
+          "data_type": "currency",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Currency",
+          "display_label": "Currency",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Exchange_Rate",
+          "display_label": "Exchange Rate",
+          "data_type": "double",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Ordered_Items",
+          "display_label": "Ordered Items",
+          "data_type": "subform",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 42,
+      "sampleRecords": []
+    },
+    "Vendors": {
+      "fields": [
+        {
+          "api_name": "Vendor_Name",
+          "display_label": "Vendor Name",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Phone",
+          "display_label": "Phone",
+          "data_type": "phone",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Email",
+          "display_label": "Email",
+          "data_type": "email",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Website",
+          "display_label": "Website",
+          "data_type": "website",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "GL_Account",
+          "display_label": "GL Account",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Category",
+          "display_label": "Category",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Owner",
+          "display_label": "Vendor Owner",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_By",
+          "display_label": "Created By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_By",
+          "display_label": "Modified By",
+          "data_type": "ownerlookup",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Created_Time",
+          "display_label": "Created Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Modified_Time",
+          "display_label": "Modified Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Street",
+          "display_label": "Street",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "City",
+          "display_label": "City",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "State",
+          "display_label": "State",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Zip_Code",
+          "display_label": "Zip Code",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Country",
+          "display_label": "Country",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Description",
+          "display_label": "Description",
+          "data_type": "textarea",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Tag",
+          "display_label": "Tag",
+          "data_type": "text",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Record_Image",
+          "display_label": "Record Image",
+          "data_type": "profileimage",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Locked__s",
+          "display_label": "Locked",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Email_Opt_Out",
+          "display_label": "Email Opt Out",
+          "data_type": "boolean",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        },
+        {
+          "api_name": "Unsubscribed_Mode",
+          "display_label": "Unsubscribed Mode",
+          "data_type": "picklist",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Unsubscribed_Time",
+          "display_label": "Unsubscribed Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": true,
+          "lookup": {}
+        },
+        {
+          "api_name": "Last_Activity_Time",
+          "display_label": "Last Activity Time",
+          "data_type": "datetime",
+          "required": false,
+          "read_only": false,
+          "lookup": {}
+        }
+      ],
+      "fieldCount": 24,
+      "sampleRecords": []
+    }
+  }
+}
