@@ -128,6 +128,28 @@ const WeightAudit = () => {
         setExpandedId(expandedId === id ? null : id);
     };
 
+    // Open product in Zoho CRM's native product page
+    const openProductInCRM = (e, product) => {
+        e.stopPropagation(); // Prevent row expand/collapse
+
+        if (typeof ZOHO !== 'undefined' && ZOHO.CRM && ZOHO.CRM.UI) {
+            // Determine the entity type based on productType
+            const entity = product.productType === 'parent' ? 'Parent_MTP_SKU' : 'Products';
+
+            ZOHO.CRM.UI.Record.open({ Entity: entity, RecordID: product.id })
+                .then((response) => {
+                    console.log('[WeightAudit] Opened CRM record:', response);
+                })
+                .catch((error) => {
+                    console.error('[WeightAudit] Failed to open CRM record:', error);
+                    alert('Could not open product page. Please try again.');
+                });
+        } else {
+            // Fallback for development - show alert
+            alert(`Development mode: Would open ${product.productType === 'parent' ? 'Parent_MTP_SKU' : 'Products'} record ID: ${product.id}`);
+        }
+    };
+
     // Count products by type
     const parentCount = products.filter(p => p.productType === 'parent').length;
     const childCount = products.filter(p => p.productType === 'child').length;
@@ -241,8 +263,15 @@ const WeightAudit = () => {
                                         >
                                             <td className="mtp-sku-name">{product.mtpSkuName || '-'}</td>
                                             <td className="product-code">
-                                                <span className={`expand-icon ${isExpanded ? 'open' : ''}`}>▶</span>
-                                                {product.productCode}
+                                                <span className={`expand-icon ${isExpanded ? 'open' : ''}`}>&#9654;</span>
+                                                <a
+                                                    href="#"
+                                                    className="product-link"
+                                                    onClick={(e) => openProductInCRM(e, product)}
+                                                    title="Open in Zoho CRM"
+                                                >
+                                                    {product.productCode}
+                                                </a>
                                             </td>
                                             <td>
                                                 <span className={`type-badge ${product.productType === 'parent' ? 'type-parent' : 'type-child'}`}>
