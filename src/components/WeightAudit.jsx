@@ -17,7 +17,7 @@ const WeightAudit = () => {
     } = useData();
 
     const [auditResults, setAuditResults] = useState([]);
-    const [activeTab, setActiveTab] = useState('ALL');
+    const [activeTab, setActiveTab] = useState('PARENTS'); // Default to Parent SKUs
     const [expandedId, setExpandedId] = useState(null);
     const [showAuditModal, setShowAuditModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -156,9 +156,8 @@ const WeightAudit = () => {
                 return products.filter(p => p.hasAudit === true);
             case 'VARIANCES':
                 return products.filter(p => p.hasAudit && (p.variations?.hasWeightChange || p.variations?.hasDimensionChanges));
-            case 'ALL':
             default:
-                return products;
+                return products.filter(p => p.productType === 'parent'); // Default to parents
         }
     };
 
@@ -235,22 +234,10 @@ const WeightAudit = () => {
 
             <div className="audit-tabs">
                 <button
-                    className={`tab-item ${activeTab === 'ALL' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('ALL')}
-                >
-                    All Products ({products.length})
-                </button>
-                <button
                     className={`tab-item ${activeTab === 'PARENTS' ? 'active' : ''}`}
                     onClick={() => setActiveTab('PARENTS')}
                 >
-                    Parent SKUs ({parentCount})
-                </button>
-                <button
-                    className={`tab-item ${activeTab === 'CHILDREN' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('CHILDREN')}
-                >
-                    Child Products ({childCount})
+                    Parent SKUs - Working ({parentCount})
                 </button>
                 <button
                     className={`tab-item ${activeTab === 'AUDITED' ? 'active' : ''}`}
@@ -265,6 +252,12 @@ const WeightAudit = () => {
                     disabled={!hasAnyAuditData}
                 >
                     Variances ({varianceCount})
+                </button>
+                <button
+                    className={`tab-item ${activeTab === 'CHILDREN' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('CHILDREN')}
+                >
+                    Child Products - Reference ({childCount})
                 </button>
             </div>
 
