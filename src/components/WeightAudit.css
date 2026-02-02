@@ -541,3 +541,40 @@
 optgroup {
     display: table-row-group;
 }
+
+/* Audit Button & Status Layout */
+.status-cell-actions {
+    padding: 8px;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 8px;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background: #f0f0f0;
+    color: #6a1b9a;
+    /* Zoho Purple */
+    border-color: #6a1b9a;
+}
+
+.btn-icon.history-btn {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

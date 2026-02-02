@@ -3,6 +3,7 @@ import React, { useState, Fragment } from 'react';
 import { useData } from '../context/DataContext';
 import { parseDimensionAudit, calculateDimensionVariations } from '../services/DimensionAuditParser';
 import SaveStatus from './SaveStatus';
+import AuditModal from './AuditModal'; // Import new modal
 import './WeightAudit.css';
 
 const WeightAudit = () => {
@@ -18,6 +19,46 @@ const WeightAudit = () => {
     const [auditResults, setAuditResults] = useState([]);
     const [activeTab, setActiveTab] = useState('ALL');
     const [expandedId, setExpandedId] = useState(null);
+    const [showAuditModal, setShowAuditModal] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
+    // ... (rest of existing code until render) ...
+
+    const handleAuditClick = (e, product) => {
+        e.stopPropagation();
+        setSelectedProduct(product);
+        setShowAuditModal(true);
+    };
+
+    const handleAuditSave = (auditEntry) => {
+        console.log('Saved audit entry:', auditEntry);
+
+        // Calculate variations immediately
+        const newAuditedWeight = auditEntry.totals.chargeableWeight;
+        const billedWeight = selectedProduct.billedTotalWeight || 0;
+        const delta = newAuditedWeight - billedWeight;
+
+        // Update local product state
+        updateProduct({
+            id: selectedProduct.id,
+            auditedWeight: newAuditedWeight,
+            auditedBoxes: auditEntry.boxes,
+            hasAudit: true,
+            variations: {
+                totalWeightDelta: delta,
+                hasWeightChange: Math.abs(delta) > 0.01,
+                hasDimensionChanges: true // Assume manual entry implies verification
+            }
+        });
+
+        // Close modal
+        setShowAuditModal(false);
+        setSelectedProduct(null);
+        alert('Audit saved locally! Click "Sync to ZOHO" to push changes.');
+    };
+
+    // ... (rest of code) ...
+
 
     const handleAuditUpload = async (file) => {
         setLoading(true);
@@ -306,18 +347,28 @@ const WeightAudit = () => {
                                                     ) : '-'}
                                                 </td>
                                             )}
-                                            <td>
-                                                {hasDimensionChange ? (
-                                                    <span className="status-badge status-warning">Dim Variance</span>
-                                                ) : hasVariance ? (
-                                                    <span className="status-badge status-secondary">Wht Variance</span>
-                                                ) : product.hasAudit ? (
-                                                    <span className="status-badge status-success">Matched</span>
-                                                ) : product.lastAuditDate ? (
-                                                    <span className="status-badge status-info">Prev Audit</span>
-                                                ) : (
-                                                    <span className="status-badge status-pending">No Audit</span>
-                                                )}
+                                            <td className="status-cell-actions">
+                                                <div className="flex-center">
+                                                    {hasDimensionChange ? (
+                                                        <span className="status-badge status-warning">Dim Variance</span>
+                                                    ) : hasVariance ? (
+                                                        <span className="status-badge status-secondary">Wht Variance</span>
+                                                    ) : product.hasAudit ? (
+                                                        <span className="status-badge status-success">Matched</span>
+                                                    ) : product.lastAuditDate ? (
+                                                        <span className="status-badge status-info">Prev Audit</span>
+                                                    ) : (
+                                                        <span className="status-badge status-pending">No Audit</span>
+                                                    )}
+
+                                                    <button
+                                                        className="btn-icon audit-btn"
+                                                        onClick={(e) => handleAuditClick(e, product)}
+                                                        title="Enter Audit Dimensions"
+                                                    >
+                                                        &#9998;
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                         {isExpanded && (
@@ -370,6 +421,14 @@ const WeightAudit = () => {
                     </tbody>
                 </table>
             </div>
+
+            {showAuditModal && selectedProduct && (
+                <AuditModal
+                    product={selectedProduct}
+                    onClose={() => setShowAuditModal(false)}
+                    onSave={handleAuditSave}
+                />
+            )}
         </div>
     );
 };
