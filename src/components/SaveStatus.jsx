@@ -34,7 +34,7 @@ const SaveStatus = () => {
             )}
             {status === 'saved' && (
                 <>
-                    <span className="save-status__icon">✓</span>
+                    <span className="save-status__icon">OK</span>
                     <span>Saved to CRM</span>
                     {lastSaved && (
                         <span className="save-status__time">
@@ -45,7 +45,7 @@ const SaveStatus = () => {
             )}
             {status === 'error' && (
                 <>
-                    <span className="save-status__icon">⚠</span>
+                    <span className="save-status__icon">!</span>
                     <span>Save failed - retry?</span>
                 </>
             )}

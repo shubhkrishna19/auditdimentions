@@ -42,7 +42,7 @@ const normalizeSKU = (sku) => {
  */
 export const parseDimensionAudit = async (file) => {
     return new Promise((resolve, reject) => {
-        console.log('📤 Starting dimension audit parse...', file.name);
+        console.log('[DimensionParser] Starting dimension audit parse...', file.name);
         const reader = new FileReader();
 
         reader.onload = (e) => {
@@ -137,11 +137,11 @@ export const parseDimensionAudit = async (file) => {
                         };
                     });
 
-                console.log('✅ Parsed products:', products.length);
-                console.log('📦 Sample product:', products[0]);
+                console.log('[DimensionParser] Parsed products:', products.length);
+                console.log('[DimensionParser] Sample product:', products[0]);
                 resolve(products);
             } catch (error) {
-                console.error('❌ Parse error:', error);
+                console.error('[DimensionParser] Parse error:', error);
                 reject(new Error(`Failed to parse dimension audit file: ${error.message}`));
             }
         };
@@ -158,9 +158,9 @@ export const parseDimensionAudit = async (file) => {
  * Calculate dimension variations between billed (CRM) and audited data
  */
 export const calculateDimensionVariations = (crmProducts, auditedProducts) => {
-    console.log('🔄 Calculating variations...');
-    console.log('📊 CRM Products:', crmProducts.length);
-    console.log('📊 Audited Products:', auditedProducts.length);
+    console.log('[DimensionParser] Calculating variations...');
+    console.log('[DimensionParser] CRM Products:', crmProducts.length);
+    console.log('[DimensionParser] Audited Products:', auditedProducts.length);
 
     // Create map of audited products by normalized SKU
     const auditMap = new Map();
@@ -169,9 +169,9 @@ export const calculateDimensionVariations = (crmProducts, auditedProducts) => {
         auditMap.set(normalizedSKU, audit);
     });
 
-    console.log('🗺️ Audit map size:', auditMap.size);
-    console.log('🗺️ Sample audit SKUs:', Array.from(auditMap.keys()).slice(0, 5));
-    console.log('🗺️ Sample CRM SKUs:', crmProducts.slice(0, 5).map(p => normalizeSKU(p.productCode)));
+    console.log('[DimensionParser] Audit map size:', auditMap.size);
+    console.log('[DimensionParser] Sample audit SKUs:', Array.from(auditMap.keys()).slice(0, 5));
+    console.log('[DimensionParser] Sample CRM SKUs:', crmProducts.slice(0, 5).map(p => normalizeSKU(p.productCode)));
 
     const results = crmProducts.map(crmProduct => {
         const normalizedCRMSKU = normalizeSKU(crmProduct.productCode);
@@ -234,7 +234,7 @@ export const calculateDimensionVariations = (crmProducts, auditedProducts) => {
     });
 
     const withAudit = results.filter(r => r.hasAudit).length;
-    console.log('✅ Results:', results.length, `(${withAudit} with audit data)`);
+    console.log('[DimensionParser] Results:', results.length, `(${withAudit} with audit data)`);
 
     return results;
 };

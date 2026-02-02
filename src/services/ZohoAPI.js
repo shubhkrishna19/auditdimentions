@@ -29,14 +29,14 @@ class ZohoAPI {
         }
 
         try {
-            console.log('🔍 Fetching records from Zoho CRM...');
+            console.log('[ZohoAPI] Fetching records from Zoho CRM...');
 
             const allProducts = [];
 
             // 1. Fetch Parent MTP SKUs with pagination
             let parentProducts = [];
             try {
-                console.log('📥 Fetching Parent MTP SKUs...');
+                console.log('[ZohoAPI] Fetching Parent MTP SKUs...');
                 const allParents = await this.fetchAllRecords("Parent_MTP_SKU");
 
                 parentProducts = allParents.map(parent => ({
@@ -67,13 +67,13 @@ class ZohoAPI {
                 }));
 
                 allProducts.push(...parentProducts);
-                console.log(`✅ Fetched ${parentProducts.length} parent MTP SKUs`);
+                console.log(`[ZohoAPI] Fetched ${parentProducts.length} parent MTP SKUs`);
             } catch (e) {
                 console.warn('Could not fetch Parent_MTP_SKU module:', e);
             }
 
             // 2. Fetch Child Products with pagination
-            console.log('📥 Fetching Child Products...');
+            console.log('[ZohoAPI] Fetching Child Products...');
             const allChildRecords = await this.fetchAllRecords("Products");
 
             const childProducts = allChildRecords.map(product => {
@@ -117,9 +117,9 @@ class ZohoAPI {
             });
 
             allProducts.push(...childProducts);
-            console.log(`✅ Fetched ${childProducts.length} child products`);
+            console.log(`[ZohoAPI] Fetched ${childProducts.length} child products`);
 
-            console.log(`📦 Total products loaded: ${allProducts.length} (${parentProducts.length} parents, ${childProducts.length} children)`);
+            console.log(`[ZohoAPI] Total products loaded: ${allProducts.length} (${parentProducts.length} parents, ${childProducts.length} children)`);
             return allProducts;
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -139,7 +139,7 @@ class ZohoAPI {
 
             if (response.data && response.data.length > 0) {
                 allRecords.push(...response.data);
-                console.log(`  📄 Page ${page}: ${response.data.length} records (Total: ${allRecords.length})`);
+                console.log(`[ZohoAPI] Page ${page}: ${response.data.length} records (Total: ${allRecords.length})`);
 
                 // Check if there are more records
                 if (response.info && response.info.more_records) {

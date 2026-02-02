@@ -22,11 +22,11 @@ const WeightAudit = () => {
     const handleAuditUpload = async (file) => {
         setLoading(true);
         try {
-            console.log('📤 Upload started:', file.name);
+            console.log('[WeightAudit] Upload started:', file.name);
 
             // Parse dimension audit file
             const auditedProducts = await parseDimensionAudit(file);
-            console.log('✅ Parsed audited rows:', auditedProducts.length);
+            console.log('[WeightAudit] Parsed audited rows:', auditedProducts.length);
 
             // Calculate variations compared to CURRENT products in state
             const results = calculateDimensionVariations(products, auditedProducts);
@@ -45,10 +45,10 @@ const WeightAudit = () => {
 
             // Show success message
             const withChanges = results.filter(r => r.hasAudit && r.variations).length;
-            alert(`✅ Upload successful!\n\n${withChanges} products matched with audit data.\n\nSwitch to "Audited" or "Variances" tab to review.`);
+            alert(`Upload successful!\n\n${withChanges} products matched with audit data.\n\nSwitch to "Audited" or "Variances" tab to review.`);
 
         } catch (error) {
-            console.error('❌ Error processing audit:', error);
+            console.error('[WeightAudit] Error processing audit:', error);
             alert(`Failed to process audit file.\n\nError: ${error.message}`);
         } finally {
             setLoading(false);
@@ -79,9 +79,9 @@ const WeightAudit = () => {
                 });
             }
 
-            alert('✅ Updates queued for Zoho CRM sync!');
+            alert('Updates queued for Zoho CRM sync!');
         } catch (error) {
-            console.error('❌ Bulk save failed:', error);
+            console.error('[WeightAudit] Bulk save failed:', error);
             alert('Failed to queue updates.');
         } finally {
             setLoading(false);
@@ -147,10 +147,10 @@ const WeightAudit = () => {
                 </div>
                 <div className="audit-actions">
                     <button className="btn btn-secondary" onClick={refreshData} disabled={isLoading}>
-                        🔄 Refresh CRM
+                        Refresh CRM
                     </button>
                     <label className="btn btn-primary">
-                        📤 Upload Audit Excel
+                        Upload Audit Excel
                         <input
                             type="file"
                             accept=".xlsx,.xls,.csv"
@@ -164,7 +164,7 @@ const WeightAudit = () => {
                             onClick={handleSaveToZoho}
                             disabled={isLoading}
                         >
-                            💾 Sync to ZOHO
+                            Sync to ZOHO
                         </button>
                     )}
                 </div>
@@ -246,7 +246,7 @@ const WeightAudit = () => {
                                             </td>
                                             <td>
                                                 <span className={`type-badge ${product.productType === 'parent' ? 'type-parent' : 'type-child'}`}>
-                                                    {product.productType === 'parent' ? '👨 Parent' : '👶 Child'}
+                                                    {product.productType === 'parent' ? 'Parent' : 'Child'}
                                                 </span>
                                             </td>
                                             <td className="weight">{product.billedTotalWeight.toFixed(2)} kg</td>
@@ -270,7 +270,7 @@ const WeightAudit = () => {
                                                             {product.variations.boxes.map((box, idx) => (
                                                                 <div key={idx} className={`box-var-item ${box.hasDimensionChange ? 'has-change' : ''}`}>
                                                                     <span className="box-label">B{box.boxNumber}:</span>
-                                                                    {box.hasDimensionChange ? <span className="dims-change">Δ</span> : <span className="no-change">✓</span>}
+                                                                    {box.hasDimensionChange ? <span className="dims-change">Changed</span> : <span className="no-change">OK</span>}
                                                                 </div>
                                                             ))}
                                                         </div>
@@ -279,13 +279,13 @@ const WeightAudit = () => {
                                             )}
                                             <td>
                                                 {hasDimensionChange ? (
-                                                    <span className="status-badge status-warning">⚠️ Dim Var</span>
+                                                    <span className="status-badge status-warning">Dim Variance</span>
                                                 ) : hasVariance ? (
-                                                    <span className="status-badge status-secondary">ℹ️ Wht Var</span>
+                                                    <span className="status-badge status-secondary">Wht Variance</span>
                                                 ) : product.hasAudit ? (
-                                                    <span className="status-badge status-success">✓ Matched</span>
+                                                    <span className="status-badge status-success">Matched</span>
                                                 ) : product.lastAuditDate ? (
-                                                    <span className="status-badge status-info">✓ Prev Audit</span>
+                                                    <span className="status-badge status-info">Prev Audit</span>
                                                 ) : (
                                                     <span className="status-badge status-pending">No Audit</span>
                                                 )}

@@ -126,7 +126,7 @@ const DataGrid = ({
                             </td>
                             <td>
                                 {product.status === 'audited' ? (
-                                    <span className="checkmark">✓</span>
+                                    <span className="checkmark">OK</span>
                                 ) : (
                                     <span className={`badge ${getStatusBadge(product.status)}`}>
                                         {product.status}
