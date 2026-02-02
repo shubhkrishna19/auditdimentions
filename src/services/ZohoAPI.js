@@ -9,15 +9,20 @@ class ZohoAPI {
 
     // Initialize Zoho SDK
     async init() {
-        if (typeof ZOHO !== 'undefined') {
-            await ZOHO.embeddedApp.on("PageLoad", (data) => {
-                this.isInitialized = true;
-            });
-            await ZOHO.embeddedApp.init();
-        } else {
-            console.warn('Zoho SDK not loaded - using mock data for development');
-            this.isInitialized = false;
-        }
+        return new Promise((resolve) => {
+            if (typeof ZOHO !== 'undefined') {
+                ZOHO.embeddedApp.on("PageLoad", (data) => {
+                    console.log('[ZohoAPI] PageLoad event received:', data);
+                    this.isInitialized = true;
+                    resolve(true);
+                });
+                ZOHO.embeddedApp.init();
+            } else {
+                console.warn('[ZohoAPI] Zoho SDK not loaded - using mock data for development');
+                this.isInitialized = false;
+                resolve(false);
+            }
+        });
     }
 
     // Fetch all products with dimensions and weights
