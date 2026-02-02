@@ -203,7 +203,7 @@ const WeightAudit = () => {
 
             <div className="audit-header">
                 <div className="header-info">
-                    <h2>Weight Audit - Live CRM Data</h2>
+                    <h2>Audit Dimensions</h2>
                     <p className="subtitle">
                         {isLoading ? 'Syncing with Zoho...' : `${products.length} Total Products | ${parentCount} Parents | ${childCount} Children`}
                     </p>
