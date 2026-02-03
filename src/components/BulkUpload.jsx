@@ -8,6 +8,8 @@ const BulkUpload = () => {
     const [syncing, setSyncing] = useState(false);
     const [progress, setProgress] = useState({ current: 0, total: 0, message: '' });
     const [results, setResults] = useState(null);
+    const [syncService, setSyncService] = useState(null); // Track service for restore
+    const [restoring, setRestoring] = useState(false);
 
     const handleFileUpload = async (e) => {
         const uploadedFile = e.target.files[0];
@@ -34,19 +36,20 @@ const BulkUpload = () => {
             return;
         }
 
-        if (!confirm(`Sync ${parsedData.length} products to Zoho CRM?`)) {
+        if (!confirm(`Sync ${parsedData.length} products to Zoho CRM?\n\n⚠️ Checkpoints will be created for rollback capability.`)) {
             return;
         }
 
         setSyncing(true);
         setProgress({ current: 0, total: parsedData.length, message: 'Initializing...' });
 
-        const syncService = new ZohoSyncService();
+        const service = new ZohoSyncService();
+        setSyncService(service); // Store for restore capability
 
         try {
-            await syncService.init();
+            await service.init();
 
-            await syncService.syncAll(
+            await service.syncAll(
                 parsedData,
                 // Progress callback
                 (progressData) => {
@@ -65,6 +68,11 @@ const BulkUpload = () => {
                         total: finalResults.total,
                         message: 'Sync complete!'
                     });
+
+                    // Save checkpoints to localStorage for safety
+                    if (finalResults.checkpoints && finalResults.checkpoints.length > 0) {
+                        console.log(`[BulkUpload] ✅ ${finalResults.checkpoints.length} checkpoints created`);
+                    }
                 }
             );
 
@@ -72,6 +80,43 @@ const BulkUpload = () => {
             console.error('[BulkUpload] Sync error:', error);
             alert('Sync failed: ' + error.message);
             setSyncing(false);
+        }
+    };
+
+    const handleRestore = async () => {
+        if (!syncService || !results || !results.checkpoints || results.checkpoints.length === 0) {
+            alert('No checkpoints available to restore');
+            return;
+        }
+
+        if (!confirm(`⚠️ RESTORE ALL PRODUCTS?\n\nThis will rollback ${results.checkpoints.length} products to their pre-sync state.\n\nThis action CANNOT be undone!`)) {
+            return;
+        }
+
+        setRestoring(true);
+        setProgress({ current: 0, total: results.checkpoints.length, message: 'Restoring...' });
+
+        try {
+            const restoreResults = await syncService.restoreAll((progressData) => {
+                if (progressData.type === 'restore_complete') {
+                    setProgress({
+                        current: progressData.restored,
+                        total: progressData.total,
+                        message: `Restored ${progressData.restored}/${progressData.total} products`
+                    });
+                }
+            });
+
+            alert(`✅ Restore complete!\n\nRestored: ${restoreResults.restored}\nFailed: ${restoreResults.failed}`);
+            setRestoring(false);
+
+            // Reset state after restore
+            window.location.reload();
+
+        } catch (error) {
+            console.error('[BulkUpload] Restore error:', error);
+            alert('Restore failed: ' + error.message);
+            setRestoring(false);
         }
     };
 
@@ -155,6 +200,13 @@ const BulkUpload = () => {
                             </div>
                         </div>
 
+                        {/* Checkpoint Info */}
+                        {results.checkpoints && results.checkpoints.length > 0 && (
+                            <div className="checkpoint-info">
+                                <p>🔒 <strong>{results.checkpoints.length} checkpoints created</strong> - Rollback available</p>
+                            </div>
+                        )}
+
                         {results.errors.length > 0 && (
                             <div className="errors-section">
                                 <h4>Errors:</h4>
@@ -169,19 +221,33 @@ const BulkUpload = () => {
                         )}
 
                         <div className="results-actions">
+                            {/* Restore Button */}
+                            {results.checkpoints && results.checkpoints.length > 0 && !restoring && (
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={handleRestore}
+                                    style={{ marginRight: '10px' }}
+                                >
+                                    ↩️ Restore All ({results.checkpoints.length} products)
+                                </button>
+                            )}
+
                             <button
                                 className="btn btn-secondary"
                                 onClick={() => {
                                     setResults(null);
                                     setParsedData(null);
                                     setFile(null);
+                                    setSyncService(null);
                                 }}
+                                disabled={restoring}
                             >
                                 Upload Another File
                             </button>
                             <button
                                 className="btn btn-primary"
                                 onClick={() => window.location.reload()}
+                                disabled={restoring}
                             >
                                 Refresh Data
                             </button>

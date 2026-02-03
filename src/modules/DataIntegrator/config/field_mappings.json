@@ -225,10 +225,68 @@
             "errorMessage": "Invalid weight category"
         }
     },
+    "unitHandling": {
+        "CRITICAL_WEIGHT_UNITS": {
+            "storageUnit": "GRAMS",
+            "displayUnit": "KILOGRAMS",
+            "conversionFactor": 1000,
+            "reason": "Zoho stores weights in GRAMS (e.g., 1890). UI should display in KG (e.g., 1.89 kg) for readability.",
+            "rule": "ALWAYS store in grams, ALWAYS display in kg. Convert on read, not on write.",
+            "examples": {
+                "storage": "Billed_Physical_Weight: 1890 (grams)",
+                "display": "Billed Physical Weight: 1.89 kg",
+                "conversion": "displayValue = storedValue / 1000"
+            }
+        },
+        "CRITICAL_DIMENSION_UNITS": {
+            "storageUnit": "CENTIMETERS",
+            "displayUnit": "CENTIMETERS",
+            "conversionFactor": 1,
+            "reason": "Dimensions always in cm, no conversion needed"
+        },
+        "VOLUMETRIC_WEIGHT_FORMULA": {
+            "forGrams": {
+                "formula": "(Length × Width × Height in cm³) / 5",
+                "divisor": 5,
+                "result": "grams",
+                "example": "(70 × 23 × 5) / 5 = 1,610 grams"
+            },
+            "forKilograms": {
+                "formula": "(Length × Width × Height in cm³) / 5000",
+                "divisor": 5000,
+                "result": "kilograms",
+                "example": "(70 × 23 × 5) / 5000 = 1.61 kg"
+            },
+            "CRITICAL_NOTE": "Use divisor 5 when storing in grams, 5000 when calculating for display in kg"
+        },
+        "PRE_SYNC_VALIDATION": {
+            "step1": "Check if weight values are in correct unit (grams for storage)",
+            "step2": "Verify Weight_Measurement field = 'Gram' (not 'kg')",
+            "step3": "Ensure Box_Measurement field = 'cm'",
+            "step4": "Validate chargeable weight = MAX(volumetric_grams, physical_grams)",
+            "step5": "Confirm both weights compared in SAME UNIT before MAX()"
+        }
+    },
     "notes": {
-        "unitConversion": "Always convert grams to kg before sending to Zoho (divide by 1000)",
-        "volumetricFormula": "(Length × Width × Height in cm) / 5000 = volumetric weight in kg",
-        "chargeableLogic": "MAX(billedPhysicalWeight, billedVolumetricWeight)",
-        "parentChildLogic": "Parent weights are NOT sum of children. Each entity has independent weight."
+        "unitConversion": "⚠️ CRITICAL: Weights stored in GRAMS in Zoho, displayed as KG in UI. NEVER convert before storing!",
+        "volumetricFormula": "Use divisor 5 for grams: (L×W×H)/5. Use divisor 5000 for kg: (L×W×H)/5000",
+        "chargeableLogic": "MAX(billedPhysicalWeight_GRAMS, billedVolumetricWeight_GRAMS) - both must be in GRAMS",
+        "parentChildLogic": "Parent weights are NOT sum of children. Each entity has independent weight.",
+        "displayConversion": "Always divide by 1000 when displaying to users: displayKg = storedGrams / 1000"
+    },
+    "dataIntegrityChecks": {
+        "beforeSync": [
+            "Verify all weight values are positive numbers",
+            "Confirm Weight_Measurement = 'Gram' in all box records",
+            "Check Box_Measurement = 'cm' in all box records",
+            "Validate weight category matches chargeable weight range",
+            "Ensure no null/undefined values in required fields"
+        ],
+        "afterSync": [
+            "Read back synced record from Zoho",
+            "Convert stored grams to kg for comparison",
+            "Verify displayed kg matches expected value (±0.001 kg tolerance)",
+            "Check subform box count matches source data"
+        ]
     }
 }

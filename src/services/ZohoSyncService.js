@@ -12,9 +12,14 @@ class ZohoSyncService {
             updated: 0,
             created: 0,
             errors: [],
+            checkpoints: [],  // Track checkpoint IDs
             startTime: null,
             endTime: null
         };
+
+        // Transaction Manager for checkpoints
+        this.transactionManager = null;
+        this.enableCheckpoints = true;  // Set to false to disable checkpointing
     }
 
     /**
@@ -130,9 +135,27 @@ class ZohoSyncService {
                 throw new Error(`${sku} not found in CRM - ensure all MTP SKUs exist`);
             }
 
+            const recordId = existing[0].id;
+
+            // ✅ CREATE CHECKPOINT before update (for rollback capability)
+            let checkpoint = null;
+            if (this.enableCheckpoints && this.transactionManager) {
+                try {
+                    checkpoint = await this.transactionManager.createCheckpoint(
+                        module,
+                        recordId,
+                        sku
+                    );
+                    this.results.checkpoints.push(checkpoint.id);
+                } catch (checkpointError) {
+                    console.warn(`[Checkpoint] Failed for ${sku}, continuing without backup:`, checkpointError);
+                    // Continue anyway - checkpoint failure shouldn't block sync
+                }
+            }
+
             // UPDATE existing product with dimensions and weights
             const updateData = {
-                id: existing[0].id,
+                id: recordId,
                 // Update box dimensions subform
                 Bill_Dimension_Weight: productData.Bill_Dimension_Weight,
                 // Update weight fields (if they exist in the schema check)
@@ -206,11 +229,21 @@ class ZohoSyncService {
         try {
             console.log('[ZohoSync] Starting sync for', products.length, 'products');
 
+            // Initialize Transaction Manager for checkpoints
+            if (this.enableCheckpoints) {
+                // Import TransactionManager class
+                const TransactionManager = (await import('../modules/DataIntegrator/core/TransactionManager.js')).default;
+                this.transactionManager = new TransactionManager();
+                await this.transactionManager.init();
+                console.log('[ZohoSync] ✅ Transaction Manager initialized - Checkpoints enabled');
+            }
+
             this.results = {
                 total: products.length,
                 updated: 0,
                 created: 0,
                 errors: [],
+                checkpoints: [],
                 startTime: new Date(),
                 endTime: null
             };
@@ -254,6 +287,54 @@ class ZohoSyncService {
      */
     getResults() {
         return this.results;
+    }
+
+    /**
+     * Restore ALL synced products to their pre-sync state
+     */
+    async restoreAll(onProgress) {
+        if (!this.transactionManager || this.results.checkpoints.length === 0) {
+            console.error('[Restore] No checkpoints available to restore');
+            return { success: false, error: 'No checkpoints found' };
+        }
+
+        console.log(`[Restore] Starting rollback for ${this.results.checkpoints.length} products...`);
+
+        const restoreResults = await this.transactionManager.restoreAll(
+            this.results.checkpoints
+        );
+
+        if (onProgress) {
+            onProgress({
+                type: 'restore_complete',
+                ...restoreResults
+            });
+        }
+
+        return restoreResults;
+    }
+
+    /**
+     * Export checkpoints for backup
+     */
+    exportCheckpoints() {
+        if (!this.transactionManager) {
+            return null;
+        }
+        return this.transactionManager.exportCheckpoints();
+    }
+
+    /**
+     * Get checkpoint stats
+     */
+    getCheckpointStats() {
+        if (!this.transactionManager) {
+            return { checkpointsEnabled: false };
+        }
+        return {
+            checkpointsEnabled: this.enableCheckpoints,
+            ...this.transactionManager.getStats()
+        };
     }
 }
 
