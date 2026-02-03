@@ -338,6 +338,198 @@ class ZohoSyncService {
     }
 
     /**
+     * Update a single product in real-time (for Save button)
+     * Uses standard CRM API for immediate update
+     */
+    async updateProductRealtime(productData) {
+        try {
+            const { sku, weights, boxes } = productData;
+
+            console.log(`[ZohoSync] Real-time update for ${sku}...`);
+
+            // Step 1: Find the record by Product_Code
+            const searchResult = await ZOHO.CRM.API.searchRecord({
+                Entity: 'Parent_MTP_SKU',
+                Type: 'criteria',
+                Query: `(Product_Code:equals:${sku})`
+            });
+
+            if (!searchResult.data || searchResult.data.length === 0) {
+                throw new Error(`Product ${sku} not found in Zoho CRM`);
+            }
+
+            const recordId = searchResult.data[0].id;
+
+            // Step 2: Prepare update data
+            const updateData = {
+                id: recordId,
+                Product_Code: sku,
+
+                // Weights in GRAMS (Zoho storage)
+                Billed_Physical_Weight: weights.physical || 0,
+                Billed_Volumetric_Weight: weights.volumetric || 0,
+                Billed_Chargeable_Weight: weights.chargeable || 0,
+                BOM_Weight: weights.bom || weights.physical || 0,
+                Total_Weight: weights.chargeable || 0,
+
+                // Weight category
+                Weight_Category_Billed: weights.category || '10kg'
+            };
+
+            // Add box dimensions if provided
+            if (boxes && boxes.length > 0) {
+                updateData.Bill_Dimension_Weight = boxes.map((box, index) => ({
+                    Box_Number: index + 1,
+                    Length: box.length || 0,
+                    Width: box.width || 0,
+                    Height: box.height || 0,
+                    Weight: box.weight || 0,
+                    Box_Measurement: box.unit || 'cm',
+                    Weight_Measurement: 'Gram'
+                }));
+            }
+
+            // Step 3: Call Zoho CRM Update API
+            const response = await ZOHO.CRM.API.updateRecord({
+                Entity: 'Parent_MTP_SKU',
+                APIData: updateData,
+                Trigger: ["workflow"]
+            });
+
+            if (response.data && response.data[0].code === 'SUCCESS') {
+                console.log(`[ZohoSync] ✅ Product ${sku} updated successfully!`, response.data[0]);
+                return {
+                    success: true,
+                    recordId: recordId,
+                    message: 'Product updated in Zoho CRM',
+                    details: response.data[0].details
+                };
+            } else {
+                throw new Error(response.data[0].message || 'Update failed');
+            }
+
+        } catch (error) {
+            console.error('[ZohoSync] Real-time update error:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * Update multiple products in real-time (small batches)
+     * Max 100 records per call
+     */
+    async updateProductsBatch(productsData, onProgress) {
+        try {
+            console.log(`[ZohoSync] Batch update for ${productsData.length} products...`);
+
+            const results = {
+                total: productsData.length,
+                successful: 0,
+                failed: 0,
+                errors: []
+            };
+
+            // Process in batches of 100 (API limit)
+            const batchSize = 100;
+            const batches = [];
+
+            for (let i = 0; i < productsData.length; i += batchSize) {
+                batches.push(productsData.slice(i, i + batchSize));
+            }
+
+            for (let batchIndex = 0; batchIndex < batches.length; batchIndex++) {
+                const batch = batches[batchIndex];
+
+                // Prepare records for this batch
+                const records = [];
+
+                for (const product of batch) {
+                    try {
+                        // Find record ID
+                        const searchResult = await ZOHO.CRM.API.searchRecord({
+                            Entity: 'Parent_MTP_SKU',
+                            Type: 'criteria',
+                            Query: `(Product_Code:equals:${product.sku})`
+                        });
+
+                        if (searchResult.data && searchResult.data.length > 0) {
+                            records.push({
+                                id: searchResult.data[0].id,
+                                Product_Code: product.sku,
+                                Billed_Physical_Weight: product.weights.physical,
+                                Billed_Volumetric_Weight: product.weights.volumetric,
+                                Billed_Chargeable_Weight: product.weights.chargeable,
+                                BOM_Weight: product.weights.bom || product.weights.physical,
+                                Weight_Category_Billed: product.weights.category,
+                                Total_Weight: product.weights.chargeable
+                            });
+                        }
+                    } catch (error) {
+                        console.error(`Error preparing ${product.sku}:`, error);
+                        results.failed++;
+                        results.errors.push({ sku: product.sku, error: error.message });
+                    }
+                }
+
+                if (records.length > 0) {
+                    // Batch update
+                    const response = await ZOHO.CRM.API.updateRecord({
+                        Entity: 'Parent_MTP_SKU',
+                        APIData: records,
+                        Trigger: ["workflow"]
+                    });
+
+                    if (response.data) {
+                        response.data.forEach(item => {
+                            if (item.code === 'SUCCESS') {
+                                results.successful++;
+                            } else {
+                                results.failed++;
+                                results.errors.push({
+                                    sku: item.details?.Product_Code,
+                                    error: item.message
+                                });
+                            }
+                        });
+                    }
+                }
+
+                // Progress callback
+                if (onProgress) {
+                    onProgress({
+                        type: 'batch_complete',
+                        batch: batchIndex + 1,
+                        totalBatches: batches.length,
+                        processed: results.successful + results.failed,
+                        total: results.total
+                    });
+                }
+
+                // Delay between batches to avoid rate limits
+                if (batchIndex < batches.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
+
+            console.log('[ZohoSync] ✅ Batch update completed', results);
+            return {
+                success: true,
+                ...results
+            };
+
+        } catch (error) {
+            console.error('[ZohoSync] Batch update error:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    /**
      * Fetch single product from Zoho (for display - Zoho as SSOT)
      */
     async fetchProduct(sku, module = 'Parent_MTP_SKU') {
