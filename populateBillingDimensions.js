@@ -52,8 +52,8 @@ function parseBillingDimensions(filePath) {
                 Length: box1L,
                 Width: parseFloat(row[3]) || 0,
                 Height: parseFloat(row[4]) || 0,
-                Weight_Measurement: 'kg',
-                Weight: (parseFloat(row[5]) || 0) / 1000 // GRAMS TO KG
+                Weight_Measurement: 'Gram',  // Store as Gram to match Zoho
+                Weight: parseFloat(row[5]) || 0  // Keep in GRAMS (no conversion)
             });
         }
 
@@ -66,8 +66,8 @@ function parseBillingDimensions(filePath) {
                 Length: box2L,
                 Width: parseFloat(row[7]) || 0,
                 Height: parseFloat(row[8]) || 0,
-                Weight_Measurement: 'kg',
-                Weight: (parseFloat(row[9]) || 0) / 1000 // GRAMS TO KG
+                Weight_Measurement: 'Gram',
+                Weight: parseFloat(row[9]) || 0  // Keep in GRAMS
             });
         }
 
@@ -80,43 +80,47 @@ function parseBillingDimensions(filePath) {
                 Length: box3L,
                 Width: parseFloat(row[11]) || 0,
                 Height: parseFloat(row[12]) || 0,
-                Weight_Measurement: 'kg',
-                Weight: (parseFloat(row[13]) || 0) / 1000 // GRAMS TO KG
+                Weight_Measurement: 'Gram',
+                Weight: parseFloat(row[13]) || 0  // Keep in GRAMS
             });
         }
 
-        // Calculate weights - ALL IN KG FOR PROPER COMPARISON
-        let totalVolumetricKg = 0;
-        let totalPhysicalKg = 0;
+        // Calculate weights - ALL IN GRAMS for storage in Zoho
+        let totalVolumetricGrams = 0;
+        let totalPhysicalGrams = 0;
 
         boxes.forEach(box => {
-            // Volumetric Weight: (L×W×H in cm³) / 5000 = kg
-            const volWeightKg = (box.Length * box.Width * box.Height) / VOLUMETRIC_DIVISOR;
-            totalVolumetricKg += volWeightKg;
+            // Volumetric Weight: (L×W×H in cm³) / 5 = grams
+            // (Standard formula: divide by 5000 for kg, divide by 5 for grams)
+            const volWeightGrams = (box.Length * box.Width * box.Height) / 5;
+            totalVolumetricGrams += volWeightGrams;
 
-            // Physical weight already in kg
-            totalPhysicalKg += box.Weight;
+            // Physical weight already in grams
+            totalPhysicalGrams += box.Weight;
         });
 
-        // Chargeable = MAX (both in KG, proper comparison!)
-        const chargeableWeightKg = Math.max(totalVolumetricKg, totalPhysicalKg);
+        // Chargeable = MAX (both in GRAMS)
+        const chargeableWeightGrams = Math.max(totalVolumetricGrams, totalPhysicalGrams);
 
-        // BOM Weight from Column S (grams) → convert to kg
-        const bomWeightKg = (parseFloat(row[18]) || 0) / 1000;
+        // BOM Weight from Column S (already in grams)
+        const bomWeightGrams = parseFloat(row[18]) || 0;
 
         // Status from Column T
         const status = row[19]?.toString().trim() || '';
+
+        // For weight category, convert to kg temporarily
+        const chargeableWeightKg = chargeableWeightGrams / 1000;
 
         const productData = {
             Product_Code: sku,
             Bill_Dimension_Weight: boxes,
 
-            // All weights in KG
-            Billed_Physical_Weight: parseFloat(totalPhysicalKg.toFixed(3)),
-            Billed_Volumetric_Weight: parseFloat(totalVolumetricKg.toFixed(3)),
-            Billed_Chargeable_Weight: parseFloat(chargeableWeightKg.toFixed(3)),
-            BOM_Weight: parseFloat(bomWeightKg.toFixed(3)),
-            Total_Weight: parseFloat(chargeableWeightKg.toFixed(3)),
+            // All weights stored in GRAMS (will display as kg in UI)
+            Billed_Physical_Weight: Math.round(totalPhysicalGrams),
+            Billed_Volumetric_Weight: Math.round(totalVolumetricGrams),
+            Billed_Chargeable_Weight: Math.round(chargeableWeightGrams),
+            BOM_Weight: Math.round(bomWeightGrams),
+            Total_Weight: Math.round(chargeableWeightGrams),
 
             Weight_Category_Billed: getWeightCategory(chargeableWeightKg),
             Processing_Status: status
@@ -197,12 +201,12 @@ try {
         console.log(`\n${idx + 1}. ${p.Product_Code}`);
         console.log(`   Boxes: ${p.Bill_Dimension_Weight.length}`);
         p.Bill_Dimension_Weight.forEach(box => {
-            console.log(`     Box ${box.Box_Number}: ${box.Length}×${box.Width}×${box.Height} cm, ${box.Weight} kg`);
+            console.log(`     Box ${box.Box_Number}: ${box.Length}×${box.Width}×${box.Height} cm, ${(box.Weight / 1000).toFixed(3)} kg (${box.Weight}g stored)`);
         });
-        console.log(`   Physical: ${p.Billed_Physical_Weight} kg`);
-        console.log(`   Volumetric: ${p.Billed_Volumetric_Weight} kg`);
-        console.log(`   Chargeable: ${p.Billed_Chargeable_Weight} kg`);
-        console.log(`   BOM: ${p.BOM_Weight} kg`);
+        console.log(`   Physical: ${(p.Billed_Physical_Weight / 1000).toFixed(3)} kg (${p.Billed_Physical_Weight}g stored)`);
+        console.log(`   Volumetric: ${(p.Billed_Volumetric_Weight / 1000).toFixed(3)} kg`);
+        console.log(`   Chargeable: ${(p.Billed_Chargeable_Weight / 1000).toFixed(3)} kg`);
+        console.log(`   BOM: ${(p.BOM_Weight / 1000).toFixed(3)} kg`);
         console.log(`   Category: ${p.Weight_Category_Billed}`);
     });
 

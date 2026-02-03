@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Schema Verification Test</title>
+    <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .output {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 600px;
+            overflow-y: auto;
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .success {
+            color: #2ecc71;
+        }
+
+        .error {
+            color: #e74c3c;
+        }
+
+        .warning {
+            color: #f39c12;
+        }
+
+        .info {
+            color: #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔍 Zoho CRM Schema Verifier</h1>
+        <p class="subtitle">Verify Parent_MTP_SKU fields and test sync capability</p>
+
+        <div class="controls">
+            <button class="btn" onclick="runVerification()">1️⃣ Verify Fields</button>
+            <button class="btn" onclick="fetchSample()">2️⃣ Check Sample Product (PU-SUB)</button>
+            <button class="btn btn-success" onclick="testUpdate()">3️⃣ Test Update (PU-SUB)</button>
+            <button class="btn" onclick="clearOutput()">🗑️ Clear Output</button>
+        </div>
+
+        <div id="output" class="output">
+            Console output will appear here...
+            Click "Verify Fields" to start.</div>
+    </div>
+
+    <script>
+        // Redirect console.log to output div
+        const outputDiv = document.getElementById('output');
+        const originalLog = console.log;
+        const originalError = console.error;
+
+        console.log = function (...args) {
+            const message = args.join(' ');
+            outputDiv.textContent += message + '\n';
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+            originalLog.apply(console, args);
+        };
+
+        console.error = function (...args) {
+            const message = '❌ ERROR: ' + args.join(' ');
+            outputDiv.textContent += message + '\n';
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+            originalError.apply(console, args);
+        };
+
+        function clearOutput() {
+            outputDiv.textContent = 'Console cleared.\n';
+        }
+
+        class SchemaVerifier {
+            async init() {
+                return new Promise((resolve) => {
+                    ZOHO.embeddedApp.on("PageLoad", function () {
+                        resolve();
+                    });
+                    ZOHO.embeddedApp.init();
+                });
+            }
+
+            async verifyFields() {
+                console.log('🔍 Fetching Parent_MTP_SKU field metadata...\n');
+
+                try {
+                    const response = await ZOHO.CRM.META.getFields({ Entity: "Parent_MTP_SKU" });
+
+                    if (!response.fields) {
+                        console.error('No fields returned');
+                        return null;
+                    }
+
+                    console.log(`✅ Found ${response.fields.length} total fields\n`);
+
+                    const TARGET_FIELDS = [
+                        'Billed_Physical_Weight',
+                        'Billed_Volumetric_Weight',
+                        'Billed_Chargeable_Weight',
+                        'BOM_Weight',
+                        'Weight_Category_Billed',
+                        'Audit_History_Log',
+                        'Processing_Status',
+                        'Bill_Dimension_Weight',
+                        'Total_Weight',
+                        'Product_Code'
+                    ];
+
+                    console.log('📋 Checking target fields:\n');
+
+                    const results = { found: [], missing: [] };
+
+                    TARGET_FIELDS.forEach(targetField => {
+                        const field = response.fields.find(f => f.api_name === targetField);
+
+                        if (field) {
+                            results.found.push(targetField);
+                            console.log(`✅ ${targetField.padEnd(30)} → "${field.field_label}" (${field.data_type})`);
+                        } else {
+                            results.missing.push(targetField);
+                            console.log(`❌ ${targetField.padEnd(30)} → NOT FOUND`);
+                        }
+                    });
+
+                    console.log(`\n📊 Summary: ${results.found.length}/${TARGET_FIELDS.length} found`);
+
+                    if (results.missing.length > 0) {
+                        console.log(`\n⚠️ MISSING: ${results.missing.join(', ')}`);
+                    } else {
+                        console.log('\n✅ ALL FIELDS EXIST!');
+                    }
+
+                    return results;
+
+                } catch (error) {
+                    console.error('Error fetching fields:', error);
+                    return null;
+                }
+            }
+
+            async fetch SampleProduct(sku = 'PU-SUB') {
+                console.log(`\n🔍 Fetching product: ${sku}...\n`);
+
+                try {
+                    const response = await ZOHO.CRM.API.searchRecord({
+                        Entity: "Parent_MTP_SKU",
+                        Type: "criteria",
+                        Query: `(Product_Code:equals:${sku})`
+                    });
+
+                    if (response.data && response.data.length > 0) {
+                        const product = response.data[0];
+
+                        console.log('✅ Product found!\n');
+                        console.log('Product Code: ' + product.Product_Code);
+                        console.log('Product Name: ' + (product.Product_MTP_Name || '(no name)'));
+
+                        console.log('\n⚖️ Current Weight Values:');
+                        console.log('Total Weight:              ' + (product.Total_Weight || '(empty)'));
+                        console.log('Billed Physical Weight:    ' + (product.Billed_Physical_Weight || '(empty)'));
+                        console.log('Billed Volumetric Weight:  ' + (product.Billed_Volumetric_Weight || '(empty)'));
+                        console.log('Billed Chargeable Weight:  ' + (product.Billed_Chargeable_Weight || '(empty)'));
+                        console.log('BOM Weight:                ' + (product.BOM_Weight || '(empty)'));
+                        console.log('Weight Category:           ' + (product.Weight_Category_Billed || '(empty)'));
+
+                        console.log('\n📦 Box Dimensions:');
+                        if (product.Bill_Dimension_Weight && product.Bill_Dimension_Weight.length > 0) {
+                            product.Bill_Dimension_Weight.forEach(box => {
+                                console.log(`\nBox ${box.Box_Number}:`);
+                                console.log(`  Length:  ${box.Length || '?'} ${box.Box_Measurement || 'cm'}`);
+                                console.log(`  Width:   ${box.Width || '?'}`);
+                                console.log(`  Height:  ${box.Height || '?'}`);
+                                console.log(`  Weight:  ${box.Weight || '?'} ${box.Weight_Measurement || '?'}`);
+                            });
+
+                            // Check weight units
+                            const firstBox = product.Bill_Dimension_Weight[0];
+                            if (firstBox.Weight_Measurement) {
+                                console.log(`\n⚠️ WEIGHT UNIT: ${firstBox.Weight_Measurement}`);
+                                if (firstBox.Weight_Measurement.toLowerCase() === 'gram') {
+                                    console.log('   → Storing in GRAMS (not kg)');
+                                } else {
+                                    console.log(`   → Storing in ${firstBox.Weight_Measurement}`);
+                                }
+                            }
+                        } else {
+                            console.log('(No box data yet)');
+                        }
+
+                        return product;
+
+                    } else {
+                        console.log(`❌ Product ${sku} not found in Parent_MTP_SKU`);
+                        return null;
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching product:', error);
+                    return null;
+                }
+            }
+
+            async testUpdate(sku = 'PU-SUB') {
+                console.log(`\n🧪 TEST UPDATE: ${sku}...\n`);
+
+                try {
+                    const searchResponse = await ZOHO.CRM.API.searchRecord({
+                        Entity: "Parent_MTP_SKU",
+                        Type: "criteria",
+                        Query: `(Product_Code:equals:${sku})`
+                    });
+
+                    if (!searchResponse.data || searchResponse.data.length === 0) {
+                        console.log(`❌ Product ${sku} not found`);
+                        return false;
+                    }
+
+                    const recordId = searchResponse.data[0].id;
+                    console.log(`✅ Found product ID: ${recordId}`);
+
+                    const testData = {
+                        id: recordId,
+                        Billed_Physical_Weight: 5.5,
+                        Billed_Volumetric_Weight: 4.8,
+                        Billed_Chargeable_Weight: 5.5,
+                        BOM_Weight: 5.2,
+                        Weight_Category_Billed: '5kg',
+                        Processing_Status: 'Y'
+                    };
+
+                    console.log('\n📤 Updating with test values:');
+                    console.log(JSON.stringify(testData, null, 2));
+
+                    const updateResponse = await ZOHO.CRM.API.updateRecord({
+                        Entity: "Parent_MTP_SKU",
+                        APIData: testData
+                    });
+
+                    if (updateResponse.data && updateResponse.data[0].code === 'SUCCESS') {
+                        console.log('\n✅ UPDATE SUCCESSFUL!');
+                        console.log('Record ID: ' + updateResponse.data[0].details.id);
+
+                        console.log('\n🔄 Fetching to verify...');
+                        await this.fetchSampleProduct(sku);
+
+                        console.log('\n✅ TEST PASSED! Ready to sync all products.');
+
+                        return true;
+                    } else {
+                        console.log('\n❌ Update failed');
+                        console.log('Response:', JSON.stringify(updateResponse, null, 2));
+                        return false;
+                    }
+
+                } catch (error) {
+                    console.error('Test update error:', error);
+                    return false;
+                }
+            }
+        }
+
+        let verifier;
+
+        async function init() {
+            console.log('🚀 Initializing Zoho SDK...\n');
+            verifier = new SchemaVerifier();
+            await verifier.init();
+            console.log('✅ SDK initialized\n');
+            console.log('Ready! Click a button above to start.\n');
+        }
+
+        async function runVerification() {
+            console.log('\n' + '='.repeat(60));
+            console.log('STEP 1: VERIFY FIELD API NAMES');
+            console.log('='.repeat(60) + '\n');
+            await verifier.verifyFields();
+        }
+
+        async function fetchSample() {
+            console.log('\n' + '='.repeat(60));
+            console.log('STEP 2: FETCH SAMPLE PRODUCT (PU-SUB)');
+            console.log('='.repeat(60) + '\n');
+            await verifier.fetchSampleProduct('PU-SUB');
+        }
+
+        async function testUpdate() {
+            if (!confirm('This will UPDATE product PU-SUB with test values. Continue?')) {
+                console.log('\n⏸️ Test update cancelled by user.\n');
+                return;
+            }
+            console.log('\n' + '='.repeat(60));
+            console.log('STEP 3: TEST UPDATE (PU-SUB)');
+            console.log('='.repeat(60) + '\n');
+            await verifier.testUpdate('PU-SUB');
+        }
+
+        // Initialize on page load
+        window.onload = init;
+    </script>
+</body>
+
+</html>
