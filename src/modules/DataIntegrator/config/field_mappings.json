@@ -1,0 +1,234 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-03",
+    "description": "Field mappings between app variables and Zoho CRM API names",
+    "modules": {
+        "Parent_MTP_SKU": {
+            "description": "Parent MTP SKU Module - Design templates (colorless, not sold)",
+            "identifier": "Product_Code",
+            "fields": {
+                "productCode": {
+                    "zohoApiName": "Product_Code",
+                    "type": "string",
+                    "required": true,
+                    "description": "Unique SKU identifier",
+                    "example": "WA-PYS-N"
+                },
+                "productName": {
+                    "zohoApiName": "Product_Name",
+                    "type": "string",
+                    "required": false,
+                    "description": "Display name of the product"
+                },
+                "billedPhysicalWeight": {
+                    "zohoApiName": "Billed_Physical_Weight",
+                    "type": "decimal",
+                    "precision": 3,
+                    "required": false,
+                    "validation": "positive_number",
+                    "unit": "kg",
+                    "description": "Sum of actual box weights in kilograms"
+                },
+                "billedVolumetricWeight": {
+                    "zohoApiName": "Billed_Volumetric_Weight",
+                    "type": "decimal",
+                    "precision": 3,
+                    "required": false,
+                    "validation": "positive_number",
+                    "unit": "kg",
+                    "description": "Calculated volumetric weight: (L×W×H)/5000 in kg"
+                },
+                "billedChargeableWeight": {
+                    "zohoApiName": "Billed_Chargeable_Weight",
+                    "type": "decimal",
+                    "precision": 3,
+                    "required": false,
+                    "validation": "positive_number",
+                    "unit": "kg",
+                    "description": "MAX(physical, volumetric) - used for shipping cost"
+                },
+                "bomWeight": {
+                    "zohoApiName": "BOM_Weight",
+                    "type": "decimal",
+                    "precision": 3,
+                    "required": false,
+                    "validation": "positive_number",
+                    "unit": "kg",
+                    "description": "Theoretical weight from Bill of Materials"
+                },
+                "totalWeight": {
+                    "zohoApiName": "Total_Weight",
+                    "type": "decimal",
+                    "precision": 3,
+                    "required": false,
+                    "validation": "positive_number",
+                    "unit": "kg",
+                    "description": "Legacy field, typically same as chargeable weight"
+                },
+                "weightCategoryBilled": {
+                    "zohoApiName": "Weight_Category_Billed",
+                    "type": "picklist",
+                    "required": false,
+                    "options": [
+                        "5kg",
+                        "10kg",
+                        "20kg",
+                        "50kg",
+                        "100kg",
+                        "500kg",
+                        "500kg+"
+                    ],
+                    "description": "Shipping weight bracket for courier pricing"
+                },
+                "processingStatus": {
+                    "zohoApiName": "Processing_Status",
+                    "type": "picklist",
+                    "required": false,
+                    "options": [
+                        "Y",
+                        "N"
+                    ],
+                    "description": "Status from Excel Column T (expand as needed)"
+                },
+                "auditHistoryLog": {
+                    "zohoApiName": "Audit_History_Log",
+                    "type": "long_text",
+                    "required": false,
+                    "description": "Timestamped log of audit changes"
+                },
+                "lastAuditedWeight": {
+                    "zohoApiName": "Last_Audited_Total_Weight",
+                    "type": "decimal",
+                    "precision": 3,
+                    "required": false,
+                    "unit": "kg"
+                },
+                "weightVariance": {
+                    "zohoApiName": "Weight_Variance",
+                    "type": "decimal",
+                    "precision": 3,
+                    "required": false,
+                    "unit": "kg",
+                    "description": "Difference between billed and audited"
+                },
+                "weightCategoryAudited": {
+                    "zohoApiName": "Weight_Category_Audited",
+                    "type": "picklist",
+                    "required": false,
+                    "options": [
+                        "5kg",
+                        "10kg",
+                        "20kg",
+                        "50kg",
+                        "100kg",
+                        "500kg",
+                        "500kg+"
+                    ]
+                },
+                "categoryMismatch": {
+                    "zohoApiName": "Category_Mismatch",
+                    "type": "boolean",
+                    "required": false,
+                    "description": "True if billed and audited categories differ"
+                },
+                "lastAuditDate": {
+                    "zohoApiName": "Last_Audit_Date",
+                    "type": "date",
+                    "required": false
+                }
+            },
+            "subforms": {
+                "boxDimensions": {
+                    "zohoApiName": "Bill_Dimension_Weight",
+                    "description": "Individual box measurements",
+                    "fields": {
+                        "boxNumber": {
+                            "zohoApiName": "Box_Number",
+                            "type": "number",
+                            "required": true
+                        },
+                        "boxMeasurement": {
+                            "zohoApiName": "Box_Measurement",
+                            "type": "string",
+                            "default": "cm",
+                            "description": "Unit for dimensions (always cm)"
+                        },
+                        "length": {
+                            "zohoApiName": "Length",
+                            "type": "decimal",
+                            "precision": 2,
+                            "required": false,
+                            "validation": "positive_number",
+                            "unit": "cm"
+                        },
+                        "width": {
+                            "zohoApiName": "Width",
+                            "type": "decimal",
+                            "precision": 2,
+                            "required": false,
+                            "validation": "positive_number",
+                            "unit": "cm"
+                        },
+                        "height": {
+                            "zohoApiName": "Height",
+                            "type": "decimal",
+                            "precision": 2,
+                            "required": false,
+                            "validation": "positive_number",
+                            "unit": "cm"
+                        },
+                        "weightMeasurement": {
+                            "zohoApiName": "Weight_Measurement",
+                            "type": "string",
+                            "default": "kg",
+                            "description": "Unit for weight (always kg)"
+                        },
+                        "weight": {
+                            "zohoApiName": "Weight",
+                            "type": "decimal",
+                            "precision": 3,
+                            "required": false,
+                            "validation": "positive_number",
+                            "unit": "kg"
+                        }
+                    }
+                }
+            },
+            "relationships": {
+                "mtpSku": {
+                    "zohoApiName": "MTP_SKU",
+                    "type": "lookup",
+                    "targetModule": "Parent_MTP_SKU",
+                    "description": "Lookup to parent MTP SKU (for child products)"
+                }
+            }
+        },
+        "Products": {
+            "description": "Child Products Module - Finished colored items (sold online)",
+            "identifier": "Product_Code",
+            "inheritsFrom": "Parent_MTP_SKU",
+            "note": "Uses same fields as Parent_MTP_SKU but has MTP_SKU lookup"
+        }
+    },
+    "validationRules": {
+        "positive_number": {
+            "description": "Value must be >= 0",
+            "errorMessage": "Value must be a positive number"
+        },
+        "required": {
+            "description": "Field cannot be null or empty",
+            "errorMessage": "This field is required"
+        },
+        "valid_weight_category": {
+            "description": "Must be one of the standard weight brackets",
+            "errorMessage": "Invalid weight category"
+        }
+    },
+    "notes": {
+        "unitConversion": "Always convert grams to kg before sending to Zoho (divide by 1000)",
+        "volumetricFormula": "(Length × Width × Height in cm) / 5000 = volumetric weight in kg",
+        "chargeableLogic": "MAX(billedPhysicalWeight, billedVolumetricWeight)",
+        "parentChildLogic": "Parent weights are NOT sum of children. Each entity has independent weight."
+    }
+}

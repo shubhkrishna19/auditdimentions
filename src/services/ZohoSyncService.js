@@ -48,6 +48,38 @@ class ZohoSyncService {
     }
 
     /**
+     * Verify if required fields exist in the module
+     */
+    async verifySchema(module = 'Parent_MTP_SKU') {
+        const REQUIRED_FIELDS = [
+            'Billed_Physical_Weight',
+            'Billed_Volumetric_Weight',
+            'Billed_Chargeable_Weight',
+            'BOM_Weight',
+            'Weight_Category_Billed',
+            'Processing_Status'
+        ];
+
+        try {
+            const response = await ZOHO.CRM.METADATA.getFields({ Entity: module });
+            const existingFields = response.fields.map(f => f.api_name);
+
+            const missing = REQUIRED_FIELDS.filter(field => !existingFields.includes(field));
+
+            return {
+                valid: missing.length === 0,
+                missingFields: missing,
+                allFields: existingFields
+            };
+        } catch (error) {
+            console.error('[ZohoSync] Schema check failed:', error);
+            // Default to assume valid if we can't check (e.g. permission error)
+            // or return error state
+            return { valid: false, error: error.message, missingFields: [] };
+        }
+    }
+
+    /**
      * Update existing product
      */
     async updateProduct(module, productData) {
@@ -103,10 +135,14 @@ class ZohoSyncService {
                 id: existing[0].id,
                 // Update box dimensions subform
                 Bill_Dimension_Weight: productData.Bill_Dimension_Weight,
-                // Update weight fields
-                Total_Weight: productData.Total_Weight
-                // Note: Add other fields like Billed_Physical_Weight etc.
-                // once they're created in Zoho CRM
+                // Update weight fields (if they exist in the schema check)
+                Total_Weight: productData.Total_Weight,
+                Billed_Physical_Weight: productData.Billed_Physical_Weight,
+                Billed_Volumetric_Weight: productData.Billed_Volumetric_Weight,
+                Billed_Chargeable_Weight: productData.Billed_Chargeable_Weight,
+                BOM_Weight: productData.BOM_Weight,
+                Weight_Category_Billed: productData.Weight_Category_Billed,
+                Processing_Status: productData.Processing_Status
             };
 
             const success = await this.updateProduct(module, updateData);
