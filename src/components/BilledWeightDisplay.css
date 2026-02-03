@@ -1,0 +1,214 @@
+/* Billed Weight Display - Zoho SSOT */
+
+.billed-weight-display {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+    border: 2px solid #4caf50;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.billed-weight-display.no-data {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    border-color: #bdbdbd;
+}
+
+.b illed-weight-display .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #4caf50;
+}
+
+.billed-weight-display .header h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.billed-weight-display .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.billed-weight-display .sync-badge {
+    background: #4caf50;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.billed-weight-display .btn-refresh {
+    background: white;
+    border: 1px solid #4caf50;
+    color: #4caf50;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.billed-weight-display .btn-refresh:hover {
+    background: #4caf50;
+    color: white;
+}
+
+.billed-weight-display .empty-state {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* Primary Weight Card */
+.billed-weight-display .weight-card.primary {
+    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.billed-weight-display .weight-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.billed-weight-display .weight-card .label {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.billed-weight-display .weight-card .value.large {
+    font-size: 32px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.billed-weight-display .weight-category {
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+.billed-weight-display .weight-category strong {
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+/* Mismatch Warning */
+.billed-weight-display .mismatch-warning {
+    background: #fff3cd;
+    border-left: 4px solid #ff9800;
+    color: #856404;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Weight Details */
+.billed-weight-display .weight-details {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.billed-weight-display .weight-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.billed-weight-display .weight-row:last-child {
+    border-bottom: none;
+}
+
+.billed-weight-display .weight-row .label {
+    color: #666;
+    font-size: 14px;
+}
+
+.billed-weight-display .weight-row .value {
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* Box Dimensions Table */
+.billed-weight-display .box-dimensions {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.billed-weight-display .box-dimensions h5 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: #2e7d32;
+}
+
+.billed-weight-display .box-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.billed-weight-display .box-table th {
+    background: #f1f8f4;
+    color: #2e7d32;
+    padding: 10px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 2px solid #4caf50;
+}
+
+.billed-weight-display .box-table td {
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+}
+
+.billed-weight-display .box-table tr:last-child td {
+    border-bottom: none;
+}
+
+.billed-weight-display .box-table tr:hover {
+    background: #f9f9f9;
+}
+
+/* Metadata */
+.billed-weight-display .metadata {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #c8e6c9;
+}
+
+.billed-weight-display .metadata small {
+    color: #666;
+    font-size: 12px;
+}
+
+.billed-weight-display .metadata .zoho-id {
+    font-family: monospace;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
