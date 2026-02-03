@@ -231,8 +231,8 @@ class ZohoSyncService {
 
             // Initialize Transaction Manager for checkpoints
             if (this.enableCheckpoints) {
-                // Import TransactionManager class
-                const TransactionManager = (await import('../modules/DataIntegrator/core/TransactionManager.js')).default;
+                // Import TransactionManager from portable module
+                const TransactionManager = (await import('../../ZohoDataIntegrationModule/core/TransactionManager.js')).default;
                 this.transactionManager = new TransactionManager();
                 await this.transactionManager.init();
                 console.log('[ZohoSync] ✅ Transaction Manager initialized - Checkpoints enabled');
