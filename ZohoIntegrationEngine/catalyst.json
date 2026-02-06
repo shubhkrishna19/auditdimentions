@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "targets": [
+      "zohocrm_bulk_callback",
+      "ZohoSyncHub"
+    ],
+    "ignore": [],
+    "source": "functions"
+  }
+}

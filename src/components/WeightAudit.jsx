@@ -99,31 +99,84 @@ const WeightAudit = () => {
     const handleSaveToZoho = async () => {
         const auditedProducts = products.filter(p => p.hasAudit && p.variations);
         if (auditedProducts.length === 0) {
-            alert('No audited products to sync.');
+            alert('No audited products to sync!');
             return;
         }
 
-        const confirmed = window.confirm(`Sync ${auditedProducts.length} audited products to Zoho CRM?`);
-        if (!confirmed) return;
+        setLoading(true);
+        let successCount = 0;
+
+        try {
+            for (const product of auditedProducts) {
+                const result = await ZohoAPI.updateProduct(product.id, {
+                    productType: product.productType,
+                    skuCode: product.skuCode,
+                    auditedWeight: product.auditedWeight,
+                    auditedBoxes: product.auditedBoxes,
+                    variance: product.variations.totalWeightDelta,
+                    auditedCategory: product.weightCategoryAudited,
+                    billedCategory: product.weightCategoryBilled,
+                    categoryMismatch: product.categoryMismatch
+                });
+
+                if (result.success) successCount++;
+            }
+            alert(`Sync complete! ${successCount}/${auditedProducts.length} records updated in Zoho CRM.`);
+            refreshData();
+        } catch (error) {
+            alert(`Sync failed: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleMasterSync = async () => {
+        const confirmSync = window.confirm("This will overwrite ALL Billing Dimensions and Weights in Zoho CRM with data from the Master Excel. Proceed?");
+        if (!confirmSync) return;
 
         setLoading(true);
         try {
-            for (const result of auditedProducts) {
-                updateProduct({
-                    id: result.id,
-                    skuCode: result.productCode,
-                    auditedWeight: result.auditedWeight,
-                    weightVariance: result.variations.totalWeightDelta,
-                    weightCategoryBilled: result.weightCategoryBilled,
-                    weightCategoryAudited: result.weightCategoryAudited,
-                    categoryMismatch: result.variations.hasDimensionChanges || result.variations.hasWeightChange
-                });
-            }
+            console.log('[WeightAudit] Starting Master Sync...');
+            // In a real widget, we'd fetch the JSON or re-parse the excel
+            // Since we're in a browser, we'll try to fetch the local JSON if possible
+            // Or guide the user to upload it. For simplicity, let's look for match in current products
 
-            alert('Updates queued for Zoho CRM sync!');
+            const response = await fetch('./parsed_billing_dimensions.json');
+            const masterData = await response.json();
+
+            let updateCount = 0;
+            for (const item of masterData) {
+                // Find matching product in currently loaded list
+                const match = products.find(p => p.skuCode === item.skuCode);
+                if (match) {
+                    console.log(`[WeightAudit] Syncing ${item.skuCode} as ${match.productType}...`);
+
+                    // 🏗️ CONSTRUCT ALIGNED DATA based on actual CRM type
+                    const isParent = match.productType === 'parent';
+                    const auditData = {
+                        productType: match.productType,
+                        auditedWeight: item.totalWeightKg,
+                        auditedCategory: item.category,
+                        billedCategory: item.category, // Defaulting to same for master sync
+                        variance: 0,
+                        categoryMismatch: false,
+                        auditedBoxes: item.boxes.map(b => ({
+                            length: b.length,
+                            width: b.width,
+                            height: b.height,
+                            weight: b.weight / 1000 // Convert grams from excel to KG for the API mapper
+                        }))
+                    };
+
+                    const result = await ZohoAPI.updateProduct(match.id, auditData);
+                    if (result.success) updateCount++;
+                }
+            }
+            alert(`Master Sync Complete! Updated ${updateCount} records matching the Excel list.`);
+            refreshData();
         } catch (error) {
-            console.error('[WeightAudit] Bulk save failed:', error);
-            alert('Failed to queue updates.');
+            console.error('[WeightAudit] Master Sync Error:', error);
+            alert('Master Sync failed. Ensure parsed_billing_dimensions.json is accessible.');
         } finally {
             setLoading(false);
         }
@@ -208,8 +261,20 @@ const WeightAudit = () => {
                     </p>
                 </div>
                 <div className="audit-actions">
-                    <button className="btn btn-secondary" onClick={refreshData} disabled={isLoading}>
-                        Refresh CRM
+                    <button
+                        className="btn btn-secondary"
+                        onClick={refreshData}
+                        disabled={isLoading}
+                    >
+                        🔄 Refresh CRM
+                    </button>
+                    <button
+                        className="btn btn-secondary sync-master-btn"
+                        onClick={handleMasterSync}
+                        disabled={isLoading}
+                        title="Sync data from Master Excel"
+                    >
+                        📦 Master Sync (Excel)
                     </button>
                     <label className="btn btn-primary">
                         Upload Audit Excel
@@ -222,11 +287,11 @@ const WeightAudit = () => {
                     </label>
                     {hasAnyAuditData && (
                         <button
-                            className="btn btn-success"
+                            className="btn btn-primary"
                             onClick={handleSaveToZoho}
                             disabled={isLoading}
                         >
-                            Sync to ZOHO
+                            ☁️ Sync Audits to CRM
                         </button>
                     )}
                 </div>
@@ -267,12 +332,13 @@ const WeightAudit = () => {
                         <tr>
                             <th>MTP SKU</th>
                             <th>Product Code</th>
-                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Shipment Cat</th>
                             <th>Billed Weight</th>
                             {hasAnyAuditData && <th>Audited Weight</th>}
                             {hasAnyAuditData && <th>Weight Δ</th>}
                             {hasAnyAuditData && <th>Dim Δ</th>}
-                            <th>Status</th>
+                            <th>Status & Live</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -295,7 +361,7 @@ const WeightAudit = () => {
                                             onClick={() => toggleExpand(product.id)}
                                             style={{ cursor: 'pointer' }}
                                         >
-                                            <td className="mtp-sku-name">{product.mtpSkuName || '-'}</td>
+                                            <td className="mtp-sku-name">{product.mtpSkuName || product.mtpSku?.name || '-'}</td>
                                             <td className="product-code">
                                                 <span className={`expand-icon ${isExpanded ? 'open' : ''}`}>&#9654;</span>
                                                 <a
@@ -304,15 +370,14 @@ const WeightAudit = () => {
                                                     onClick={(e) => openProductInCRM(e, product)}
                                                     title="Open in Zoho CRM"
                                                 >
-                                                    {product.productCode}
+                                                    {product.skuCode}
                                                 </a>
                                             </td>
+                                            <td>{product.productCategory || '-'}</td>
                                             <td>
-                                                <span className={`type-badge ${product.productType === 'parent' ? 'type-parent' : 'type-child'}`}>
-                                                    {product.productType === 'parent' ? 'Parent' : 'Child'}
-                                                </span>
+                                                <span className="weight-cat-badge">{product.shipmentCategory || product.weightCategory || '-'}</span>
                                             </td>
-                                            <td className="weight">{product.billedTotalWeight.toFixed(2)} kg</td>
+                                            <td className="weight">{product.billedTotalWeight?.toFixed(2)} kg</td>
                                             {hasAnyAuditData && (
                                                 <td className="weight audited">
                                                     {product.auditedWeight ? `${product.auditedWeight.toFixed(2)} kg` : '-'}
@@ -341,18 +406,19 @@ const WeightAudit = () => {
                                                 </td>
                                             )}
                                             <td className="status-cell-actions">
-                                                <div className="flex-center">
+                                                <div className="flex-center gap-2">
+                                                    {/* Live Status Badge */}
+                                                    <span className={`status-badge ${product.liveStatus === 'Y' || product.liveStatus === 'Live' ? 'status-success' : 'status-pending'}`} title="Zoho Live Status">
+                                                        {product.liveStatus || 'NL'}
+                                                    </span>
+
                                                     {hasDimensionChange ? (
-                                                        <span className="status-badge status-warning">Dim Variance</span>
+                                                        <span className="status-badge status-warning">Dim Var</span>
                                                     ) : hasVariance ? (
-                                                        <span className="status-badge status-secondary">Wht Variance</span>
+                                                        <span className="status-badge status-secondary">Wht Var</span>
                                                     ) : product.hasAudit ? (
-                                                        <span className="status-badge status-success">Matched</span>
-                                                    ) : product.lastAuditDate ? (
-                                                        <span className="status-badge status-info">Prev Audit</span>
-                                                    ) : (
-                                                        <span className="status-badge status-pending">No Audit</span>
-                                                    )}
+                                                        <span className="status-badge status-success">Match</span>
+                                                    ) : null}
 
                                                     <button
                                                         className="btn-icon audit-btn"
@@ -371,8 +437,30 @@ const WeightAudit = () => {
                                                         <div className="comparison-section crm">
                                                             <div className="section-header">ZOHO CRM (CURRENT)</div>
                                                             <div className="data-box">
-                                                                <div className="data-label">Total Weight: <span>{product.billedTotalWeight} kg</span></div>
-                                                                <div className="data-label">Product Type: <span>{product.productType}</span></div>
+                                                                <div className="data-row">
+                                                                    <div className="data-label">Total Weight: <span>{product.billedTotalWeight} kg</span></div>
+                                                                    <div className="data-label">Manufacturer: <span>{product.manufacturer || '-'}</span></div>
+                                                                </div>
+
+                                                                {product.mtpSku && (
+                                                                    <div className="data-label mtp-link">
+                                                                        Linked Parent:
+                                                                        <a href="#" onClick={(e) => { e.preventDefault(); openProductInCRM(e, { ...product, id: product.mtpSku.id, productType: 'parent' }) }}>
+                                                                            {product.mtpSku.name}
+                                                                        </a>
+                                                                    </div>
+                                                                )}
+
+                                                                {product.identifiers && product.identifiers.length > 0 && (
+                                                                    <div className="identifiers-list">
+                                                                        {product.identifiers.map((id, idx) => (
+                                                                            <span key={idx} className="identifier-badge">
+                                                                                {id.channel}: {id.identifier}
+                                                                            </span>
+                                                                        ))}
+                                                                    </div>
+                                                                )}
+
                                                                 {renderBoxDetails(product.boxes)}
                                                             </div>
                                                         </div>

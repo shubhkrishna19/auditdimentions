@@ -225,7 +225,7 @@ dir
 1. In API Console → **"Generate Code"**
 2. **Scope (COPY THIS EXACTLY):**
    ```
-   ZohoFiles.files.ALL,ZohoCRM.bulk.ALL,ZohoCRM.modules.ALL,ZohoCRM.settings.ALL
+   ZohoFiles.files.ALL,ZohoCRM.bulk.ALL,ZohoCRM.modules.ALL,ZohoCRM.settings.ALL,ZohoCRM.org.ALL
    ```
 3. **Time Duration:** 10 minutes (for initial setup)
 4. Click **"Create"** → Copy the **CODE**

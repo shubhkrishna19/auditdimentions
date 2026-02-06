@@ -1,0 +1,10 @@
+﻿[dotenv@17.2.3] injecting env (8) from .env -- tip: ≡ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
+--- FINAL VERIFICATION ---
+Parent Count: 1 (Expected: 230)
+Child Count:  1 (Expected: 385)
+
+--- Child Record: SR-CLM-TM ---
+Product Name: Carlem Tall Design Shoe Rack Brown Maple (Should be Readable)
+Product Code: SR-CLM-TM (Should be SKU)
+MTP_SKU ID:   undefined (Should be linked)
+Subform Rows: undefined (Should be 1)

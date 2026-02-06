@@ -1,0 +1,10 @@
+{
+    "name": "zohosynchub",
+    "version": "1.0.0",
+    "description": "Zoho CRM Sync Hub",
+    "main": "index.js",
+    "dependencies": {
+        "zcatalyst-sdk-node": "latest",
+        "axios": "^1.6.0"
+    }
+}

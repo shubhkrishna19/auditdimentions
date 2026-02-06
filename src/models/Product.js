@@ -27,6 +27,14 @@ export const createProduct = (data = {}) => ({
   boxType: data.boxType || BoxType.SINGLE,
   courierPartner: data.courierPartner || 'Default',
 
+  // New Fields for Clean Data
+  productCategory: data.productCategory || 'Uncategorized', // Real Category (e.g. Shoe Rack)
+  shipmentCategory: data.shipmentCategory || '10kg', // Weight Slab (e.g. 50kg)
+  manufacturer: data.manufacturer || 'Bluewud Concepts Pvt. Ltd.',
+  liveStatus: data.liveStatus || 'NL', // Y, NL, etc.
+  identifiers: data.identifiers || [], // Array of { Channel, Identifier }
+  mtpSku: data.mtpSku || null, // { name: 'ParentName', id: 'ParentID' }
+
   billing: {
     boxes: data.billing?.boxes || [createEmptyBox(), createEmptyBox(), createEmptyBox()],
     volumetricWeight: data.billing?.volumetricWeight || 0,

@@ -1,0 +1,230 @@
+﻿[dotenv@17.2.3] injecting env (8) from .env -- tip: ≡ƒöæ add access controls to secrets: https://dotenvx.com/ops
+[
+  {
+    "label": "Product Owner",
+    "api": "Owner",
+    "type": "ownerlookup",
+    "lookup": {}
+  },
+  {
+    "label": "Product Name",
+    "api": "Product_Name",
+    "type": "text",
+    "lookup": {}
+  },
+  {
+    "label": "Product Code",
+    "api": "Product_Code",
+    "type": "text",
+    "lookup": {}
+  },
+  {
+    "label": "Product Active",
+    "api": "Product_Active",
+    "type": "boolean",
+    "lookup": {}
+  },
+  {
+    "label": "Manufacturer",
+    "api": "Manufacturer",
+    "type": "picklist",
+    "lookup": {}
+  },
+  {
+    "label": "Product Category",
+    "api": "Product_Category",
+    "type": "picklist",
+    "lookup": {}
+  },
+  {
+    "label": "Created By",
+    "api": "Created_By",
+    "type": "ownerlookup",
+    "lookup": {}
+  },
+  {
+    "label": "Modified By",
+    "api": "Modified_By",
+    "type": "ownerlookup",
+    "lookup": {}
+  },
+  {
+    "label": "Created Time",
+    "api": "Created_Time",
+    "type": "datetime",
+    "lookup": {}
+  },
+  {
+    "label": "Modified Time",
+    "api": "Modified_Time",
+    "type": "datetime",
+    "lookup": {}
+  },
+  {
+    "label": "Unit Price",
+    "api": "Unit_Price",
+    "type": "currency",
+    "lookup": {}
+  },
+  {
+    "label": "Quantity in Stock",
+    "api": "Qty_in_Stock",
+    "type": "double",
+    "lookup": {}
+  },
+  {
+    "label": "Description",
+    "api": "Description",
+    "type": "textarea",
+    "lookup": {}
+  },
+  {
+    "label": "Tag",
+    "api": "Tag",
+    "type": "text",
+    "lookup": {}
+  },
+  {
+    "label": "Inventory",
+    "api": "Inventory",
+    "type": "text",
+    "lookup": {}
+  },
+  {
+    "label": "Locked",
+    "api": "Locked__s",
+    "type": "boolean",
+    "lookup": {}
+  },
+  {
+    "label": "Last Activity Time",
+    "api": "Last_Activity_Time",
+    "type": "datetime",
+    "lookup": {}
+  },
+  {
+    "label": "Product Sub Category",
+    "api": "Product_Sub_Category",
+    "type": "picklist",
+    "lookup": {}
+  },
+  {
+    "label": "Color/Finish",
+    "api": "Color_Finish",
+    "type": "picklist",
+    "lookup": {}
+  },
+  {
+    "label": "Ususal Price",
+    "api": "Ususal_Price",
+    "type": "currency",
+    "lookup": {}
+  },
+  {
+    "label": "Channel Price",
+    "api": "Channel_Price",
+    "type": "currency",
+    "lookup": {}
+  },
+  {
+    "label": "OEM Price",
+    "api": "OEM_Price",
+    "type": "currency",
+    "lookup": {}
+  },
+  {
+    "label": "Deal Price",
+    "api": "Deal_Price",
+    "type": "currency",
+    "lookup": {}
+  },
+  {
+    "label": "Box Dimensions",
+    "api": "Bill_Dimension_Weight",
+    "type": "subform",
+    "lookup": {}
+  },
+  {
+    "label": "Total Weight",
+    "api": "Total_Weight",
+    "type": "formula",
+    "lookup": {}
+  },
+  {
+    "label": "Installation",
+    "api": "Installation_Mode",
+    "type": "picklist",
+    "lookup": {}
+  },
+  {
+    "label": "CRM ID",
+    "api": "CRM_ID",
+    "type": "text",
+    "lookup": {}
+  },
+  {
+    "label": "Live Status",
+    "api": "Live_Status",
+    "type": "picklist",
+    "lookup": {}
+  },
+  {
+    "label": "Tax Rate",
+    "api": "Tax_Rate",
+    "type": "picklist",
+    "lookup": {}
+  },
+  {
+    "label": "MTP SKU",
+    "api": "MTP_SKU",
+    "type": "lookup",
+    "lookup": {
+      "display_label": "MTP SKU",
+      "api_name": "MTP_SKU1",
+      "module": "Parent_MTP_SKU",
+      "id": "4301492000076160758"
+    }
+  },
+  {
+    "label": "Installation Price",
+    "api": "Installation_Price",
+    "type": "currency",
+    "lookup": {}
+  },
+  {
+    "label": "Weight Variance (kg)",
+    "api": "Weight_Variance_kg",
+    "type": "double",
+    "lookup": {}
+  },
+  {
+    "label": "Last Audited Total Weight (kg)",
+    "api": "Last_Audited_Total_Weight_kg",
+    "type": "double",
+    "lookup": {}
+  },
+  {
+    "label": "Weight Category (Audited)",
+    "api": "Weight_Category_Audited",
+    "type": "text",
+    "lookup": {}
+  },
+  {
+    "label": "Weight Category (Billed)",
+    "api": "Weight_Category_Billed",
+    "type": "text",
+    "lookup": {}
+  },
+  {
+    "label": "Last Audit Date",
+    "api": "Last_Audit_Date",
+    "type": "date",
+    "lookup": {}
+  },
+  {
+    "label": "Category Mismatch",
+    "api": "Category_Mismatch",
+    "type": "boolean",
+    "lookup": {}
+  }
+]

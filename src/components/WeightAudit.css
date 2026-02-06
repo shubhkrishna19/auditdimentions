@@ -578,3 +578,52 @@ optgroup {
     align-items: center;
     gap: 4px;
 }
+
+/* === New Styles for Clean Data Integration === */
+
+/* Linked Parent Name */
+.mtp-link a {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.mtp-link a:hover {
+    text-decoration: underline;
+}
+
+/* Identifiers List (Barcode, ASIN) */
+.identifiers-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.identifier-badge {
+    background: #f1f3f4;
+    border: 1px solid #dadce0;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+    color: #3c4043;
+}
+
+/* Weight Category (Shipment Slab) Badge */
+.weight-cat-badge {
+    background: #e8f0fe;
+    color: #1967d2;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid #d2e3fc;
+}
+
+/* Live Status Badge Colors */
+.status-badge {
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+}

@@ -11,18 +11,50 @@ class ZohoAPI {
     async init() {
         return new Promise((resolve) => {
             if (typeof ZOHO !== 'undefined') {
-                ZOHO.embeddedApp.on("PageLoad", (data) => {
-                    console.log('[ZohoAPI] PageLoad event received:', data);
+                ZOHO.embeddedApp.on("PageLoad", async (data) => {
+                    console.info('[ZohoAPI] 🔍 Starting API Field Scan...');
                     this.isInitialized = true;
+
+                    // Scan both modules to find correct field names
+                    await this.scanModuleFields("Parent_MTP_SKU");
+                    await this.scanModuleFields("Products");
+
                     resolve(true);
                 });
                 ZOHO.embeddedApp.init();
             } else {
-                console.warn('[ZohoAPI] Zoho SDK not loaded - using mock data for development');
+                console.warn('[ZohoAPI] Zoho SDK not loaded - using mock data');
                 this.isInitialized = false;
                 resolve(false);
             }
         });
+    }
+
+    // Diagnostic tool to see EXACT API names in your CRM
+    async scanModuleFields(moduleName) {
+        try {
+            const response = await ZOHO.CRM.META.getFields({ "Entity": moduleName });
+            if (response.fields) {
+                const map = response.fields.reduce((acc, f) => {
+                    acc[f.field_label] = f.api_name + (f.data_type === 'subform' ? ' [SUBFORM]' : '');
+                    return acc;
+                }, {});
+
+                console.group(`[ZohoAPI] 🗺️ Module: ${moduleName}`);
+                console.table(map);
+
+                // Highlight Subforms specifically
+                const subforms = response.fields.filter(f => f.data_type === 'subform');
+                if (subforms.length > 0) {
+                    console.log(`[ZohoAPI] 📦 Subforms found in ${moduleName}:`, subforms.map(s => s.api_name));
+                }
+
+                console.groupEnd();
+                return response.fields;
+            }
+        } catch (error) {
+            console.error(`[ZohoAPI] Failed to scan ${moduleName}:`, error);
+        }
     }
 
     // Fetch all products with dimensions and weights
@@ -38,75 +70,96 @@ class ZohoAPI {
 
             const allProducts = [];
 
-            // 1. Fetch Parent MTP SKUs with pagination
+            // 1. Fetch Parent MTP SKUs
             let parentProducts = [];
             try {
                 console.log('[ZohoAPI] Fetching Parent MTP SKUs...');
                 const allParents = await this.fetchAllRecords("Parent_MTP_SKU");
 
-                parentProducts = allParents.map(parent => ({
-                    id: parent.id,
-                    productCode: parent.Name || parent.MTP_SKU_Code || `MTP-${parent.id}`,
-                    productName: parent.MTP_SKU_Name || parent.Name || 'Unnamed Parent SKU',
-                    productType: 'parent',
-                    mtpSkuName: parent.Name || 'N/A',
-                    mtpSkuId: parent.id,
-                    parentId: null,
+                parentProducts = allParents.map(parent => {
+                    // 📦 Subform: Weight and Audit Details (MTP_Box_Dimensions)
+                    const mtpBoxes = (parent.MTP_Box_Dimensions || []).map(box => ({
+                        boxNumber: box.Box || '1',
+                        measurement: box.Box_Measurement || 'cm',
+                        length: parseFloat(box.Length) || 0,
+                        width: parseFloat(box.Width) || 0,
+                        height: parseFloat(box.Height) || 0,
+                        weightMeasurement: box.Weight_Measurement || 'Gram',
+                        weight: (parseFloat(box.Weight) || 0) / 1000 // Convert Grams to KG
+                    }));
 
-                    boxes: [],
-                    billedTotalWeight: parseFloat(parent.Total_Weight) || 0,
+                    const boxesSum = mtpBoxes.reduce((acc, b) => acc + b.weight, 0);
+                    // For Parent, Total_Weight is Formula, so we use Billed_Physical_Weight
+                    const billedWeight = (parseFloat(parent.Billed_Physical_Weight) || parseFloat(parent.Total_Weight) || 0) / 1000;
 
-                    lastAuditedWeight: parseFloat(parent.Last_Audited_Total_Weight) || 0,
-                    weightVariance: parseFloat(parent.Weight_Variance) || 0,
-                    weightCategoryBilled: parent.Weight_Category_Billed || '',
-                    weightCategoryAudited: parent.Weight_Category_Audited || '',
-                    categoryMismatch: parent.Category_Mismatch || false,
-                    lastAuditDate: parent.Last_Audit_Date || null,
+                    return {
+                        id: parent.id,
+                        skuCode: parent.Name || `MTP-${parent.id}`,
+                        productName: parent.Product_MTP_Name || parent.Name || 'Unnamed Parent SKU',
+                        productType: 'parent',
+                        mtpSkuName: parent.Name || 'N/A',
+                        mtpSkuId: parent.id,
+                        parentId: null,
 
-                    auditedWeight: null,
-                    auditedBoxes: [],
-                    variations: null,
-                    hasAudit: false,
+                        boxes: mtpBoxes,
+                        billedTotalWeight: billedWeight || boxesSum,
 
-                    raw: parent
-                }));
+                        // Fields specific to Parent MTP SKU
+                        lastAuditedWeight: 0, // Parent doesn't seem to have last_audited_total_weight field in scan?
+                        weightVariance: 0,
+                        weightCategoryBilled: parent.Weight_Category_Billed || '',
+                        weightCategoryAudited: '',
+                        categoryMismatch: !!parent.Checkbox_1, // Mapping Product_Active to UI
+                        lastAuditDate: null,
+
+                        auditedWeight: null,
+                        auditedBoxes: [],
+                        variations: null,
+                        hasAudit: false,
+                        raw: parent
+                    };
+                });
 
                 allProducts.push(...parentProducts);
-                console.log(`[ZohoAPI] Fetched ${parentProducts.length} parent MTP SKUs`);
             } catch (e) {
-                console.warn('Could not fetch Parent_MTP_SKU module:', e);
+                console.warn('Parent Fetch Failed:', e);
             }
 
-            // 2. Fetch Child Products with pagination
+            // 2. Fetch Child Products
             console.log('[ZohoAPI] Fetching Child Products...');
             const allChildRecords = await this.fetchAllRecords("Products");
 
             const childProducts = allChildRecords.map(product => {
                 const mtpLookup = product.MTP_SKU;
 
+                // 📦 Subform: Box Dimensions (Bill_Dimension_Weight)
+                const productBoxes = (product.Bill_Dimension_Weight || []).map(box => ({
+                    boxNumber: box.BL || '1', // Subform field is BL for products!
+                    measurement: box.Box_Measurement || 'cm',
+                    length: parseFloat(box.Length) || 0,
+                    width: parseFloat(box.Width) || 0,
+                    height: parseFloat(box.Height) || 0,
+                    weightMeasurement: box.Weight_Measurement || 'Gram',
+                    weight: (parseFloat(box.Weight) || 0) / 1000
+                }));
+
+                const boxesSum = productBoxes.reduce((acc, b) => acc + b.weight, 0);
+
                 return {
                     id: product.id,
-                    productCode: product.Product_Code,
-                    productName: product.Product_Name,
+                    skuCode: product.Product_Code || product.Name,
+                    productName: product.Product_Name || product.Name,
                     productType: 'child',
                     mtpSkuName: mtpLookup?.name || '',
                     mtpSkuId: mtpLookup?.id || '',
                     parentId: mtpLookup?.id || null,
 
-                    boxes: (product.Bill_Dimension_Weight || []).map(box => ({
-                        boxNumber: box.Box_Number,
-                        measurement: box.Box_Measurement,
-                        length: parseFloat(box.Length) || 0,
-                        width: parseFloat(box.Width) || 0,
-                        height: parseFloat(box.Height) || 0,
-                        weightMeasurement: box.Weight_Measurement,
-                        weight: parseFloat(box.Weight) || 0
-                    })),
+                    boxes: productBoxes,
+                    billedTotalWeight: (parseFloat(product.Total_Weight) || 0) / 1000 || boxesSum,
 
-                    billedTotalWeight: parseFloat(product.Total_Weight) || 0,
-
-                    lastAuditedWeight: parseFloat(product.Last_Audited_Total_Weight) || 0,
-                    weightVariance: parseFloat(product.Weight_Variance) || 0,
+                    // Fields specific to Products Module (note the _kg suffixes discovered in scan!)
+                    lastAuditedWeight: (parseFloat(product.Last_Audited_Total_Weight_kg) || 0) / 1000,
+                    weightVariance: (parseFloat(product.Weight_Variance_kg) || 0) / 1000,
                     weightCategoryBilled: product.Weight_Category_Billed || '',
                     weightCategoryAudited: product.Weight_Category_Audited || '',
                     categoryMismatch: product.Category_Mismatch || false,
@@ -116,7 +169,6 @@ class ZohoAPI {
                     auditedBoxes: [],
                     variations: null,
                     hasAudit: false,
-
                     raw: product
                 };
             });
@@ -161,60 +213,139 @@ class ZohoAPI {
 
     // Update product with audit results
     async updateProduct(productId, auditData) {
-        if (!this.isInitialized) {
-            console.log('Mock update:', productId, auditData);
-            return { success: true };
-        }
-
         try {
-            const apiData = {
-                id: productId,
-                Last_Audited_Total_Weight: auditData.auditedWeight,
-                Weight_Variance: auditData.variance,
-                Weight_Category_Billed: auditData.billedCategory,
-                Weight_Category_Audited: auditData.auditedCategory,
-                Category_Mismatch: auditData.categoryMismatch,
-                Last_Audit_Date: new Date().toISOString().split('T')[0]
-            };
-
-            const response = await ZOHO.CRM.API.updateRecord({
-                Entity: "Products",
-                APIData: apiData
-            });
-            return response;
+            // 🚀 Use the Catalyst Hub for the smart 'Inheritance' logic (Parent -> Children)
+            // This replicates the successful logic from our manual script
+            return await this._updateViaCatalystHub(productId, auditData);
         } catch (error) {
-            console.error('Error updating product:', error);
-            return { success: false, error };
+            console.error('[ZohoAPI] Update failed:', error);
+            // Fallback to widget if hub fails
+            if (typeof ZOHO !== 'undefined' && this.isInitialized) {
+                return await this._updateViaWidget(productId, auditData);
+            }
+            return { success: false, error: error.message };
         }
     }
 
-    // Batch update multiple products
-    async batchUpdateProducts(updates) {
-        if (!this.isInitialized) {
-            console.log('Mock batch update:', updates.length, 'products');
-            return { success: true };
+    async _updateViaWidget(productId, auditData) {
+        if (!productId) return { success: false, error: 'Missing ID' };
+
+        const isParent = auditData.productType === 'parent';
+        const entity = isParent ? 'Parent_MTP_SKU' : 'Products';
+
+        console.group(`[ZohoAPI] 🚀 SYNC INITIATED: ${entity}`);
+        console.log('Record ID:', productId);
+
+        let apiData = { id: String(productId) };
+        const weightKG = Number(auditData.auditedWeight) || 0;
+        const weightGrams = Math.round(weightKG * 1000);
+
+        if (isParent) {
+            // 🏗️ PARENT MODULE: Only sending fields found in your scan
+            apiData = {
+                ...apiData,
+                Billed_Physical_Weight: weightGrams,
+                Billed_Chargeable_Weight: weightGrams,
+                Billed_Volumetric_Weight: weightGrams,
+                BOM_Weight: weightGrams,
+                Weight_Category_Billed: String(auditData.auditedCategory || auditData.billedCategory || ''),
+                Processing_Status: 'Y',
+                Audit_History_Log: `Audited ${new Date().toLocaleDateString()}. Weight: ${weightKG}kg`,
+                ProductActive: 'Y' // Found in your scan as a Picklist
+            };
+
+            if (auditData.auditedBoxes?.length > 0) {
+                apiData.MTP_Box_Dimensions = auditData.auditedBoxes.map((box, idx) => ({
+                    Box: String(idx + 1), // Exact field from scan
+                    Length: Number(box.length) || 0,
+                    Width: Number(box.width) || 0,
+                    Height: Number(box.height) || 0,
+                    Weight: Math.round((Number(box.weight) || 0) * 1000), // Grams for storage
+                    Box_Measurement: "cm",
+                    Weight_Measurement: "Gram"
+                }));
+            }
+        } else {
+            // 📦 PRODUCT MODULE: Using the "_kg" fields found in your scan
+            apiData = {
+                ...apiData,
+                Total_Weight: weightKG, // Formula in scan, but often allowing writes
+                Last_Audited_Total_Weight_kg: weightKG, // Explicit (kg) field from scan
+                Weight_Variance_kg: Number(auditData.variance) || 0,
+                Weight_Category_Billed: String(auditData.billedCategory || ''),
+                Weight_Category_Audited: String(auditData.auditedCategory || ''),
+                Category_Mismatch: !!auditData.categoryMismatch,
+                Last_Audit_Date: new Date().toISOString().split('T')[0]
+            };
+
+            if (auditData.auditedBoxes?.length > 0) {
+                apiData.Bill_Dimension_Weight = auditData.auditedBoxes.map((box, idx) => ({
+                    BL: String(idx + 1), // Exact field from scan
+                    Length: Number(box.length) || 0,
+                    Width: Number(box.width) || 0,
+                    Height: Number(box.height) || 0,
+                    Weight: Number(box.weight) || 0, // Product subform weight looks like Decimal
+                    Box_Measurement: "cm",
+                    Weight_Measurement: "kg"
+                }));
+            }
         }
+
+        console.log('Final API Payload:', apiData);
+        console.groupEnd();
 
         try {
-            const apiData = updates.map(update => ({
-                id: update.productId,
-                Last_Audited_Total_Weight: update.auditedWeight,
-                Weight_Variance: update.variance,
-                Weight_Category_Billed: update.billedCategory,
-                Weight_Category_Audited: update.auditedCategory,
-                Category_Mismatch: update.categoryMismatch,
-                Last_Audit_Date: new Date().toISOString().split('T')[0]
-            }));
-
             const response = await ZOHO.CRM.API.updateRecord({
-                Entity: "Products",
-                APIData: { data: apiData }
+                Entity: entity,
+                APIData: apiData
             });
-            return response;
+
+            const result = response.data?.[0];
+            console.log(`[ZohoAPI] CRM Response (${entity}):`, result);
+
+            if (result?.code === 'SUCCESS') {
+                return { success: true };
+            } else {
+                return { success: false, error: result?.message || 'Update rejected by Zoho' };
+            }
         } catch (error) {
-            console.error('Error batch updating products:', error);
-            return { success: false, error };
+            console.error('[ZohoAPI] SDK CRASH:', error);
+            return { success: false, error: error.message };
         }
+    }
+
+    async _updateViaCatalystHub(productId, auditData) {
+        const HUB_URL = 'https://zohocrmbulkdataprocessingintegrityengine-913495338.development.catalystserverless.com/server/ZohoSyncHub/';
+
+        const response = await fetch(HUB_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'update_single',
+                sku: auditData.skuCode,
+                data: {
+                    weights: {
+                        physical: auditData.auditedWeight,
+                        chargeable: auditData.auditedWeight,
+                        category: auditData.auditedCategory || auditData.billedCategory
+                    },
+                    boxes: auditData.auditedBoxes || auditData.boxes || []
+                }
+            })
+        });
+
+        return await response.json();
+    }
+
+    // Batch update multiple products (Legacy support - usually mapped to single updates)
+    async batchUpdateProducts(updates) {
+        console.log(`[ZohoAPI] Processing batch of ${updates.length} updates...`);
+        const results = [];
+        for (const update of updates) {
+            const res = await this.updateProduct(update.productId, update);
+            results.push(res);
+        }
+        return { success: true, results };
     }
 
     // Mock data for development

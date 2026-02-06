@@ -1,0 +1,26 @@
+﻿[dotenv@17.2.3] injecting env (8) from .env -- tip: ΓÜÖ∩╕Å  specify custom .env file path with { path: '/custom/path/.env' }
+≡ƒôí Fetching all records from Parent_MTP_SKU...
+   Page 1... Γ£à (200 records)
+   Page 2... Γ£à (200 records)
+   Page 3... Γ£à (200 records)
+   Page 4... Γ£à (200 records)
+   Page 5... Γ£à (200 records)
+   Page 6... Γ£à (171 records)
+
+≡ƒöì Analyzing Parent_MTP_SKU:
+   - Unique SKUs Found: 477
+   - Orphaned SKUs: 247
+   - Duplicate SKU sets: 230
+≡ƒôí Fetching all records from Products...
+   Page 1... Γ£à (200 records)
+   Page 2... Γ£à (200 records)
+   Page 3... Γ£à (84 records)
+
+≡ƒöì Analyzing Products:
+   - Unique SKUs Found: 484
+   - Orphaned SKUs: 70
+   - Duplicate SKU sets: 0
+
+≡ƒÜ⌐ TOTAL RECORDS FLAGGED FOR DELETION: 1011
+≡ƒô¥ DRY RUN COMPLETE. No records were deleted.
+Run with --exec to perform deletion.

@@ -12,8 +12,8 @@
 
 function updateParentLiveStatus() {
     try {
-        // Get current record ID
-        var recordId = ZDK.Page.getEntityId();
+        // Get current record ID using the correct ZDK method
+        var recordId = ZDK.Page.getRecordId();
 
         if (!recordId) {
             console.log('No record ID found');

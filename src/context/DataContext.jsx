@@ -87,7 +87,7 @@ const dataReducer = (state, action) => {
         case ACTIONS.UPDATE_PRODUCT: {
             const updatedProduct = action.payload;
             const products = state.products.map(p =>
-                p.skuCode === updatedProduct.skuCode ? { ...p, ...updatedProduct } : p
+                p.id === updatedProduct.id ? { ...p, ...updatedProduct } : p
             );
             return {
                 ...state,
@@ -190,7 +190,10 @@ export const DataProvider = ({ children }) => {
             // Queue for Auto-Save to CRM
             if (product.id) {
                 autoSave.queueSave(product.id, {
+                    productType: product.productType,
+                    skuCode: product.skuCode,
                     auditedWeight: product.auditedWeight || 0,
+                    auditedBoxes: product.auditedBoxes || [], // 📦 Added boxes
                     variance: product.weightVariance || 0,
                     billedCategory: product.weightCategoryBilled || '',
                     auditedCategory: product.weightCategoryAudited || '',
