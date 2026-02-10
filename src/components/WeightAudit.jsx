@@ -103,7 +103,7 @@ const WeightAudit = () => {
                 alert(`⚠️ No products matched!\n\n` +
                       `Parsed ${auditedProducts.length} rows from Excel.\n` +
                       `Found ${products.length} products in CRM.\n\n` +
-                      `Check browser console for detailed SKU comparison.\n\n` +
+                      `\n` +
                       `Common issues:\n` +
                       `• SKU format mismatch (Excel vs CRM)\n` +
                       `• Wrong Excel file uploaded\n` +
