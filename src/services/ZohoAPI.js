@@ -46,6 +46,35 @@ class ZohoAPI {
         }
     }
 
+    // Helper: Fetch ALL records with pagination
+    async fetchAllRecords(module) {
+        let allRecords = [];
+        let page = 1;
+        let hasMore = true;
+
+        while (hasMore) {
+            const response = await window.ZOHO.CRM.API.getAllRecords({
+                Entity: module,
+                sort_order: "asc",
+                per_page: 200,
+                page: page
+            });
+
+            if (response.data && response.data.length > 0) {
+                allRecords = allRecords.concat(response.data);
+                page++;
+                // Zoho returns less than per_page when it's the last page
+                if (response.data.length < 200) {
+                    hasMore = false;
+                }
+            } else {
+                hasMore = false;
+            }
+        }
+
+        return allRecords;
+    }
+
     // Fetch products
     async fetchProducts() {
         if (this.mode === 'mock') {
@@ -56,17 +85,11 @@ class ZohoAPI {
         try {
             await this.sdkReady;
 
-            // 1. Fetch Parent SKUs
-            const parentResp = await window.ZOHO.CRM.API.getAllRecords({
-                Entity: "Parent_MTP_SKU", sort_order: "asc", per_page: 200
-            });
-            const parentsRaw = parentResp.data || [];
+            // 1. Fetch ALL Parent SKUs (with pagination)
+            const parentsRaw = await this.fetchAllRecords("Parent_MTP_SKU");
 
-            // 2. Fetch Child Products
-            const childResp = await window.ZOHO.CRM.API.getAllRecords({
-                Entity: "Products", sort_order: "asc", per_page: 200
-            });
-            const childrenRaw = childResp.data || [];
+            // 2. Fetch ALL Child Products (with pagination)
+            const childrenRaw = await this.fetchAllRecords("Products");
 
             // DATA LINKER LOGIC
             const parentMap = new Map();
