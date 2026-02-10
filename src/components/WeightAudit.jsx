@@ -415,7 +415,7 @@ const WeightAudit = () => {
                                             </td>
                                             <td>{product.productCategory || '-'}</td>
                                             <td>
-                                                <span className="weight-cat-badge">{product.shipmentCategory || product.weightCategory || '-'}</span>
+                                                <span className="weight-cat-badge">{product.weightCategory || '-'}</span>
                                             </td>
                                             <td className="weight">{product.billedTotalWeight?.toFixed(2)} kg</td>
                                             {hasAnyAuditData && (
