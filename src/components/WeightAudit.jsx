@@ -397,7 +397,11 @@ const WeightAudit = () => {
                                             onClick={() => toggleExpand(product.id)}
                                             style={{ cursor: 'pointer' }}
                                         >
-                                            <td className="mtp-sku-name">{product.mtpSkuName || product.mtpSku?.name || '-'}</td>
+                                            <td className="mtp-sku-name">
+                                                {product.productType === 'parent'
+                                                    ? product.skuCode
+                                                    : (product.mtpSku?.name || '-')}
+                                            </td>
                                             <td className="product-code">
                                                 <span className={`expand-icon ${isExpanded ? 'open' : ''}`}>&#9654;</span>
                                                 <a

@@ -104,7 +104,7 @@ class ZohoAPI {
                     skuCode: p.Name,
                     productName: p.Product_MTP_Name || p.Name,
                     productType: 'parent',
-                    billedTotalWeight: Number(p.Billed_Physical_Weight) || 0,
+                    billedTotalWeight: Number(p.Billed_Physical_Weight) || Number(p.Total_Weight) || 0,
                     productCategory: p.Product_Category || null,
                     weightCategory: p.Weight_Category_Billed || null,
                     liveStatus: p.Live_Status || null,
