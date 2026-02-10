@@ -183,11 +183,12 @@ const WarehouseEntry = () => {
                                     />
                                     <input
                                         type="number"
-                                        placeholder="Wt (kg)"
+                                        placeholder="Weight"
                                         value={box.weight}
                                         onChange={(e) => handleBoxChange(index, 'weight', e.target.value)}
                                         className="weight-input"
                                     />
+                                    <span className="unit-label">kg</span>
                                 </div>
                                 {boxes.length > 1 && (
                                     <button className="remove-box-btn" onClick={() => removeBox(index)}>×</button>

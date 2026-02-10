@@ -145,9 +145,10 @@
 
 .input-group {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
     gap: 10px;
     flex: 1;
+    align-items: center;
 }
 
 .input-group input {
@@ -161,6 +162,13 @@
 .input-group input:focus {
     border-color: #2196f3;
     background: #ecf6ff;
+}
+
+.input-group .unit-label {
+    color: #666;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .add-box-btn {

@@ -105,6 +105,10 @@ class ZohoAPI {
                     productName: p.Product_MTP_Name || p.Name,
                     productType: 'parent',
                     billedTotalWeight: Number(p.Billed_Physical_Weight) || 0,
+                    productCategory: p.Product_Category || null,
+                    weightCategory: p.Weight_Category_Billed || null,
+                    liveStatus: p.Live_Status || null,
+                    mtpSkuName: p.Product_MTP_Name || p.Name,
                     hasAudit: false,
                     boxes: (p.MTP_Box_Dimensions || []).map(b => ({
                         boxNumber: b.Box,
@@ -132,7 +136,11 @@ class ZohoAPI {
                     billedTotalWeight: Number(c.Total_Weight) || 0,
                     auditedWeight: Number(c.Last_Audited_Total_Weight_kg) || 0,
                     hasAudit: !!c.Last_Audited_Total_Weight_kg,
+                    productCategory: c.Product_Category || null,
+                    weightCategory: c.Weight_Category_Billed || null,
+                    liveStatus: c.Live_Status || null,
                     parentId: parentId,
+                    mtpSku: c.MTP_SKU ? { id: c.MTP_SKU.id, name: c.MTP_SKU.name } : null,
                     boxes: (c.Bill_Dimension_Weight || []).map(b => ({
                         boxNumber: b.BL,
                         length: b.Length, width: b.Width, height: b.Height,

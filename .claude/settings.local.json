@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.zoho.com)",
+      "WebFetch(domain:help.zwidgets.com)",
+      "Bash(git status:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: Enable iframe embedding for Zoho Web Tab in Slate\n\n- Add slate.config.json with X-Frame-Options and CSP headers\n- Add public/_headers for Netlify-style header config\n- Update vite.config.js with frame-ancestors CSP\n- Allows embedding in https://*.zoho.com domains\n\nThis fixes \"refused to connect\" error when loading Slate app in Zoho Web Tab.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)"
+    ]
+  }
+}
