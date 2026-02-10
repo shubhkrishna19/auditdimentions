@@ -79,7 +79,23 @@ class ZohoAPI {
     async fetchProducts() {
         if (this.mode === 'mock') {
             await new Promise(r => setTimeout(r, 800));
-            return MOCK_PRODUCTS;
+            // Process mock data same as live data
+            const processedMock = MOCK_PRODUCTS.map(p => ({
+                id: p.id,
+                skuCode: p.Name,
+                productName: p.Product_MTP_Name || p.Name,
+                productType: 'parent', // Mock data is all parents
+                billedTotalWeight: Number(p.Billed_Physical_Weight) || Number(p.Total_Weight) || 0,
+                productCategory: p.Product_Category || null,
+                weightCategory: p.Weight_Category_Billed || null,
+                liveStatus: p.Live_Status || null,
+                mtpSkuName: p.Product_MTP_Name || p.Name,
+                hasAudit: false, // No audit data until Excel uploaded
+                boxes: [],
+                children: [],
+                childIds: []
+            }));
+            return processedMock;
         }
 
         try {
