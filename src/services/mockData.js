@@ -59,7 +59,10 @@ export const MOCK_PRODUCTS = [
     "Tag": [],
     "$zia_owner_assignment": "owner_recommendation_unavailable",
     "$approval_state": "approved",
-    "Unit_Price": 6199
+    "Unit_Price": 6199,
+    "soldsPerMonth": 45,
+    "shippingCostPerKg": 25,
+    "Live_Status": "Y"
   },
   {
     "Product_Category": "Wardrobe",
@@ -120,7 +123,10 @@ export const MOCK_PRODUCTS = [
     "Tag": [],
     "$zia_owner_assignment": "owner_recommendation_unavailable",
     "$approval_state": "approved",
-    "Unit_Price": 23999
+    "Unit_Price": 23999,
+    "soldsPerMonth": 12,
+    "shippingCostPerKg": 32,
+    "Live_Status": "Y"
   },
   {
     "Product_Category": "Furniture",
@@ -181,7 +187,10 @@ export const MOCK_PRODUCTS = [
     "Tag": [],
     "$zia_owner_assignment": "owner_recommendation_unavailable",
     "$approval_state": "approved",
-    "Unit_Price": 1999
+    "Unit_Price": 1999,
+    "soldsPerMonth": 85,
+    "shippingCostPerKg": 22,
+    "Live_Status": "Y"
   },
   {
     "Product_Category": "Bookshelf",
@@ -486,7 +495,10 @@ export const MOCK_PRODUCTS = [
     "Tag": [],
     "$zia_owner_assignment": "owner_recommendation_unavailable",
     "$approval_state": "approved",
-    "Unit_Price": 1999
+    "Unit_Price": 1999,
+    "soldsPerMonth": 85,
+    "shippingCostPerKg": 22,
+    "Live_Status": "Y"
   },
   {
     "Product_Category": "Furniture",

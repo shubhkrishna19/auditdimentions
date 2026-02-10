@@ -1,71 +1,93 @@
 // Sidebar Component for Filters
 import { useData } from '../context/DataContext';
+import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ currentView, onViewChange }) => {
     const { filter, setFilter, summary } = useData();
 
     return (
         <div className="sidebar">
-            {/* Search */}
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Search SKU..."
-                    value={filter.search}
-                    onChange={(e) => setFilter({ search: e.target.value })}
-                />
+            {/* View Selection */}
+            <div className="view-selector">
+                <button
+                    className={`view-btn ${currentView === 'dashboard' ? 'active' : ''}`}
+                    onClick={() => onViewChange('dashboard')}
+                >
+                    📊 Dashboard (Admin)
+                </button>
+                <button
+                    className={`view-btn ${currentView === 'warehouse' ? 'active' : ''}`}
+                    onClick={() => onViewChange('warehouse')}
+                >
+                    📦 Warehouse Entry
+                </button>
             </div>
 
-            {/* System Defined Filters */}
-            <div className="filter-section">
-                <div className="filter-title">System Defined Filters</div>
-                <ul className="filter-list">
-                    <li className="filter-item">
+            <div className="sidebar-divider"></div>
+
+            {/* Filters - Only show in Dashboard mode */}
+            {currentView === 'dashboard' && (
+                <>
+                    {/* Search */}
+                    <div className="form-group">
                         <input
-                            type="checkbox"
-                            checked={filter.hasVariance}
-                            onChange={(e) => setFilter({ hasVariance: e.target.checked })}
+                            type="text"
+                            className="form-input"
+                            placeholder="Search SKU..."
+                            value={filter.search}
+                            onChange={(e) => setFilter({ search: e.target.value })}
                         />
-                        <span>With Variance</span>
-                    </li>
-                </ul>
-            </div>
+                    </div>
 
-            {/* Filter By Status */}
-            <div className="filter-section">
-                <div className="filter-title">Filter By Status</div>
-                <ul className="filter-list">
-                    <li
-                        className="filter-item"
-                        onClick={() => setFilter({ status: 'all' })}
-                        style={{ fontWeight: filter.status === 'all' ? 600 : 400 }}
-                    >
-                        <span>All ({summary.total})</span>
-                    </li>
-                    <li
-                        className="filter-item"
-                        onClick={() => setFilter({ status: 'pending' })}
-                        style={{ fontWeight: filter.status === 'pending' ? 600 : 400 }}
-                    >
-                        <span>Pending ({summary.pending})</span>
-                    </li>
-                    <li
-                        className="filter-item"
-                        onClick={() => setFilter({ status: 'audited' })}
-                        style={{ fontWeight: filter.status === 'audited' ? 600 : 400 }}
-                    >
-                        <span>Audited ({summary.audited})</span>
-                    </li>
-                    <li
-                        className="filter-item"
-                        onClick={() => setFilter({ status: 'disputed' })}
-                        style={{ fontWeight: filter.status === 'disputed' ? 600 : 400 }}
-                    >
-                        <span>Disputed ({summary.disputed || 0})</span>
-                    </li>
-                </ul>
-            </div>
+                    {/* System Defined Filters */}
+                    <div className="filter-section">
+                        <div className="filter-title">System Defined Filters</div>
+                        <ul className="filter-list">
+                            <li className="filter-item">
+                                <label className="checkbox-label">
+                                    <input
+                                        type="checkbox"
+                                        checked={filter.hasVariance}
+                                        onChange={(e) => setFilter({ hasVariance: e.target.checked })}
+                                    />
+                                    <span>With Variance</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Filter By Status */}
+                    <div className="filter-section">
+                        <div className="filter-title">Filter By Status</div>
+                        <ul className="filter-list">
+                            <li
+                                className={`filter-item ${filter.status === 'all' ? 'active' : ''}`}
+                                onClick={() => setFilter({ status: 'all' })}
+                            >
+                                <span>All ({summary.total})</span>
+                            </li>
+                            <li
+                                className={`filter-item ${filter.status === 'pending' ? 'active' : ''}`}
+                                onClick={() => setFilter({ status: 'pending' })}
+                            >
+                                <span>Pending ({summary.pending})</span>
+                            </li>
+                            <li
+                                className={`filter-item ${filter.status === 'audited' ? 'active' : ''}`}
+                                onClick={() => setFilter({ status: 'audited' })}
+                            >
+                                <span>Audited ({summary.audited})</span>
+                            </li>
+                            <li
+                                className={`filter-item ${filter.status === 'disputed' ? 'active' : ''}`}
+                                onClick={() => setFilter({ status: 'disputed' })}
+                            >
+                                <span>Disputed ({summary.disputed || 0})</span>
+                            </li>
+                        </ul>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

@@ -627,3 +627,51 @@ optgroup {
     font-size: 10px;
     letter-spacing: 0.5px;
 }
+
+/* === Cost Impact Styles === */
+.cost-impact {
+    font-family: 'Roboto Mono', 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.cost-impact.positive-impact {
+    color: #2e7d32;
+    /* Green 800 */
+    background-color: #e8f5e9;
+    /* Green 50 */
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.cost-impact.negative-impact {
+    color: #c62828;
+    /* Red 800 */
+    background-color: #ffebee;
+    /* Red 50 */
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+/* Update data grid to accommodate new column */
+.data-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 4px;
+}
+
+.data-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

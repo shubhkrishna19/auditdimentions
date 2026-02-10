@@ -167,23 +167,38 @@ export const calculateDimensionVariations = (crmProducts, auditedProducts) => {
     auditedProducts.forEach(audit => {
         const normalizedSKU = normalizeSKU(audit.skuCode);
         auditMap.set(normalizedSKU, audit);
+        console.log(`[Audit SKU] Original: "${audit.skuCode}" → Normalized: "${normalizedSKU}"`);
     });
 
     console.log('[DimensionParser] Audit map size:', auditMap.size);
-    console.log('[DimensionParser] Sample audit SKUs:', Array.from(auditMap.keys()).slice(0, 5));
-    console.log('[DimensionParser] Sample CRM SKUs:', crmProducts.slice(0, 5).map(p => normalizeSKU(p.productCode)));
+    console.log('[DimensionParser] Audit SKUs:', Array.from(auditMap.keys()).slice(0, 10));
+
+    // Debug CRM SKU fields
+    console.log('[DimensionParser] First 3 CRM products:', crmProducts.slice(0, 3).map(p => ({
+        id: p.id,
+        skuCode: p.skuCode,
+        productCode: p.productCode,
+        productName: p.productName,
+        normalized: normalizeSKU(p.skuCode || p.productCode)
+    })));
+
+    console.log('[DimensionParser] CRM SKUs (normalized):',
+        crmProducts.slice(0, 10).map(p => normalizeSKU(p.skuCode || p.productCode)));
 
     const results = crmProducts.map(crmProduct => {
-        const normalizedCRMSKU = normalizeSKU(crmProduct.productCode);
+        const normalizedCRMSKU = normalizeSKU(crmProduct.skuCode || crmProduct.productCode);
         const audit = auditMap.get(normalizedCRMSKU);
 
         if (!audit) {
+            console.log(`[No Match] CRM SKU: "${crmProduct.skuCode || crmProduct.productCode}" → Normalized: "${normalizedCRMSKU}" - Not found in audit data`);
             return {
                 ...crmProduct,
                 hasAudit: false,
                 variations: null
             };
         }
+
+        console.log(`[Match Found] CRM SKU: "${crmProduct.skuCode || crmProduct.productCode}" ↔ Audit SKU: "${audit.skuCode}"`);
 
         // Calculate box-by-box variations
         const boxVariations = [];

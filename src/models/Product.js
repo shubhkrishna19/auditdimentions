@@ -35,6 +35,11 @@ export const createProduct = (data = {}) => ({
   identifiers: data.identifiers || [], // Array of { Channel, Identifier }
   mtpSku: data.mtpSku || null, // { name: 'ParentName', id: 'ParentID' }
 
+  // Unit Economics (Mock/Default values for now)
+  // In real app, these would come from Zoho Inventory or Sales Reports
+  soldsPerMonth: data.soldsPerMonth || Math.floor(Math.random() * 50) + 10,
+  shippingCostPerKg: data.shippingCostPerKg || 25, // ₹25/kg generic average
+
   billing: {
     boxes: data.billing?.boxes || [createEmptyBox(), createEmptyBox(), createEmptyBox()],
     volumetricWeight: data.billing?.volumetricWeight || 0,
@@ -53,7 +58,7 @@ export const createProduct = (data = {}) => ({
     dimensionDiff: data.variance?.dimensionDiff || {},
     weightDiff: data.variance?.weightDiff || 0,
     percentageDiff: data.variance?.percentageDiff || 0,
-    costImpact: data.variance?.costImpact || 0
+    costImpact: data.variance?.costImpact || 0 // This will now hold the calculated savings
   },
 
   status: data.status || AuditStatus.PENDING,
@@ -61,6 +66,21 @@ export const createProduct = (data = {}) => ({
   lastUpdated: data.lastUpdated || new Date().toISOString(),
   createdAt: data.createdAt || new Date().toISOString()
 });
+
+/**
+ * Calculate Monthly Cost Impact
+ * @param {number} weightDelta - Difference in weight (Billed - Audited). Positive means we are overpaying.
+ * @param {number} costPerKg - Shipping rate
+ * @param {number} monthlySales - Sales velocity
+ * @returns {number} - Potential monthly savings in INR
+ */
+export const calculateCostImpact = (weightDelta, costPerKg, monthlySales) => {
+  // If delta is positive (Billed > Audited), we are overpaying, so it's potential savings.
+  // If delta is negative (Billed < Audited), we might be undercharged (risk of penalty).
+  // Let's focus on SAVINGS (Positive Delta).
+  if (!weightDelta) return 0;
+  return weightDelta * costPerKg * monthlySales;
+};
 
 // Calculate volumetric weight for a box
 export const calculateVolumetricWeight = (box, divisor = 5000) => {

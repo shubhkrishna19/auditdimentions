@@ -1,61 +1,73 @@
-// Weight Audit Comparison Component
+// Weight Audit Comparison Component (Admin View Only)
 import React, { useState, Fragment } from 'react';
 import { useData } from '../context/DataContext';
 import { parseDimensionAudit, calculateDimensionVariations } from '../services/DimensionAuditParser';
 import SaveStatus from './SaveStatus';
-import AuditModal from './AuditModal'; // Import new modal
+import BulkApplyModal from './BulkApplyModal';
 import './WeightAudit.css';
 
 const WeightAudit = () => {
     const {
         products,
+        updateProduct, // Re-added updateProduct for bulk apply action
         isLoading,
         setLoading,
-        updateProduct,
         refreshData,
         summary
     } = useData();
 
     const [auditResults, setAuditResults] = useState([]);
-    const [activeTab, setActiveTab] = useState('PARENTS'); // Default to Parent SKUs
+    const [activeTab, setActiveTab] = useState('PARENTS');
     const [expandedId, setExpandedId] = useState(null);
-    const [showAuditModal, setShowAuditModal] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
 
-    // ... (rest of existing code until render) ...
+    // Bulk Apply State
+    const [showBulkModal, setShowBulkModal] = useState(false);
+    const [selectedBulkSource, setSelectedBulkSource] = useState(null);
 
-    const handleAuditClick = (e, product) => {
-        e.stopPropagation();
-        setSelectedProduct(product);
-        setShowAuditModal(true);
-    };
+    const handleBulkApplySave = (targetIds) => {
+        if (!selectedBulkSource) return;
 
-    const handleAuditSave = (auditEntry) => {
-        console.log('Saved audit entry:', auditEntry);
+        // Find the full product object for the source to copy dimensions from
+        // Note: selectedBulkSource is already the object, but let's be safe
+        const sourceWeight = selectedBulkSource.auditedWeight;
+        const sourceBoxes = selectedBulkSource.auditedBoxes;
 
-        // Calculate variations immediately
-        const newAuditedWeight = auditEntry.totals.chargeableWeight;
-        const billedWeight = selectedProduct.billedTotalWeight || 0;
-        const delta = newAuditedWeight - billedWeight;
+        console.log(`[BulkApply] Applying ${selectedBulkSource.skuCode} to ${targetIds.length} variants`);
 
-        // Update local product state
-        updateProduct({
-            id: selectedProduct.id,
-            auditedWeight: newAuditedWeight,
-            auditedBoxes: auditEntry.boxes,
-            hasAudit: true,
-            variations: {
-                totalWeightDelta: delta,
-                hasWeightChange: Math.abs(delta) > 0.01,
-                hasDimensionChanges: true // Assume manual entry implies verification
+        // We'll process each update sequentially or dispatch all at once
+        // Since updateProduct is likely one-at-a-time, we'll loop.
+        // In a real app with batch API, we'd send one request.
+
+        targetIds.forEach(targetId => {
+            const targetProduct = products.find(p => p.id === targetId);
+            if (targetProduct) {
+                const billedWeight = targetProduct.billedTotalWeight || 0;
+                const delta = sourceWeight - billedWeight;
+
+                // Fire update
+                updateProduct({
+                    id: targetId,
+                    auditedWeight: sourceWeight,
+                    auditedBoxes: sourceBoxes,
+                    hasAudit: true,
+                    variations: {
+                        totalWeightDelta: delta,
+                        hasWeightChange: Math.abs(delta) > 0.01,
+                        hasDimensionChanges: true
+                    },
+                    // Recalculate economics for the TARGET variant using its own sales velocity
+                    costImpact: delta * (targetProduct.shippingCostPerKg || 25) * (targetProduct.soldsPerMonth || 0),
+                    soldsPerMonth: targetProduct.soldsPerMonth || 0
+                });
             }
         });
 
-        // Close modal
-        setShowAuditModal(false);
-        setSelectedProduct(null);
-        alert('Audit saved locally! Click "Sync to ZOHO" to push changes.');
+        alert(`Success! Applied dimensions to ${targetIds.length} variants.`);
+        setShowBulkModal(false);
+        setSelectedBulkSource(null);
     };
+
+    // ... (rest of existing code until render) ...
 
     // ... (rest of code) ...
 
@@ -86,7 +98,19 @@ const WeightAudit = () => {
 
             // Show success message
             const withChanges = results.filter(r => r.hasAudit && r.variations).length;
-            alert(`Upload successful!\n\n${withChanges} products matched with audit data.\n\nSwitch to "Audited" or "Variances" tab to review.`);
+
+            if (withChanges === 0) {
+                alert(`⚠️ No products matched!\n\n` +
+                      `Parsed ${auditedProducts.length} rows from Excel.\n` +
+                      `Found ${products.length} products in CRM.\n\n` +
+                      `Check browser console for detailed SKU comparison.\n\n` +
+                      `Common issues:\n` +
+                      `• SKU format mismatch (Excel vs CRM)\n` +
+                      `• Wrong Excel file uploaded\n` +
+                      `• Products not loaded from CRM yet`);
+            } else {
+                alert(`✅ Upload successful!\n\n${withChanges} products matched with audit data.\n\nSwitch to "Audited" or "Variances" tab to review.`);
+            }
 
         } catch (error) {
             console.error('[WeightAudit] Error processing audit:', error);
@@ -116,7 +140,10 @@ const WeightAudit = () => {
                     variance: product.variations.totalWeightDelta,
                     auditedCategory: product.weightCategoryAudited,
                     billedCategory: product.weightCategoryBilled,
-                    categoryMismatch: product.categoryMismatch
+                    categoryMismatch: product.categoryMismatch,
+                    // Pass calculated economics
+                    costImpact: (product.variations.totalWeightDelta) * (product.shippingCostPerKg || 25) * (product.soldsPerMonth || 0),
+                    soldsPerMonth: product.soldsPerMonth || 0
                 });
 
                 if (result.success) successCount++;
@@ -266,7 +293,7 @@ const WeightAudit = () => {
                         onClick={refreshData}
                         disabled={isLoading}
                     >
-                        🔄 Refresh CRM
+                        Refresh CRM
                     </button>
                     <button
                         className="btn btn-secondary sync-master-btn"
@@ -274,7 +301,7 @@ const WeightAudit = () => {
                         disabled={isLoading}
                         title="Sync data from Master Excel"
                     >
-                        📦 Master Sync (Excel)
+                        Master Sync (Excel)
                     </button>
                     <label className="btn btn-primary">
                         Upload Audit Excel
@@ -291,7 +318,7 @@ const WeightAudit = () => {
                             onClick={handleSaveToZoho}
                             disabled={isLoading}
                         >
-                            ☁️ Sync Audits to CRM
+                            Sync Audits to CRM
                         </button>
                     )}
                 </div>
@@ -338,13 +365,14 @@ const WeightAudit = () => {
                             {hasAnyAuditData && <th>Audited Weight</th>}
                             {hasAnyAuditData && <th>Weight Δ</th>}
                             {hasAnyAuditData && <th>Dim Δ</th>}
+                            {hasAnyAuditData && <th>Est. Impact (Mo)</th>}
                             <th>Status & Live</th>
                         </tr>
                     </thead>
                     <tbody>
                         {displayData.length === 0 ? (
                             <tr>
-                                <td colSpan={hasAnyAuditData ? 8 : 5} className="text-center py-4">
+                                <td colSpan={hasAnyAuditData ? 10 : 6} className="text-center py-4">
                                     {isLoading ? 'Loading data...' : 'No products found matching this filter.'}
                                 </td>
                             </tr>
@@ -353,6 +381,14 @@ const WeightAudit = () => {
                                 const hasVariance = product.variations?.hasWeightChange;
                                 const hasDimensionChange = product.variations?.hasDimensionChanges;
                                 const isExpanded = product.id === expandedId;
+
+                                // Calculate Cost Impact
+                                let impact = 0;
+                                if (hasVariance && product.variations?.totalWeightDelta) {
+                                    // Savings = (Billed - Audited) * CostPerKg * Sales
+                                    // If totalWeightDelta is positive (Billed > Audited), we save money.
+                                    impact = (product.variations.totalWeightDelta) * (product.shippingCostPerKg || 25) * (product.soldsPerMonth || 0);
+                                }
 
                                 return (
                                     <Fragment key={product.id}>
@@ -405,6 +441,16 @@ const WeightAudit = () => {
                                                     ) : '-'}
                                                 </td>
                                             )}
+                                            {hasAnyAuditData && (
+                                                <td className={`cost-impact ${impact > 0 ? 'positive-impact' : impact < 0 ? 'negative-impact' : ''}`}>
+                                                    {impact !== 0 ? (
+                                                        <span title={`Based on ${product.soldsPerMonth} sold/mo @ ₹${product.shippingCostPerKg}/kg`}>
+                                                            {impact > 0 ? 'Save ' : 'Loss '}
+                                                            ₹{Math.abs(impact).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+                                                        </span>
+                                                    ) : '-'}
+                                                </td>
+                                            )}
                                             <td className="status-cell-actions">
                                                 <div className="flex-center gap-2">
                                                     {/* Live Status Badge */}
@@ -420,19 +466,26 @@ const WeightAudit = () => {
                                                         <span className="status-badge status-success">Match</span>
                                                     ) : null}
 
-                                                    <button
-                                                        className="btn-icon audit-btn"
-                                                        onClick={(e) => handleAuditClick(e, product)}
-                                                        title="Enter Audit Dimensions"
-                                                    >
-                                                        &#9998;
-                                                    </button>
+                                                    {/* Bulk Apply Button - Only for Audited Items */}
+                                                    {product.hasAudit && (
+                                                        <button
+                                                            className="btn-icon bulk-btn"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setSelectedBulkSource(product);
+                                                                setShowBulkModal(true);
+                                                            }}
+                                                            title="Apply dimensions to variants"
+                                                        >
+                                                            Bulk Apply
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </td>
                                         </tr>
                                         {isExpanded && (
                                             <tr className="comparison-detail-row">
-                                                <td colSpan={hasAnyAuditData ? 8 : 5}>
+                                                <td colSpan={hasAnyAuditData ? 10 : 6}>
                                                     <div className="comparison-grid">
                                                         <div className="comparison-section crm">
                                                             <div className="section-header">ZOHO CRM (CURRENT)</div>
@@ -440,6 +493,10 @@ const WeightAudit = () => {
                                                                 <div className="data-row">
                                                                     <div className="data-label">Total Weight: <span>{product.billedTotalWeight} kg</span></div>
                                                                     <div className="data-label">Manufacturer: <span>{product.manufacturer || '-'}</span></div>
+                                                                </div>
+                                                                <div className="data-row">
+                                                                    <div className="data-label">Avg. Sales: <span>{product.soldsPerMonth || 0} / mo</span></div>
+                                                                    <div className="data-label">Ship Rate: <span>₹{product.shippingCostPerKg || 25} / kg</span></div>
                                                                 </div>
 
                                                                 {product.mtpSku && (
@@ -466,7 +523,7 @@ const WeightAudit = () => {
                                                         </div>
                                                         {product.hasAudit && (
                                                             <>
-                                                                <div className="comparison-arrow">→</div>
+                                                                <div className="comparison-separator">|</div>
                                                                 <div className="comparison-section audit">
                                                                     <div className="section-header">AUDIT DATA (UPLOADED)</div>
                                                                     <div className="data-box highlighted">
@@ -503,11 +560,14 @@ const WeightAudit = () => {
                 </table>
             </div>
 
-            {showAuditModal && selectedProduct && (
-                <AuditModal
-                    product={selectedProduct}
-                    onClose={() => setShowAuditModal(false)}
-                    onSave={handleAuditSave}
+            {showBulkModal && selectedBulkSource && (
+                <BulkApplyModal
+                    sourceProduct={selectedBulkSource}
+                    onClose={() => {
+                        setShowBulkModal(false);
+                        setSelectedBulkSource(null);
+                    }}
+                    onSave={handleBulkApplySave}
                 />
             )}
         </div>

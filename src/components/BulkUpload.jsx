@@ -36,7 +36,7 @@ const BulkUpload = () => {
             return;
         }
 
-        if (!confirm(`Sync ${parsedData.length} products to Zoho CRM?\n\n⚠️ Checkpoints will be created for rollback capability.`)) {
+        if (!confirm(`Sync ${parsedData.length} products to Zoho CRM?\n\nCheckpoints will be created for rollback capability.`)) {
             return;
         }
 
@@ -56,7 +56,7 @@ const BulkUpload = () => {
                     setProgress({
                         current: progressData.current,
                         total: progressData.total,
-                        message: `${progressData.success ? '✅' : '❌'} ${progressData.sku} (${progressData.action || 'failed'})`
+                        message: `${progressData.success ? 'Success' : 'Failed'} ${progressData.sku} (${progressData.action || 'failed'})`
                     });
                 },
                 // Complete callback
@@ -128,7 +128,7 @@ const BulkUpload = () => {
     return (
         <div className="bulk-upload-container">
             <div className="bulk-upload-header">
-                <h2>📦 Bulk Upload Billing Dimensions</h2>
+                <h2>Bulk Upload Billing Dimensions</h2>
                 <p className="subtitle">Upload and sync dimensions from Excel to Zoho CRM</p>
             </div>
 
@@ -143,7 +143,7 @@ const BulkUpload = () => {
                     />
                     {parsedData && (
                         <div className="file-info">
-                            <span className="file-badge">✅ {parsedData.length} products ready</span>
+                            <span className="file-badge">Ready: {parsedData.length} products</span>
                         </div>
                     )}
                 </div>
@@ -155,7 +155,7 @@ const BulkUpload = () => {
                             className="btn btn-primary btn-large"
                             onClick={handleSync}
                         >
-                            🚀 Sync {parsedData.length} Products to Zoho
+                            Sync {parsedData.length} Products to Zoho
                         </button>
                     </div>
                 )}
@@ -180,7 +180,7 @@ const BulkUpload = () => {
 
                 {results && (
                     <div className="upload-card results-card">
-                        <h3>✅ Sync Complete!</h3>
+                        <h3>Sync Complete</h3>
                         <div className="results-grid">
                             <div className="result-stat">
                                 <div className="stat-value">{results.total}</div>
@@ -203,7 +203,7 @@ const BulkUpload = () => {
                         {/* Checkpoint Info */}
                         {results.checkpoints && results.checkpoints.length > 0 && (
                             <div className="checkpoint-info">
-                                <p>🔒 <strong>{results.checkpoints.length} checkpoints created</strong> - Rollback available</p>
+                                <p><strong>{results.checkpoints.length} checkpoints created</strong> - Rollback available</p>
                             </div>
                         )}
 
@@ -228,7 +228,7 @@ const BulkUpload = () => {
                                     onClick={handleRestore}
                                     style={{ marginRight: '10px' }}
                                 >
-                                    ↩️ Restore All ({results.checkpoints.length} products)
+                                    Restore All ({results.checkpoints.length} products)
                                 </button>
                             )}
 

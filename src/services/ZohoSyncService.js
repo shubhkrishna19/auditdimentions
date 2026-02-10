@@ -403,7 +403,13 @@ class ZohoSyncService {
             Billed_Volumetric_Weight: weights.volumetric || 0,
             Billed_Chargeable_Weight: weights.chargeable || 0,
             BOM_Weight: weights.bom || weights.physical || 0,
-            Weight_Category_Billed: weights.category || '10kg'
+            Billed_Chargeable_Weight: weights.chargeable || 0,
+            BOM_Weight: weights.bom || weights.physical || 0,
+            Weight_Category_Billed: weights.category || '10kg',
+
+            // New Analysis Fields 
+            Est_Monthly_Savings: weights.costImpact, // The calculated financial impact
+            Avg_Monthly_Sales: weights.soldsPerMonth // The velocity used for calc
         };
 
         if (boxes && boxes.length > 0) {
