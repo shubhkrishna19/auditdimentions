@@ -249,77 +249,103 @@ class ZohoAPI {
     // Update product with audit results
     async updateProduct(productId, auditData) {
         if (this.mode === 'mock') {
-            return { success: true };
+            console.log('[ZohoAPI Mock] Would update:', productId, auditData);
+            // Simulate delay
+            await new Promise(r => setTimeout(r, 300));
+            return { success: true, mock: true, message: 'Mock update successful' };
         }
 
         try {
             await this.sdkReady;
 
-            const sku = auditData.skuCode;
-            const weightKG = Number(auditData.auditedWeight || auditData.weights.chargeable) || 0;
-            const category = auditData.auditedCategory || auditData.weights.category;
+            // Extract data from auditData (flexible format support)
+            const weightKG = Number(auditData.auditedWeight || auditData.weights?.chargeable || 0);
+            const boxes = auditData.auditedBoxes || auditData.boxes || [];
 
-            // 1. Try search in Parent Module
-            const parentSearch = await window.ZOHO.CRM.API.searchRecord({
-                Entity: "Parent_MTP_SKU", Type: "criteria",
-                Query: `(Product_Code:equals:${sku})`
-            });
+            // Auto-calculate weight category from audited weight
+            const weightCategory = weightKG < 5 ? '<5kg' :
+                                  weightKG < 20 ? '5-20kg' :
+                                  weightKG < 50 ? '20-50kg' : '>50kg';
 
-            if (parentSearch.data && parentSearch.data.length > 0) {
-                const parent = parentSearch.data[0];
-                const updateData = {
-                    id: parent.id,
-                    Billed_Physical_Weight: weightKG,
-                    Billed_Chargeable_Weight: weightKG,
-                    Weight_Category_Billed: category
-                };
+            // Determine module (use productId to find in cached products)
+            let module = 'Products'; // Default to child
+            let recordId = productId;
 
-                if (auditData.boxes && auditData.boxes.length > 0) {
-                    updateData.MTP_Box_Dimensions = auditData.boxes.map((b, idx) => ({
+            // Try to find in cached products to determine type
+            const cachedProducts = await this.fetchProducts();
+            const product = cachedProducts.find(p => p.id === productId);
+
+            if (product) {
+                module = product.productType === 'parent' ? 'Parent_MTP_SKU' : 'Products';
+                console.log(`[ZohoAPI] Updating ${module} record: ${product.skuCode}`);
+            } else {
+                console.warn(`[ZohoAPI] Product ${productId} not in cache, assuming Products module`);
+            }
+
+            // Build update payload based on module
+            const updateData = {
+                id: recordId
+            };
+
+            if (module === 'Parent_MTP_SKU') {
+                // Parent update
+                updateData.Last_Audited_Total_Weight_kg = weightKG;
+                updateData.Weight_Category_Audited = weightCategory;
+                updateData.Last_Audit_Date = new Date().toISOString().split('T')[0];
+
+                // Update box dimensions subform if provided
+                if (boxes.length > 0) {
+                    updateData.MTP_Box_Dimensions = boxes.map((b, idx) => ({
                         Box: String(idx + 1),
-                        Length: Number(b.length), Width: Number(b.width), Height: Number(b.height),
-                        Weight: Number(b.weight),
-                        Box_Measurement: 'cm', Weight_Measurement: 'kg'
+                        L_cm: Number(b.length || b.L_cm),
+                        W_cm: Number(b.width || b.W_cm),
+                        H_cm: Number(b.height || b.H_cm),
+                        Weight_kg: Number(b.weight || b.Weight_kg)
                     }));
                 }
+            } else {
+                // Child update
+                updateData.Last_Audited_Total_Weight_kg = weightKG;
+                updateData.Weight_Category_Audited = weightCategory;
+                updateData.Last_Audit_Date = new Date().toISOString().split('T')[0];
 
-                await window.ZOHO.CRM.API.updateRecord({ Entity: "Parent_MTP_SKU", APIData: updateData });
-                return { success: true, message: 'Parent Updated' };
+                // Update box dimensions subform if provided
+                if (boxes.length > 0) {
+                    updateData.Bill_Dimension_Weight = boxes.map((b, idx) => ({
+                        BL: String(idx + 1),
+                        L_cm: Number(b.length || b.L_cm),
+                        W_cm: Number(b.width || b.W_cm),
+                        H_cm: Number(b.height || b.H_cm),
+                        Weight_kg: Number(b.weight || b.Weight_kg)
+                    }));
+                }
             }
 
-            // 2. Try search in Products Module
-            const childSearch = await window.ZOHO.CRM.API.searchRecord({
-                Entity: "Products", Type: "criteria",
-                Query: `(Product_Code:equals:${sku})`
+            console.log(`[ZohoAPI] Sending update to ${module}:`, updateData);
+
+            // Execute update
+            const response = await window.ZOHO.CRM.API.updateRecord({
+                Entity: module,
+                APIData: { data: [updateData] },
+                Trigger: ["workflow"] // Enable workflows for alerts
             });
 
-            if (childSearch.data && childSearch.data.length > 0) {
-                const child = childSearch.data[0];
-                const updateData = {
-                    id: child.id,
-                    Last_Audited_Total_Weight_kg: weightKG,
-                    Total_Weight: weightKG,
-                    Weight_Category_Billed: category,
-                    Last_Audit_Date: new Date().toISOString().split('T')[0]
+            console.log(`[ZohoAPI] Update response:`, response);
+
+            // Check response status
+            if (response.data && response.data[0]?.code === 'SUCCESS') {
+                return {
+                    success: true,
+                    message: `${module} updated successfully`,
+                    recordId: response.data[0].details.id
                 };
-
-                if (auditData.boxes && auditData.boxes.length > 0) {
-                    updateData.Bill_Dimension_Weight = auditData.boxes.map((b, idx) => ({
-                        BL: String(idx + 1),
-                        Length: Number(b.length), Width: Number(b.width), Height: Number(b.height),
-                        Weight: Number(b.weight),
-                        Box_Measurement: 'cm', Weight_Measurement: 'kg'
-                    }));
-                }
-
-                await window.ZOHO.CRM.API.updateRecord({ Entity: "Products", APIData: updateData });
-                return { success: true, message: 'Child Updated' };
+            } else {
+                throw new Error(response.data?.[0]?.message || 'Update failed');
             }
-
-            return { success: false, error: 'Product not found in CRM' };
 
         } catch (error) {
-            return { success: false, error: error.message };
+            console.error('[ZohoAPI] Update error:', error);
+            return { success: false, error: error.message || 'Unknown error' };
         }
     }
 

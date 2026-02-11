@@ -4,6 +4,7 @@ import { useData } from '../context/DataContext';
 import { parseDimensionAudit, calculateDimensionVariations } from '../services/DimensionAuditParser';
 import SaveStatus from './SaveStatus';
 import BulkApplyModal from './BulkApplyModal';
+import { toast } from 'react-toastify';
 import './WeightAudit.css';
 
 const WeightAudit = () => {
@@ -23,6 +24,9 @@ const WeightAudit = () => {
     // Bulk Apply State
     const [showBulkModal, setShowBulkModal] = useState(false);
     const [selectedBulkSource, setSelectedBulkSource] = useState(null);
+
+    // Save Progress State
+    const [saveProgress, setSaveProgress] = useState(null); // { current: 0, total: 10 }
 
     const handleBulkApplySave = (targetIds) => {
         if (!selectedBulkSource) return;
@@ -62,7 +66,9 @@ const WeightAudit = () => {
             }
         });
 
-        alert(`Success! Applied dimensions to ${targetIds.length} variants.`);
+        toast.success(`✅ Applied dimensions to ${targetIds.length} variants successfully!`, {
+            autoClose: 3000
+        });
         setShowBulkModal(false);
         setSelectedBulkSource(null);
     };
@@ -100,21 +106,20 @@ const WeightAudit = () => {
             const withChanges = results.filter(r => r.hasAudit && r.variations).length;
 
             if (withChanges === 0) {
-                alert(`⚠️ No products matched!\n\n` +
-                      `Parsed ${auditedProducts.length} rows from Excel.\n` +
-                      `Found ${products.length} products in CRM.\n\n` +
-                      `\n` +
-                      `Common issues:\n` +
-                      `• SKU format mismatch (Excel vs CRM)\n` +
-                      `• Wrong Excel file uploaded\n` +
-                      `• Products not loaded from CRM yet`);
+                toast.warning(`⚠️ No products matched! Parsed ${auditedProducts.length} rows but found no matching SKUs.`, {
+                    autoClose: 5000
+                });
             } else {
-                alert(`✅ Upload successful!\n\n${withChanges} products matched with audit data.\n\nSwitch to "Audited" or "Variances" tab to review.`);
+                toast.success(`✅ Upload successful! ${withChanges} products matched with audit data.`, {
+                    autoClose: 4000
+                });
             }
 
         } catch (error) {
             console.error('[WeightAudit] Error processing audit:', error);
-            alert(`Failed to process audit file.\n\nError: ${error.message}`);
+            toast.error(`❌ Failed to process audit file: ${error.message}`, {
+                autoClose: 5000
+            });
         } finally {
             setLoading(false);
         }
@@ -123,37 +128,72 @@ const WeightAudit = () => {
     const handleSaveToZoho = async () => {
         const auditedProducts = products.filter(p => p.hasAudit && p.variations);
         if (auditedProducts.length === 0) {
-            alert('No audited products to sync!');
+            toast.info('ℹ️ No audited products to sync!');
             return;
         }
 
         setLoading(true);
+        setSaveProgress({ current: 0, total: auditedProducts.length });
         let successCount = 0;
+        let failedCount = 0;
 
         try {
-            for (const product of auditedProducts) {
-                const result = await ZohoAPI.updateProduct(product.id, {
-                    productType: product.productType,
-                    skuCode: product.skuCode,
-                    auditedWeight: product.auditedWeight,
-                    auditedBoxes: product.auditedBoxes,
-                    variance: product.variations.totalWeightDelta,
-                    auditedCategory: product.weightCategoryAudited,
-                    billedCategory: product.weightCategoryBilled,
-                    categoryMismatch: product.categoryMismatch,
-                    // Pass calculated economics
-                    costImpact: (product.variations.totalWeightDelta) * (product.shippingCostPerKg || 25) * (product.soldsPerMonth || 0),
-                    soldsPerMonth: product.soldsPerMonth || 0
-                });
+            for (let i = 0; i < auditedProducts.length; i++) {
+                const product = auditedProducts[i];
 
-                if (result.success) successCount++;
+                try {
+                    const result = await updateProduct(product.id, {
+                        productType: product.productType,
+                        skuCode: product.skuCode,
+                        auditedWeight: product.auditedWeight,
+                        auditedBoxes: product.auditedBoxes
+                    });
+
+                    if (result.success) {
+                        successCount++;
+                        // Mark as saved in local state
+                        setAuditResults(prev => prev.map(r =>
+                            r.id === product.id ? { ...r, savedToCRM: true } : r
+                        ));
+                    } else {
+                        failedCount++;
+                        console.error(`Failed to save ${product.skuCode}:`, result.error);
+                    }
+                } catch (error) {
+                    failedCount++;
+                    console.error(`Error saving ${product.skuCode}:`, error);
+                }
+
+                setSaveProgress({ current: i + 1, total: auditedProducts.length });
+
+                // Rate limiting: 500ms delay between saves
+                if (i < auditedProducts.length - 1) {
+                    await new Promise(r => setTimeout(r, 500));
+                }
             }
-            alert(`Sync complete! ${successCount}/${auditedProducts.length} records updated in Zoho CRM.`);
+
+            if (successCount === auditedProducts.length) {
+                toast.success(`✅ All ${successCount} products saved to CRM successfully!`, {
+                    autoClose: 4000
+                });
+            } else if (successCount > 0) {
+                toast.warning(`⚠️ Saved ${successCount}/${auditedProducts.length} products. ${failedCount} failed.`, {
+                    autoClose: 5000
+                });
+            } else {
+                toast.error(`❌ Failed to save any products to CRM`, {
+                    autoClose: 5000
+                });
+            }
+
             refreshData();
         } catch (error) {
-            alert(`Sync failed: ${error.message}`);
+            toast.error(`❌ Sync failed: ${error.message}`, {
+                autoClose: 5000
+            });
         } finally {
             setLoading(false);
+            setSaveProgress(null);
         }
     };
 
