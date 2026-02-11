@@ -185,11 +185,13 @@ class ZohoAPI {
                     productName: p.Product_MTP_Name || p.Name,
                     productType: 'parent',
                     billedTotalWeight: Number(p.Billed_Physical_Weight) || Number(p.Total_Weight) || 0,
+                    auditedWeight: 0, // Don't pre-populate from CRM history
+                    hasAudit: false,  // Only set to true when user uploads Excel in current session
+                    lastAuditedWeightInCRM: Number(p.Last_Audited_Total_Weight_kg) || 0, // Keep for reference
                     productCategory: p.Product_Category || null,
                     weightCategory: p.Weight_Category_Billed || null,
                     liveStatus: p.Live_Status || null,
                     mtpSkuName: p.Product_MTP_Name || p.Name,
-                    hasAudit: false,
                     boxes: (p.MTP_Box_Dimensions || []).map(b => ({
                         boxNumber: b.Box,
                         length: b.Length, width: b.Width, height: b.Height,
@@ -214,8 +216,9 @@ class ZohoAPI {
                     productName: c.Product_Name,
                     productType: 'child',
                     billedTotalWeight: Number(c.Total_Weight) || 0,
-                    auditedWeight: Number(c.Last_Audited_Total_Weight_kg) || 0,
-                    hasAudit: !!c.Last_Audited_Total_Weight_kg,
+                    auditedWeight: 0, // Don't pre-populate from CRM history
+                    hasAudit: false,  // Only set to true when user uploads Excel in current session
+                    lastAuditedWeightInCRM: Number(c.Last_Audited_Total_Weight_kg) || 0, // Keep for reference
                     productCategory: c.Product_Category || null,
                     weightCategory: c.Weight_Category_Billed || null,
                     liveStatus: c.Live_Status || null,
