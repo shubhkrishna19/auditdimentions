@@ -132,6 +132,40 @@
     margin-bottom: 2rem;
 }
 
+.box-inputs h4 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 18px;
+}
+
+.box-label {
+    font-weight: 600;
+    color: #555;
+    min-width: 60px;
+    font-size: 14px;
+}
+
+.remove-box-btn {
+    background: #ff5252;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.remove-box-btn:hover {
+    background: #ff1744;
+    transform: scale(1.1);
+}
+
 .box-row {
     display: flex;
     align-items: center;
@@ -144,19 +178,20 @@
 }
 
 .input-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    display: flex;
     gap: 10px;
     flex: 1;
     align-items: center;
 }
 
 .input-group input {
+    flex: 1;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 16px;
     transition: 0.2s;
+    min-width: 0; /* Prevent overflow */
 }
 
 .input-group input:focus {
@@ -164,11 +199,17 @@
     background: #ecf6ff;
 }
 
+.input-group .weight-input {
+    flex: 0.8; /* Slightly smaller for weight */
+}
+
 .input-group .unit-label {
     color: #666;
     font-weight: 600;
     font-size: 14px;
     white-space: nowrap;
+    flex-shrink: 0; /* Don't shrink the label */
+    min-width: 25px;
 }
 
 .add-box-btn {
@@ -184,6 +225,39 @@
 
 .add-box-btn:hover {
     background: #e1f5fe;
+}
+
+.total-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 18px;
+    margin-bottom: 1.5rem;
+}
+
+.total-summary strong {
+    color: #2196f3;
+    font-size: 20px;
+}
+
+.diff-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.diff-badge.good {
+    background: #c8e6c9;
+    color: #2e7d32;
+}
+
+.diff-badge.bad {
+    background: #ffcdd2;
+    color: #c62828;
 }
 
 .action-footer {
