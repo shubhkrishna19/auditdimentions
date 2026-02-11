@@ -1,0 +1,61 @@
+🔍 COMPREHENSIVE ZOHO ECOSYSTEM AUDIT
+======================================================================
+Starting at: 11/2/2026, 3:20:22 pm
+
+📦 Step 1: Fetching CRM Modules...
+   ✓ Found 91 modules (8 custom, 83 standard)
+
+📊 Step 2: Analyzing Parent_MTP_SKU module...
+Fetched page 1: 200 records (total: 200)
+Fetched page 2: 30 records (total: 230)
+   ✓ 39 fields, 230 records
+   ⚠️  230 missing Product_Category
+
+📊 Step 3: Analyzing Products module...
+Fetched page 1: 200 records (total: 200)
+Fetched page 2: 185 records (total: 385)
+   ✓ 61 fields, 385 records
+   ✓ 0 have audit data
+   ⚠️  0 have category mismatches
+
+🔧 Step 4: Analyzing custom modules...
+   Checking ORDER_HISTORY...
+     ✓ 0 records
+   Checking Parent_MTP_SKU...
+Fetched page 1: 200 records (total: 200)
+     ✓ 200 records
+   Checking test161__Commission_Settings...
+Fetched page 1: 1 records (total: 1)
+     ✓ 1 records
+   Checking zrouteiqzcrm__Routes...
+     ✓ 0 records
+   Checking zrouteiqzcrm__RIQ_Field_Visits...
+     ✓ 0 records
+   Checking test161__Commission_Sales...
+Fetched page 1: 5 records (total: 5)
+     ✓ 5 records
+   Checking Dealer...
+     ✓ 0 records
+   Checking Packaging...
+Fetched page 1: 1 records (total: 1)
+     ✓ 1 records
+
+🎨 Step 5: Fetching Zoho Creator applications...
+   ✓ Found 0 Creator applications:
+
+📋 Step 6: Generating summary...
+
+======================================================================
+✅ AUDIT COMPLETE!
+======================================================================
+
+SUMMARY:
+  CRM Modules: 91 (8 custom)
+  Products: 385
+  Parent SKUs: 230
+  Creator Apps: 0
+  Data Quality Score: 30/100
+  Audit Coverage: 0.0%
+
+📄 Full report saved to: zoho_audit_1770803435709.json
+

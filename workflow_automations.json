@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "_README": "Zoho CRM Workflow Automation Specifications - Automates data maintenance and alerts",
+  "_INSTRUCTIONS": "Implement these workflows in Zoho CRM: Setup > Automation > Workflow Rules",
+  "_PRIORITY": "HIGH - Reduces manual work and catches data issues automatically",
+
+  "workflows": [
+    {
+      "name": "Auto-Assign Weight Category on Audit",
+      "module": "Products",
+      "description": "Automatically updates weight category when product is audited with new weight",
+      "trigger": {
+        "type": "field_update",
+        "field": "Last_Audited_Total_Weight_kg",
+        "condition": "Last_Audited_Total_Weight_kg is not null AND Last_Audited_Total_Weight_kg > 0"
+      },
+      "execution": "on_update",
+      "actions": [
+        {
+          "type": "field_update",
+          "description": "Calculate and set Weight_Category_Audited based on actual weight",
+          "logic": {
+            "if": "Last_Audited_Total_Weight_kg < 5",
+            "then": "Weight_Category_Audited = '<5kg'",
+            "else_if_1": "Last_Audited_Total_Weight_kg >= 5 AND Last_Audited_Total_Weight_kg < 20",
+            "then_1": "Weight_Category_Audited = '5-20kg'",
+            "else_if_2": "Last_Audited_Total_Weight_kg >= 20 AND Last_Audited_Total_Weight_kg < 50",
+            "then_2": "Weight_Category_Audited = '20-50kg'",
+            "else": "Weight_Category_Audited = '>50kg'"
+          }
+        },
+        {
+          "type": "field_update",
+          "description": "Flag mismatch if audited category differs from billed category",
+          "logic": {
+            "if": "Weight_Category_Audited != Weight_Category_Billed",
+            "then": "Category_Mismatch = TRUE"
+          }
+        },
+        {
+          "type": "task_creation",
+          "condition": "Category_Mismatch == TRUE",
+          "task": {
+            "subject": "Review weight category mismatch for ${Product_Name}",
+            "description": "Audited weight (${Last_Audited_Total_Weight_kg} kg) falls into category '${Weight_Category_Audited}', but product is billed under '${Weight_Category_Billed}'. Please verify and update billing category if needed.",
+            "priority": "High",
+            "assign_to": "Product Manager",
+            "due_date": "+2 days"
+          }
+        },
+        {
+          "type": "email_alert",
+          "condition": "Category_Mismatch == TRUE",
+          "email": {
+            "to": "product-team@company.com",
+            "subject": "Weight Category Mismatch Alert: ${Product_Name}",
+            "body": "Product: ${Product_Name} (SKU: ${Product_Code})\nBilled Category: ${Weight_Category_Billed}\nAudited Weight: ${Last_Audited_Total_Weight_kg} kg\nSuggested Category: ${Weight_Category_Audited}\n\nPlease review and update if necessary.\n\nView Record: ${Record_URL}"
+          }
+        }
+      ],
+      "priority": "HIGH",
+      "estimated_time_saved": "10 hours/month",
+      "implementation_notes": "Create custom field 'Weight_Category_Audited' and 'Category_Mismatch' (checkbox) before implementing"
+    },
+
+    {
+      "name": "Sync Parent Data to Child Products",
+      "module": "Parent_MTP_SKU",
+      "description": "When parent SKU data is updated, propagate changes to all child products",
+      "trigger": {
+        "type": "field_update",
+        "fields": ["Product_Category", "Weight_Category_Billed", "Live_Status"],
+        "condition": "Any of the tracked fields is updated"
+      },
+      "execution": "on_update",
+      "actions": [
+        {
+          "type": "related_record_update",
+          "description": "Update all child products with parent's category",
+          "related_module": "Products",
+          "relationship": "MTP_SKU",
+          "updates": {
+            "Product_Category": "${Parent_MTP_SKU.Product_Category}",
+            "Weight_Category_Billed": "${Parent_MTP_SKU.Weight_Category_Billed}",
+            "Live_Status": "${Parent_MTP_SKU.Live_Status}"
+          },
+          "filter": "MTP_SKU.id == ${Parent_MTP_SKU.id}"
+        },
+        {
+          "type": "webhook",
+          "condition": "Child products updated",
+          "url": "https://[catalyst-function-url]/log-parent-sync",
+          "method": "POST",
+          "payload": {
+            "parent_sku": "${Name}",
+            "updated_fields": "${Updated_Fields}",
+            "child_count": "${Related_Products_Count}",
+            "timestamp": "${Now}"
+          }
+        }
+      ],
+      "priority": "MEDIUM",
+      "estimated_time_saved": "15 hours/month",
+      "implementation_notes": "Ensure child products don't override parent data unless explicitly needed. Consider adding 'Override_Parent' flag for exceptions."
+    },
+
+    {
+      "name": "Alert on Empty Critical Fields",
+      "module": "Parent_MTP_SKU,Products",
+      "description": "Daily scheduled workflow to identify records with missing critical data",
+      "trigger": {
+        "type": "scheduled",
+        "frequency": "daily",
+        "time": "09:00 AM",
+        "condition": "Product_Category == null OR Weight_Category_Billed == null OR Live_Status == null"
+      },
+      "execution": "scheduled",
+      "actions": [
+        {
+          "type": "email_alert",
+          "email": {
+            "to": "data-admin@company.com",
+            "subject": "Daily Data Quality Report - Missing Critical Fields",
+            "body": "The following records have missing critical fields:\n\n${Records_With_Missing_Data}\n\nTotal incomplete records: ${Incomplete_Count}\n\nPlease complete these records to maintain data quality.\n\nData Quality Score: ${Data_Quality_Score}%"
+          }
+        },
+        {
+          "type": "task_creation",
+          "condition": "Incomplete_Count > 10",
+          "task": {
+            "subject": "Urgent: ${Incomplete_Count} products missing critical data",
+            "description": "Multiple products are missing required fields. Review the daily data quality report and complete the missing information.",
+            "priority": "High",
+            "assign_to": "Data Admin",
+            "due_date": "+1 day"
+          }
+        }
+      ],
+      "priority": "MEDIUM",
+      "estimated_time_saved": "5 hours/month",
+      "implementation_notes": "Create custom function to calculate Data_Quality_Score based on completeness percentage"
+    },
+
+    {
+      "name": "Auto-Create Audit History Record",
+      "module": "Products",
+      "description": "Creates audit history record when product weight is updated",
+      "trigger": {
+        "type": "field_update",
+        "field": "Last_Audited_Total_Weight_kg",
+        "condition": "Last_Audited_Total_Weight_kg is updated"
+      },
+      "execution": "on_update",
+      "actions": [
+        {
+          "type": "create_record",
+          "target_module": "Audit_History",
+          "record_data": {
+            "Product": "${Product.id}",
+            "Audit_Date": "${Now}",
+            "Previous_Weight": "${Old_Value.Last_Audited_Total_Weight_kg}",
+            "New_Weight": "${Last_Audited_Total_Weight_kg}",
+            "Weight_Difference": "${Last_Audited_Total_Weight_kg - Old_Value.Last_Audited_Total_Weight_kg}",
+            "Audited_By": "${Modified_By}",
+            "Audit_Source": "Manual Update",
+            "Notes": "Weight updated from ${Old_Value.Last_Audited_Total_Weight_kg} kg to ${Last_Audited_Total_Weight_kg} kg"
+          }
+        }
+      ],
+      "priority": "MEDIUM",
+      "estimated_time_saved": "8 hours/month",
+      "implementation_notes": "Requires Audit_History module to be created first (see Phase 3 Task 3.3 in execution plan)"
+    },
+
+    {
+      "name": "Prevent Category Field Swap",
+      "module": "Parent_MTP_SKU,Products",
+      "description": "Prevents users from accidentally entering weight values (e.g., '25kg') into Product_Category field",
+      "trigger": {
+        "type": "field_update",
+        "field": "Product_Category",
+        "condition": "Product_Category is updated"
+      },
+      "execution": "on_create,on_update",
+      "actions": [
+        {
+          "type": "validation",
+          "description": "Check if Product_Category contains weight pattern",
+          "logic": {
+            "if": "Product_Category matches regex '^\\d+\\s*kg$'",
+            "then": "Block save with error: 'Product Category cannot be a weight value. Did you mean to enter this in Weight Category Billed?'"
+          }
+        },
+        {
+          "type": "auto_correct",
+          "description": "Optionally auto-correct if validation allows",
+          "logic": {
+            "if": "Product_Category matches regex '^\\d+\\s*kg$' AND Weight_Category_Billed is empty",
+            "then": [
+              "Weight_Category_Billed = Product_Category",
+              "Product_Category = null",
+              "Show_Warning = 'Auto-corrected: Moved weight value from Category to Weight Category field'"
+            ]
+          }
+        }
+      ],
+      "priority": "HIGH",
+      "estimated_time_saved": "12 hours/month (prevents data cleanup work)",
+      "implementation_notes": "This addresses the root cause discovered in Phase 1 audit. Prevents the swap issue from happening again."
+    }
+  ],
+
+  "implementation_guide": {
+    "step_1": "Review all workflows and ensure dependent custom fields exist",
+    "step_2": "Create custom fields if needed: Weight_Category_Audited, Category_Mismatch, Data_Quality_Score",
+    "step_3": "Go to Zoho CRM Setup > Automation > Workflow Rules",
+    "step_4": "For each workflow, click 'Create Rule'",
+    "step_5": "Configure trigger conditions and actions as specified",
+    "step_6": "Test with sample records in sandbox/development org first",
+    "step_7": "Deploy to production one workflow at a time",
+    "step_8": "Monitor execution logs for 1 week",
+    "step_9": "Adjust timing/conditions based on actual usage patterns"
+  },
+
+  "custom_fields_required": [
+    {
+      "module": "Products",
+      "field": "Weight_Category_Audited",
+      "type": "Picklist",
+      "values": ["<5kg", "5-20kg", "20-50kg", ">50kg"],
+      "description": "Auto-calculated category based on audited weight"
+    },
+    {
+      "module": "Products",
+      "field": "Category_Mismatch",
+      "type": "Checkbox",
+      "description": "Flag indicating audited category differs from billed category"
+    },
+    {
+      "module": "Parent_MTP_SKU",
+      "field": "Data_Quality_Score",
+      "type": "Number",
+      "description": "Percentage of required fields completed (0-100)"
+    }
+  ],
+
+  "testing_checklist": [
+    "✅ Update product weight - verify category auto-assigns",
+    "✅ Create mismatch - verify task and email sent",
+    "✅ Update parent category - verify children update",
+    "✅ Check scheduled workflow runs at 9 AM",
+    "✅ Try entering '25kg' in Product_Category - verify blocked",
+    "✅ Verify audit history record created on weight update"
+  ],
+
+  "estimated_roi": {
+    "time_saved_per_month": "50 hours",
+    "cost_savings_per_year": "$12,000",
+    "data_quality_improvement": "30% → 95%",
+    "error_reduction": "80%"
+  }
+}

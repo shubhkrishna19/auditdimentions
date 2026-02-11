@@ -11,3 +11,27 @@ dist-ssr
 *.log
 ~$*
 *.xlsx.tmp
+
+# Environment files with credentials
+.env
+.env.*
+!.env.example
+
+# MCP Server credentials
+.env.mcp
+mcp-config.json
+**/zoho_credentials.json
+**/client_secret*.json
+
+# Catalyst artifacts
+ZohoIntegrationEngine/.build/
+ZohoIntegrationEngine/client/
+
+# Local Data & Backups
+zoho_backups/
+zoho_backups_full/
+mcp_tools.json
+zoho_audit_*.json
+zoho_audit_dump.json
+unified_master_data.json
+*.json_backup.json

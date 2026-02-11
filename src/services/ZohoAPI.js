@@ -79,8 +79,36 @@ class ZohoAPI {
     async fetchProducts() {
         if (this.mode === 'mock') {
             await new Promise(r => setTimeout(r, 800));
+
+            // Helper to clean swapped category data (Data Quality Fix)
+            const cleanData = (item) => {
+                const productCat = item.productCategory?.toString().trim() || '';
+                const weightCat = item.weightCategory?.toString().trim() || '';
+
+                // Pattern 1: productCategory looks like a weight (e.g., "50kg", "20kg")
+                const productCatIsWeight = /^\d+\s*kg$/i.test(productCat);
+
+                // Pattern 2: weightCategory looks like a product category (not a weight pattern)
+                const weightCatIsProduct = weightCat && !/^\d+\s*kg$/i.test(weightCat) && weightCat !== '-';
+
+                // Swap if needed
+                if (productCatIsWeight && !weightCat) {
+                    item.weightCategory = item.productCategory;
+                    item.productCategory = null;
+                } else if (weightCatIsProduct && !productCat) {
+                    item.productCategory = item.weightCategory;
+                    item.weightCategory = null;
+                } else if (productCatIsWeight && weightCatIsProduct) {
+                    const temp = item.productCategory;
+                    item.productCategory = item.weightCategory;
+                    item.weightCategory = temp;
+                }
+
+                return item;
+            };
+
             // Process mock data same as live data
-            const processedMock = MOCK_PRODUCTS.map(p => ({
+            const processedMock = MOCK_PRODUCTS.map(p => cleanData({
                 id: p.id,
                 skuCode: p.Name,
                 productName: p.Product_MTP_Name || p.Name,
@@ -103,19 +131,55 @@ class ZohoAPI {
 
             // 1. Fetch ALL Parent SKUs (with pagination)
             const parentsRaw = await this.fetchAllRecords("Parent_MTP_SKU");
+            console.log(`[ZohoAPI] Fetched ${parentsRaw.length} Parents`);
+            if (parentsRaw.length > 0) {
+                console.log('[ZohoAPI] First Parent Record Keys:', Object.keys(parentsRaw[0]));
+                console.log('[ZohoAPI] First Parent Sample:', parentsRaw[0]);
+            }
 
             // 2. Fetch ALL Child Products (with pagination)
             const childrenRaw = await this.fetchAllRecords("Products");
+            console.log(`[ZohoAPI] Fetched ${childrenRaw.length} Children`);
+            if (childrenRaw.length > 0) {
+                console.log('[ZohoAPI] First Child Record Keys:', Object.keys(childrenRaw[0]));
+            }
 
             // DATA LINKER LOGIC
             const parentMap = new Map();
             const allProducts = [];
             const processedParents = [];
 
+            // Helper to clean swapped category data (Data Quality Fix)
+            const cleanData = (item) => {
+                const productCat = item.productCategory?.toString().trim() || '';
+                const weightCat = item.weightCategory?.toString().trim() || '';
+
+                // Pattern 1: productCategory looks like a weight (e.g., "50kg", "20kg")
+                const productCatIsWeight = /^\d+\s*kg$/i.test(productCat);
+
+                // Pattern 2: weightCategory looks like a product category (not a weight pattern)
+                const weightCatIsProduct = weightCat && !/^\d+\s*kg$/i.test(weightCat) && weightCat !== '-';
+
+                // Swap if needed
+                if (productCatIsWeight && !weightCat) {
+                    item.weightCategory = item.productCategory;
+                    item.productCategory = null;
+                } else if (weightCatIsProduct && !productCat) {
+                    item.productCategory = item.weightCategory;
+                    item.weightCategory = null;
+                } else if (productCatIsWeight && weightCatIsProduct) {
+                    const temp = item.productCategory;
+                    item.productCategory = item.weightCategory;
+                    item.weightCategory = temp;
+                }
+
+                return item;
+            };
+
             // A. Process Parents
             // Parent weights stored in KG in CRM
             parentsRaw.forEach(p => {
-                const parentObj = {
+                const parentObj = cleanData({
                     id: p.id,
                     skuCode: p.Name,
                     productName: p.Product_MTP_Name || p.Name,
@@ -133,7 +197,7 @@ class ZohoAPI {
                     })),
                     children: [],
                     childIds: []
-                };
+                });
                 parentMap.set(p.id, parentObj);
                 processedParents.push(parentObj);
             });
@@ -144,7 +208,7 @@ class ZohoAPI {
             childrenRaw.forEach(c => {
                 const parentId = c.MTP_SKU ? c.MTP_SKU.id : null;
 
-                const childObj = {
+                const childObj = cleanData({
                     id: c.id,
                     skuCode: c.Product_Code,
                     productName: c.Product_Name,
@@ -162,7 +226,7 @@ class ZohoAPI {
                         length: b.Length, width: b.Width, height: b.Height,
                         weight: b.Weight
                     }))
-                };
+                });
 
                 processedChildren.push(childObj);
 

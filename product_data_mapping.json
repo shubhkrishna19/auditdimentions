@@ -1,0 +1,32 @@
+{
+  "_README": "This file maps SKU codes to their category and weight data",
+  "_INSTRUCTIONS": "Fill in the data for each SKU from your Excel audit files or warehouse records",
+  "_TEMPLATE": {
+    "SKU-CODE": {
+      "category": "Furniture|Electronics|Textiles|Home Décor|Office Supplies|Industrial Equipment|Packaging Materials|Other",
+      "weight": 25.5,
+      "weightCategory": "<5kg|5-20kg|20-50kg|>50kg",
+      "liveStatus": "Y|N|P",
+      "notes": "Any additional notes"
+    }
+  },
+  "_EXAMPLES": {
+    "DC-CLV": {
+      "category": "Furniture",
+      "weight": 25.5,
+      "weightCategory": "20-50kg",
+      "liveStatus": "Y",
+      "notes": "Colove Chest - confirmed weight from warehouse"
+    },
+    "SR-CLM-T": {
+      "category": "Furniture",
+      "weight": 18.2,
+      "weightCategory": "5-20kg",
+      "liveStatus": "Y",
+      "notes": "Small chest table"
+    }
+  },
+  "_DATA": {
+    "COMMENT": "Add your SKUs below this line. Remove the _TEMPLATE and _EXAMPLES sections before running."
+  }
+}

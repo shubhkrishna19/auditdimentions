@@ -6,7 +6,17 @@
       "Bash(git status:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: Enable iframe embedding for Zoho Web Tab in Slate\n\n- Add slate.config.json with X-Frame-Options and CSP headers\n- Add public/_headers for Netlify-style header config\n- Update vite.config.js with frame-ancestors CSP\n- Allows embedding in https://*.zoho.com domains\n\nThis fixes \"refused to connect\" error when loading Slate app in Zoho Web Tab.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npm run build:*)",
+      "Bash(xcopy:*)",
+      "Bash(catalyst deploy:*)",
+      "Bash(ls:*)",
+      "Bash(test:*)",
+      "Bash(python3:*)",
+      "mcp__claude_ai_ZohoMCP__ZohoCreator_getApplications",
+      "mcp__claude_ai_ZohoMCP__ZohoCRM_Get_Modules",
+      "Bash(node test_zoho_mcp_direct.js:*)",
+      "Bash(node:*)"
     ]
   }
 }

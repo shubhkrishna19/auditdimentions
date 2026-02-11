@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoho CRM Data Correction Tool</title>
+    <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .warning {
+            background: #fff5f5;
+            border-left: 4px solid #fc8181;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: 4px;
+        }
+
+        .warning h3 {
+            color: #c53030;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .warning p {
+            color: #742a2a;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: 4px;
+        }
+
+        .info h3 {
+            color: #2c5282;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .info p {
+            color: #2a4365;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #cbd5e0;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(252, 129, 129, 0.4);
+        }
+
+        .progress-container {
+            display: none;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            color: #4a5568;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .log-container {
+            background: #1a202c;
+            border-radius: 8px;
+            padding: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .log-entry {
+            margin-bottom: 4px;
+        }
+
+        .log-info {
+            color: #63b3ed;
+        }
+
+        .log-success {
+            color: #68d391;
+        }
+
+        .log-warning {
+            color: #f6ad55;
+        }
+
+        .log-error {
+            color: #fc8181;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            background: #f7fafc;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔧 Zoho CRM Data Correction Tool</h1>
+        <p class="subtitle">Fix Category/Weight Field Swap Issue</p>
+
+        <div class="warning">
+            <h3>⚠️ Important Notice</h3>
+            <p>This tool will modify records in your Zoho CRM database. Please ensure you have a backup before
+                proceeding. The tool will swap values where Product_Category contains weight values (e.g., "50kg") and
+                Weight_Category_Billed is empty.</p>
+        </div>
+
+        <div class="info">
+            <h3>ℹ️ What This Tool Does</h3>
+            <p>Scans all Parent_MTP_SKU and Products records, identifies records where categories are swapped, and
+                corrects them automatically. This is a one-time fix to clean your database.</p>
+        </div>
+
+        <div class="button-group">
+            <button id="scanBtn" class="btn-secondary" onclick="scanData()">
+                🔍 Scan for Issues
+            </button>
+            <button id="fixBtn" class="btn-danger" onclick="fixData()" disabled>
+                🔨 Fix All Issues
+            </button>
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Processing...</div>
+        </div>
+
+        <div class="log-container" id="logContainer"></div>
+
+        <div class="stats" id="statsContainer" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statAffected">0</div>
+                <div class="stat-label">Issues Found</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statFixed">0</div>
+                <div class="stat-label">Fixed</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let affectedRecords = [];
+        let isInitialized = false;
+
+        // Initialize Zoho SDK
+        ZOHO.embeddedApp.on("PageLoad", function () {
+            log('SDK initialized successfully', 'success');
+            isInitialized = true;
+        });
+
+        ZOHO.embeddedApp.init();
+
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            logContainer.style.display = 'block';
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(message);
+        }
+
+        function updateProgress(current, total) {
+            const percent = (current / total) * 100;
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = `Processing ${current} of ${total} records...`;
+        }
+
+        async function fetchAllRecords(module) {
+            let allRecords = [];
+            let page = 1;
+            let hasMore = true;
+
+            log(`Fetching ${module} records...`, 'info');
+
+            while (hasMore) {
+                try {
+                    const response = await ZOHO.CRM.API.getAllRecords({
+                        Entity: module,
+                        sort_order: "asc",
+                        per_page: 200,
+                        page: page
+                    });
+
+                    if (response.data && response.data.length > 0) {
+                        allRecords = allRecords.concat(response.data);
+                        log(`Fetched page ${page}: ${response.data.length} records`, 'info');
+                        page++;
+                        if (response.data.length < 200) hasMore = false;
+                    } else {
+                        hasMore = false;
+                    }
+                } catch (error) {
+                    log(`Error fetching ${module}: ${error.message}`, 'error');
+                    hasMore = false;
+                }
+            }
+
+            log(`Total ${module} records: ${allRecords.length}`, 'success');
+            return allRecords;
+        }
+
+        async function scanData() {
+            if (!isInitialized) {
+                alert('Zoho SDK not initialized. Please refresh the page.');
+                return;
+            }
+
+            document.getElementById('scanBtn').disabled = true;
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('statsContainer').style.display = 'none';
+            affectedRecords = [];
+
+            try {
+                // Fetch Parent_MTP_SKU
+                const parents = await fetchAllRecords('Parent_MTP_SKU');
+
+                // Fetch Products
+                const children = await fetchAllRecords('Products');
+
+                const allRecords = [...parents.map(p => ({ ...p, _module: 'Parent_MTP_SKU' })),
+                ...children.map(c => ({ ...c, _module: 'Products' }))];
+
+                log('Analyzing records for issues...', 'info');
+
+                // Identify affected records
+                allRecords.forEach((record, index) => {
+                    updateProgress(index + 1, allRecords.length);
+
+                    const productCat = record.Product_Category?.toString().trim() || '';
+                    const weightCat = record.Weight_Category_Billed?.toString().trim() || '';
+
+                    const productCatIsWeight = /^\d+\s*kg$/i.test(productCat);
+                    const weightIsEmpty = !weightCat || weightCat === '-';
+
+                    if (productCatIsWeight && weightIsEmpty) {
+                        affectedRecords.push(record);
+                    }
+                });
+
+                // Update stats
+                document.getElementById('statTotal').textContent = allRecords.length;
+                document.getElementById('statAffected').textContent = affectedRecords.length;
+                document.getElementById('statFixed').textContent = '0';
+                document.getElementById('statsContainer').style.display = 'grid';
+
+                if (affectedRecords.length > 0) {
+                    log(`Found ${affectedRecords.length} records with swapped categories!`, 'warning');
+                    document.getElementById('fixBtn').disabled = false;
+                } else {
+                    log('No issues found! Your data is clean.', 'success');
+                }
+
+            } catch (error) {
+                log(`Scan failed: ${error.message}`, 'error');
+            } finally {
+                document.getElementById('scanBtn').disabled = false;
+                document.getElementById('progressContainer').style.display = 'none';
+            }
+        }
+
+        async function fixData() {
+            if (affectedRecords.length === 0) {
+                alert('No issues to fix. Please scan first.');
+                return;
+            }
+
+            const confirmed = confirm(`This will update ${affectedRecords.length} records in Zoho CRM. Continue?`);
+            if (!confirmed) return;
+
+            document.getElementById('fixBtn').disabled = true;
+            document.getElementById('progressContainer').style.display = 'block';
+
+            let fixed = 0;
+            const batchSize = 100; // Zoho API batch limit
+
+            try {
+                // Group by module
+                const parentRecords = affectedRecords.filter(r => r._module === 'Parent_MTP_SKU');
+                const childRecords = affectedRecords.filter(r => r._module === 'Products');
+
+                // Fix Parent_MTP_SKU
+                if (parentRecords.length > 0) {
+                    log(`Fixing ${parentRecords.length} Parent_MTP_SKU records...`, 'info');
+                    fixed += await fixModule('Parent_MTP_SKU', parentRecords, batchSize);
+                }
+
+                // Fix Products
+                if (childRecords.length > 0) {
+                    log(`Fixing ${childRecords.length} Products records...`, 'info');
+                    fixed += await fixModule('Products', childRecords, batchSize);
+                }
+
+                document.getElementById('statFixed').textContent = fixed;
+                log(`✅ Correction complete! Fixed ${fixed} records.`, 'success');
+                alert(`Success! Fixed ${fixed} records. Please refresh your app to see the changes.`);
+
+            } catch (error) {
+                log(`Fix failed: ${error.message}`, 'error');
+                alert('An error occurred. Check the logs for details.');
+            } finally {
+                document.getElementById('progressContainer').style.display = 'none';
+            }
+        }
+
+        async function fixModule(module, records, batchSize) {
+            let fixed = 0;
+
+            for (let i = 0; i < records.length; i += batchSize) {
+                const batch = records.slice(i, i + batchSize);
+
+                const updates = batch.map(record => ({
+                    id: record.id,
+                    Weight_Category_Billed: record.Product_Category,
+                    Product_Category: null
+                }));
+
+                try {
+                    const result = await ZOHO.CRM.API.updateRecord({
+                        Entity: module,
+                        APIData: updates,
+                        Trigger: []  // Don't trigger workflows for bulk update
+                    });
+
+                    fixed += batch.length;
+                    updateProgress(fixed, records.length);
+                    log(`Updated batch ${Math.floor(i / batchSize) + 1} in ${module}: ${batch.length} records`, 'success');
+
+                    // Small delay to avoid rate limits
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                } catch (error) {
+                    log(`Batch update failed for ${module}: ${error.message}`, 'error');
+                }
+            }
+
+            return fixed;
+        }
+    </script>
+</body>
+
+</html>

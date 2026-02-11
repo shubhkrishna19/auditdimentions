@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "_README": "Zoho CRM Validation Rules Configuration - Prevents empty/invalid data entry",
+  "_INSTRUCTIONS": "Implement these rules in Zoho CRM: Setup > Customization > Modules > [Module] > Validation Rules",
+  "_PRIORITY": "HIGH - Implement immediately after data remediation to prevent future data quality issues",
+
+  "Parent_MTP_SKU": [
+    {
+      "name": "Product_Category_Required",
+      "description": "Ensures all Parent SKUs have a product category assigned",
+      "field": "Product_Category",
+      "condition": "Product_Category == null OR Product_Category == ''",
+      "error_message": "❌ Product Category is required before saving. Please select from: Furniture, Electronics, Textiles, Home Décor, Office Supplies, Industrial Equipment, Packaging Materials, or Other.",
+      "trigger": "on_create,on_update",
+      "priority": "CRITICAL",
+      "implementation_notes": "Apply to Create and Edit layouts. Block save if empty."
+    },
+    {
+      "name": "Billed_Physical_Weight_Required",
+      "description": "Ensures weight is positive and non-zero",
+      "field": "Billed_Physical_Weight",
+      "condition": "Billed_Physical_Weight <= 0 OR Billed_Physical_Weight == null",
+      "error_message": "❌ Billed Physical Weight must be greater than 0 kg. Enter the actual product weight in kilograms.",
+      "trigger": "on_create,on_update",
+      "priority": "CRITICAL",
+      "implementation_notes": "Weight in KG. Reject zero or negative values."
+    },
+    {
+      "name": "Weight_Category_Required",
+      "description": "Ensures weight category is assigned for billing",
+      "field": "Weight_Category_Billed",
+      "condition": "Weight_Category_Billed == null OR Weight_Category_Billed == ''",
+      "error_message": "❌ Weight Category is required for billing. Select: <5kg, 5-20kg, 20-50kg, or >50kg.",
+      "trigger": "on_create,on_update",
+      "priority": "CRITICAL",
+      "implementation_notes": "Picklist validation. Ensure one value selected."
+    },
+    {
+      "name": "Live_Status_Required",
+      "description": "Ensures product live status is explicitly set",
+      "field": "Live_Status",
+      "condition": "Live_Status == null OR Live_Status == ''",
+      "error_message": "❌ Live Status is required. Select: Y (Live), N (Not Live), or P (Pending).",
+      "trigger": "on_create,on_update",
+      "priority": "HIGH",
+      "implementation_notes": "Picklist with 3 values: Y, N, P"
+    },
+    {
+      "name": "Weight_Category_Matches_Weight",
+      "description": "Validates that weight category matches actual weight value",
+      "field": "Weight_Category_Billed",
+      "condition": "(Billed_Physical_Weight < 5 AND Weight_Category_Billed != '<5kg') OR (Billed_Physical_Weight >= 5 AND Billed_Physical_Weight < 20 AND Weight_Category_Billed != '5-20kg') OR (Billed_Physical_Weight >= 20 AND Billed_Physical_Weight < 50 AND Weight_Category_Billed != '20-50kg') OR (Billed_Physical_Weight >= 50 AND Weight_Category_Billed != '>50kg')",
+      "error_message": "⚠️ Weight Category doesn't match actual weight. Please verify the weight value and category are consistent.",
+      "trigger": "on_update",
+      "priority": "MEDIUM",
+      "implementation_notes": "Warning only, doesn't block save. Helps catch data entry errors."
+    },
+    {
+      "name": "Product_Name_Required",
+      "description": "Ensures MTP product name is not empty",
+      "field": "Product_MTP_Name",
+      "condition": "Product_MTP_Name == null OR Product_MTP_Name == ''",
+      "error_message": "❌ Product MTP Name is required. Enter a descriptive product name.",
+      "trigger": "on_create,on_update",
+      "priority": "CRITICAL",
+      "implementation_notes": "Standard text field validation"
+    }
+  ],
+
+  "Products": [
+    {
+      "name": "Product_Category_Required",
+      "description": "Ensures all child products inherit or have category",
+      "field": "Product_Category",
+      "condition": "Product_Category == null OR Product_Category == ''",
+      "error_message": "❌ Product Category is required. This should match the Parent MTP SKU category.",
+      "trigger": "on_create,on_update",
+      "priority": "CRITICAL",
+      "implementation_notes": "Ideally auto-populated from Parent MTP SKU via workflow"
+    },
+    {
+      "name": "Weight_Category_Required_For_Live",
+      "description": "Live products must have weight category",
+      "field": "Weight_Category_Billed",
+      "condition": "(Live_Status == 'Y' OR Product_Active == true) AND (Weight_Category_Billed == null OR Weight_Category_Billed == '')",
+      "error_message": "❌ Weight Category is required for live/active products. Select appropriate weight range.",
+      "trigger": "on_create,on_update",
+      "priority": "HIGH",
+      "implementation_notes": "Only enforce for active products"
+    },
+    {
+      "name": "Live_Status_Required",
+      "description": "Child products must have live status set",
+      "field": "Live_Status",
+      "condition": "Live_Status == null OR Live_Status == ''",
+      "error_message": "❌ Live Status is required. Select: Y (Live), N (Not Live), or P (Pending).",
+      "trigger": "on_create,on_update",
+      "priority": "HIGH",
+      "implementation_notes": "Match parent's live status by default"
+    },
+    {
+      "name": "Total_Weight_Positive",
+      "description": "Audited weight must be positive if set",
+      "field": "Last_Audited_Total_Weight_kg",
+      "condition": "Last_Audited_Total_Weight_kg <= 0 AND Last_Audited_Total_Weight_kg != null",
+      "error_message": "❌ Audited Weight cannot be zero or negative. Enter actual weight in kg or leave empty.",
+      "trigger": "on_update",
+      "priority": "MEDIUM",
+      "implementation_notes": "Allow null for unaudited products, but reject invalid values"
+    },
+    {
+      "name": "MTP_SKU_Required",
+      "description": "Child products must link to parent MTP SKU",
+      "field": "MTP_SKU",
+      "condition": "MTP_SKU == null",
+      "error_message": "❌ MTP SKU lookup is required. Every product must be linked to a Parent MTP SKU.",
+      "trigger": "on_create,on_update",
+      "priority": "CRITICAL",
+      "implementation_notes": "Lookup field to Parent_MTP_SKU module"
+    }
+  ],
+
+  "implementation_guide": {
+    "step_1": "Go to Zoho CRM Setup",
+    "step_2": "Navigate to Customization > Modules",
+    "step_3": "Select module (Parent_MTP_SKU or Products)",
+    "step_4": "Click 'Validation Rules'",
+    "step_5": "Create new rule for each validation above",
+    "step_6": "Test by creating/editing a record with invalid data",
+    "step_7": "Verify error message displays correctly",
+    "step_8": "Repeat for all rules in both modules"
+  },
+
+  "testing_checklist": [
+    "✅ Try creating Parent SKU without category - should block",
+    "✅ Try creating Parent SKU with weight = 0 - should block",
+    "✅ Try saving with mismatched weight/category - should warn",
+    "✅ Try creating Product without MTP SKU link - should block",
+    "✅ Try setting live product without weight category - should block",
+    "✅ Verify existing valid records still save normally"
+  ],
+
+  "rollback_plan": "If validation rules cause issues, disable them temporarily via Setup > Customization > Modules > [Module] > Validation Rules > Deactivate"
+}
