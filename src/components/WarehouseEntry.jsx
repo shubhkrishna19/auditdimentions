@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useData } from '../context/DataContext';
+import { toast } from 'react-toastify';
 import './WarehouseEntry.css';
 
 const WarehouseEntry = () => {
@@ -8,12 +9,41 @@ const WarehouseEntry = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [boxes, setBoxes] = useState([{ length: '', width: '', height: '', weight: '' }]);
     const [saveStatus, setSaveStatus] = useState(null); // 'success', 'error'
+    const [auditCount, setAuditCount] = useState(0); // Track audits in this session
     const searchInputRef = useRef(null);
+    const inputRefs = useRef({}); // Store refs for each input field
 
     // Auto-focus search on load
     useEffect(() => {
         if (searchInputRef.current) searchInputRef.current.focus();
     }, [selectedProduct]);
+
+    // Keyboard shortcuts for speed
+    useEffect(() => {
+        const handleKeyPress = (e) => {
+            // Ctrl+S or Cmd+S to save
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                if (selectedProduct) {
+                    handleSave();
+                }
+            }
+            // Ctrl+N or Cmd+N to add box
+            if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                e.preventDefault();
+                if (selectedProduct) {
+                    addBox();
+                }
+            }
+            // Escape to cancel
+            if (e.key === 'Escape' && selectedProduct) {
+                setSelectedProduct(null);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [selectedProduct, boxes]);
 
     const handleSearch = (e) => {
         const term = e.target.value;
@@ -49,6 +79,34 @@ const WarehouseEntry = () => {
         setBoxes(newBoxes);
     };
 
+    // Handle Enter key to move to next field (faster data entry)
+    const handleKeyDown = (e, boxIndex, field) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            // Define field order: length → width → height → weight
+            const fieldOrder = ['length', 'width', 'height', 'weight'];
+            const currentFieldIndex = fieldOrder.indexOf(field);
+
+            if (currentFieldIndex < fieldOrder.length - 1) {
+                // Move to next field in same box
+                const nextField = fieldOrder[currentFieldIndex + 1];
+                const nextInputKey = `box-${boxIndex}-${nextField}`;
+                inputRefs.current[nextInputKey]?.focus();
+            } else {
+                // Last field (weight) - move to next box or save
+                if (boxIndex < boxes.length - 1) {
+                    // Move to first field of next box
+                    const nextInputKey = `box-${boxIndex + 1}-length`;
+                    inputRefs.current[nextInputKey]?.focus();
+                } else {
+                    // Last box, last field - trigger save
+                    handleSave();
+                }
+            }
+        }
+    };
+
     const addBox = () => {
         setBoxes([...boxes, { length: '', width: '', height: '', weight: '' }]);
     };
@@ -68,7 +126,7 @@ const WarehouseEntry = () => {
         // Basic validation
         const validBoxes = boxes.filter(b => b.length && b.width && b.height && b.weight);
         if (validBoxes.length === 0) {
-            alert('Please enter dimensions for at least one box.');
+            toast.warning('⚠️ Please enter dimensions for at least one box');
             return;
         }
 
@@ -92,11 +150,24 @@ const WarehouseEntry = () => {
             soldsPerMonth: selectedProduct.soldsPerMonth || 0
         });
 
-        setSaveStatus('success');
+        // Increment audit count
+        setAuditCount(prev => prev + 1);
+
+        // Quick toast feedback
+        toast.success(`✅ ${selectedProduct.skuCode} saved! (${auditCount + 1} audits)`, {
+            autoClose: 1500,
+            position: 'bottom-right'
+        });
+
+        // Quick transition to next product
         setTimeout(() => {
-            setSaveStatus(null);
             setSelectedProduct(null); // Return to search
-        }, 1500);
+            setBoxes([{ length: '', width: '', height: '', weight: '' }]); // Reset boxes
+            // Auto-focus search for barcode scan
+            if (searchInputRef.current) {
+                searchInputRef.current.focus();
+            }
+        }, 800); // Faster than 1500ms
     };
 
     // Filter suggestions based on search
@@ -112,6 +183,11 @@ const WarehouseEntry = () => {
             <div className="entry-header">
                 <h2>📦 Warehouse Audit Entry</h2>
                 <p>Scan or search for a product to enter dimensions</p>
+                {auditCount > 0 && (
+                    <div className="session-stats">
+                        <span className="audit-count">✅ {auditCount} audits completed this session</span>
+                    </div>
+                )}
             </div>
 
             {!selectedProduct ? (
@@ -163,35 +239,44 @@ const WarehouseEntry = () => {
                                 <div className="box-label">Box {index + 1}</div>
                                 <div className="input-group">
                                     <input
+                                        ref={el => inputRefs.current[`box-${index}-length`] = el}
                                         type="number"
                                         placeholder="L (cm)"
                                         value={box.length}
                                         onChange={(e) => handleBoxChange(index, 'length', e.target.value)}
+                                        onKeyDown={(e) => handleKeyDown(e, index, 'length')}
                                         autoFocus={index === 0}
                                     />
                                     <input
+                                        ref={el => inputRefs.current[`box-${index}-width`] = el}
                                         type="number"
                                         placeholder="W (cm)"
                                         value={box.width}
                                         onChange={(e) => handleBoxChange(index, 'width', e.target.value)}
+                                        onKeyDown={(e) => handleKeyDown(e, index, 'width')}
                                     />
                                     <input
+                                        ref={el => inputRefs.current[`box-${index}-height`] = el}
                                         type="number"
                                         placeholder="H (cm)"
                                         value={box.height}
                                         onChange={(e) => handleBoxChange(index, 'height', e.target.value)}
+                                        onKeyDown={(e) => handleKeyDown(e, index, 'height')}
                                     />
                                     <input
+                                        ref={el => inputRefs.current[`box-${index}-weight`] = el}
                                         type="number"
+                                        step="0.01"
                                         placeholder="Weight"
                                         value={box.weight}
                                         onChange={(e) => handleBoxChange(index, 'weight', e.target.value)}
+                                        onKeyDown={(e) => handleKeyDown(e, index, 'weight')}
                                         className="weight-input"
                                     />
                                     <span className="unit-label">kg</span>
                                 </div>
                                 {boxes.length > 1 && (
-                                    <button className="remove-box-btn" onClick={() => removeBox(index)}>×</button>
+                                    <button className="remove-box-btn" onClick={() => removeBox(index)} tabIndex="-1">×</button>
                                 )}
                             </div>
                         ))}
@@ -205,6 +290,10 @@ const WarehouseEntry = () => {
                                 Diff: {(calculateTotalWeight() - selectedProduct.billedTotalWeight).toFixed(2)} kg
                             </span>
                         )}
+                    </div>
+
+                    <div className="keyboard-hints">
+                        <span>⌨️ Tips: <strong>Enter</strong> = next field | <strong>Ctrl+S</strong> = save | <strong>Ctrl+N</strong> = add box | <strong>Esc</strong> = cancel</span>
                     </div>
 
                     <div className="action-footer">
