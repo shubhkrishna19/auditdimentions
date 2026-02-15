@@ -29,6 +29,17 @@ const WeightAudit = () => {
     // Save Progress State
     const [saveProgress, setSaveProgress] = useState(null); // { current: 0, total: 10 }
 
+    // Filter & Sort State
+    const [filters, setFilters] = useState({
+        category: 'all',
+        shipmentCat: 'all',
+        liveStatus: 'all'
+    });
+    const [sortConfig, setSortConfig] = useState({
+        field: null,
+        direction: 'asc' // 'asc' or 'desc'
+    });
+
     const handleBulkApplySave = (targetIds) => {
         if (!selectedBulkSource) return;
 
@@ -268,21 +279,113 @@ const WeightAudit = () => {
 
     // Tab filtering
     const getFilteredProducts = () => {
+        let filtered = [];
+
+        // First filter by tab
         switch (activeTab) {
             case 'PARENTS':
-                return products.filter(p => p.productType === 'parent');
+                filtered = products.filter(p => p.productType === 'parent');
+                break;
             case 'CHILDREN':
-                return products.filter(p => p.productType === 'child');
+                filtered = products.filter(p => p.productType === 'child');
+                break;
             case 'AUDITED':
-                return products.filter(p => p.hasAudit === true);
+                filtered = products.filter(p => p.hasAudit === true);
+                break;
             case 'VARIANCES':
-                return products.filter(p => p.hasAudit && (p.variations?.hasWeightChange || p.variations?.hasDimensionChanges));
+                filtered = products.filter(p => p.hasAudit && (p.variations?.hasWeightChange || p.variations?.hasDimensionChanges));
+                break;
             default:
-                return products.filter(p => p.productType === 'parent'); // Default to parents
+                filtered = products.filter(p => p.productType === 'parent');
         }
+
+        // Apply category filter
+        if (filters.category !== 'all') {
+            filtered = filtered.filter(p => p.productCategory === filters.category);
+        }
+
+        // Apply shipment category filter
+        if (filters.shipmentCat !== 'all') {
+            filtered = filtered.filter(p => p.weightCategory === filters.shipmentCat);
+        }
+
+        // Apply live status filter
+        if (filters.liveStatus !== 'all') {
+            if (filters.liveStatus === 'live') {
+                filtered = filtered.filter(p => p.liveStatus === 'Y' || p.liveStatus === 'Live');
+            } else {
+                filtered = filtered.filter(p => p.liveStatus !== 'Y' && p.liveStatus !== 'Live');
+            }
+        }
+
+        // Apply sorting
+        if (sortConfig.field) {
+            filtered = [...filtered].sort((a, b) => {
+                let aVal, bVal;
+
+                switch (sortConfig.field) {
+                    case 'sku':
+                        aVal = a.skuCode || '';
+                        bVal = b.skuCode || '';
+                        break;
+                    case 'category':
+                        aVal = a.productCategory || '';
+                        bVal = b.productCategory || '';
+                        break;
+                    case 'billedWeight':
+                        aVal = a.billedTotalWeight || 0;
+                        bVal = b.billedTotalWeight || 0;
+                        break;
+                    case 'auditedWeight':
+                        aVal = a.auditedWeight || 0;
+                        bVal = b.auditedWeight || 0;
+                        break;
+                    case 'weightDelta':
+                        aVal = a.variations?.totalWeightDelta || 0;
+                        bVal = b.variations?.totalWeightDelta || 0;
+                        break;
+                    default:
+                        return 0;
+                }
+
+                if (typeof aVal === 'string') {
+                    return sortConfig.direction === 'asc'
+                        ? aVal.localeCompare(bVal)
+                        : bVal.localeCompare(aVal);
+                } else {
+                    return sortConfig.direction === 'asc'
+                        ? aVal - bVal
+                        : bVal - aVal;
+                }
+            });
+        }
+
+        return filtered;
     };
 
     const displayData = getFilteredProducts();
+
+    // Get unique values for filters
+    const uniqueCategories = [...new Set(products.map(p => p.productCategory).filter(Boolean))].sort();
+    const uniqueShipmentCats = [...new Set(products.map(p => p.weightCategory).filter(Boolean))].sort();
+
+    // Toggle sort
+    const handleSort = (field) => {
+        setSortConfig(prev => ({
+            field,
+            direction: prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc'
+        }));
+    };
+
+    // Clear all filters
+    const clearFilters = () => {
+        setFilters({
+            category: 'all',
+            shipmentCat: 'all',
+            liveStatus: 'all'
+        });
+        setSortConfig({ field: null, direction: 'asc' });
+    };
     const hasAnyAuditData = products.some(p => p.hasAudit);
 
     const toggleExpand = (id) => {
@@ -394,16 +497,118 @@ const WeightAudit = () => {
                 </button>
             </div>
 
+            {/* Filter Bar */}
+            {products.length > 0 && (
+                <div className="filter-bar">
+                    <div className="filter-group">
+                        <label>Category:</label>
+                        <select
+                            value={filters.category}
+                            onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+                        >
+                            <option value="all">All Categories</option>
+                            {uniqueCategories.map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="filter-group">
+                        <label>Shipment Cat:</label>
+                        <select
+                            value={filters.shipmentCat}
+                            onChange={(e) => setFilters({ ...filters, shipmentCat: e.target.value })}
+                        >
+                            <option value="all">All Shipment Cats</option>
+                            {uniqueShipmentCats.map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="filter-group">
+                        <label>Live Status:</label>
+                        <select
+                            value={filters.liveStatus}
+                            onChange={(e) => setFilters({ ...filters, liveStatus: e.target.value })}
+                        >
+                            <option value="all">All Statuses</option>
+                            <option value="live">Live Only</option>
+                            <option value="notlive">Not Live</option>
+                        </select>
+                    </div>
+
+                    <button className="btn-clear-filters" onClick={clearFilters}>
+                        Clear Filters
+                    </button>
+
+                    {sortConfig.field && (
+                        <span className="active-sort-info">
+                            Sorted by: {sortConfig.field} ({sortConfig.direction === 'asc' ? '↑' : '↓'})
+                        </span>
+                    )}
+                </div>
+            )}
+
             <div className="audit-table-container">
                 <table className="audit-table">
                     <thead>
                         <tr>
-                            <th>SKU / Product</th>
-                            <th>Category</th>
+                            <th
+                                className="sortable"
+                                onClick={() => handleSort('sku')}
+                                title="Click to sort by SKU"
+                            >
+                                SKU / Product
+                                {sortConfig.field === 'sku' && (
+                                    <span className="sort-arrow">{sortConfig.direction === 'asc' ? ' ↑' : ' ↓'}</span>
+                                )}
+                            </th>
+                            <th
+                                className="sortable"
+                                onClick={() => handleSort('category')}
+                                title="Click to sort by Category"
+                            >
+                                Category
+                                {sortConfig.field === 'category' && (
+                                    <span className="sort-arrow">{sortConfig.direction === 'asc' ? ' ↑' : ' ↓'}</span>
+                                )}
+                            </th>
                             <th>Shipment Cat</th>
-                            <th>Billed Weight</th>
-                            {hasAnyAuditData && <th>Audited Weight</th>}
-                            {hasAnyAuditData && <th>Weight Δ</th>}
+                            <th
+                                className="sortable"
+                                onClick={() => handleSort('billedWeight')}
+                                title="Click to sort by Billed Weight"
+                            >
+                                Billed Weight
+                                {sortConfig.field === 'billedWeight' && (
+                                    <span className="sort-arrow">{sortConfig.direction === 'asc' ? ' ↑' : ' ↓'}</span>
+                                )}
+                            </th>
+                            {hasAnyAuditData && (
+                                <th
+                                    className="sortable"
+                                    onClick={() => handleSort('auditedWeight')}
+                                    title="Click to sort by Audited Weight"
+                                >
+                                    Audited Weight
+                                    {sortConfig.field === 'auditedWeight' && (
+                                        <span className="sort-arrow">{sortConfig.direction === 'asc' ? ' ↑' : ' ↓'}</span>
+                                    )}
+                                </th>
+                            )}
+                            {hasAnyAuditData && (
+                                <th
+                                    className="sortable"
+                                    onClick={() => handleSort('weightDelta')}
+                                    title="Click to sort by Weight Delta"
+                                >
+                                    Weight Δ
+                                    {sortConfig.field === 'weightDelta' && (
+                                        <span className="sort-arrow">{sortConfig.direction === 'asc' ? ' ↑' : ' ↓'}</span>
+                                    )}
+                                </th>
+                            )}
                             {hasAnyAuditData && <th>Dim Δ</th>}
                             {hasAnyAuditData && <th>Est. Impact (Mo)</th>}
                             <th>Status & Live</th>
