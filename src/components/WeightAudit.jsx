@@ -10,7 +10,8 @@ import './WeightAudit.css';
 const WeightAudit = () => {
     const {
         products,
-        updateProduct, // Re-added updateProduct for bulk apply action
+        updateProduct,
+        saveToCRM,
         isLoading,
         setLoading,
         refreshData,
@@ -142,7 +143,7 @@ const WeightAudit = () => {
                 const product = auditedProducts[i];
 
                 try {
-                    const result = await updateProduct(product.id, {
+                    const result = await saveToCRM(product.id, {
                         productType: product.productType,
                         skuCode: product.skuCode,
                         auditedWeight: product.auditedWeight,
@@ -397,8 +398,7 @@ const WeightAudit = () => {
                 <table className="audit-table">
                     <thead>
                         <tr>
-                            <th>MTP SKU</th>
-                            <th>Product Code</th>
+                            <th>SKU / Product</th>
                             <th>Category</th>
                             <th>Shipment Cat</th>
                             <th>Billed Weight</th>
@@ -407,6 +407,7 @@ const WeightAudit = () => {
                             {hasAnyAuditData && <th>Dim Δ</th>}
                             {hasAnyAuditData && <th>Est. Impact (Mo)</th>}
                             <th>Status & Live</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -434,24 +435,22 @@ const WeightAudit = () => {
                                     <Fragment key={product.id}>
                                         <tr
                                             className={`${hasDimensionChange ? 'category-mismatch' : ''} ${isExpanded ? 'expanded-row' : ''}`}
-                                            onClick={() => toggleExpand(product.id)}
                                             style={{ cursor: 'pointer' }}
                                         >
-                                            <td className="mtp-sku-name">
-                                                {product.productType === 'parent'
-                                                    ? product.skuCode
-                                                    : (product.mtpSku?.name || '-')}
-                                            </td>
-                                            <td className="product-code">
-                                                <span className={`expand-icon ${isExpanded ? 'open' : ''}`}>&#9654;</span>
+                                            <td className="sku-product-cell">
                                                 <a
                                                     href="#"
                                                     className="product-link"
                                                     onClick={(e) => openProductInCRM(e, product)}
                                                     title="Open in Zoho CRM"
                                                 >
-                                                    {product.skuCode}
+                                                    <strong>{product.skuCode}</strong>
                                                 </a>
+                                                <div className="product-name-subtitle">
+                                                    {product.productType === 'parent'
+                                                        ? product.productName
+                                                        : (product.mtpSku?.name || product.productName)}
+                                                </div>
                                             </td>
                                             <td>{product.productCategory || '-'}</td>
                                             <td>
@@ -526,10 +525,13 @@ const WeightAudit = () => {
                                                     )}
                                                 </div>
                                             </td>
+                                            <td className="expand-arrow-cell" onClick={() => toggleExpand(product.id)}>
+                                                <span className={`expand-icon ${isExpanded ? 'open' : ''}`}>&#9654;</span>
+                                            </td>
                                         </tr>
                                         {isExpanded && (
                                             <tr className="comparison-detail-row">
-                                                <td colSpan={hasAnyAuditData ? 10 : 6}>
+                                                <td colSpan={hasAnyAuditData ? 11 : 7}>
                                                     <div className="comparison-grid">
                                                         <div className="comparison-section crm">
                                                             <div className="section-header">ZOHO CRM (CURRENT)</div>
