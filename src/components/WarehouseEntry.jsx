@@ -9,9 +9,13 @@ const WarehouseEntry = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [boxes, setBoxes] = useState([{ length: '', width: '', height: '', weight: '' }]);
     const [saveStatus, setSaveStatus] = useState(null); // 'success', 'error'
-    const [auditCount, setAuditCount] = useState(0); // Track audits in this session
+    const [showAuditedList, setShowAuditedList] = useState(true); // Show audited sidebar
     const searchInputRef = useRef(null);
     const inputRefs = useRef({}); // Store refs for each input field
+
+    // Get audited products (only those with hasAudit = true)
+    const auditedProducts = products.filter(p => p.hasAudit);
+    const auditCount = auditedProducts.length;
 
     // Auto-focus search on load
     useEffect(() => {
@@ -150,11 +154,8 @@ const WarehouseEntry = () => {
             soldsPerMonth: selectedProduct.soldsPerMonth || 0
         });
 
-        // Increment audit count
-        setAuditCount(prev => prev + 1);
-
         // Quick toast feedback
-        toast.success(`✅ ${selectedProduct.skuCode} saved! (${auditCount + 1} audits)`, {
+        toast.success(`✅ ${selectedProduct.skuCode} saved! (${auditCount} audits total)`, {
             autoClose: 1500,
             position: 'bottom-right'
         });
@@ -183,12 +184,19 @@ const WarehouseEntry = () => {
             <div className="entry-header">
                 <h2>📦 Warehouse Audit Entry</h2>
                 <p>Scan or search for a product to enter dimensions</p>
-                {auditCount > 0 && (
-                    <div className="session-stats">
-                        <span className="audit-count">✅ {auditCount} audits completed this session</span>
-                    </div>
-                )}
+                <div className="session-stats">
+                    <span className="audit-count">✅ {auditCount} audits completed</span>
+                    <button
+                        className="toggle-list-btn"
+                        onClick={() => setShowAuditedList(!showAuditedList)}
+                    >
+                        {showAuditedList ? 'Hide' : 'Show'} List
+                    </button>
+                </div>
             </div>
+
+            <div className="warehouse-layout">{/* Main content area */}
+                <div className="audit-main-area">
 
             {!selectedProduct ? (
                 <div className="search-section">
@@ -302,6 +310,38 @@ const WarehouseEntry = () => {
                     </div>
                 </div>
             )}
+                </div>
+
+                {/* Audited Products Sidebar */}
+                {showAuditedList && auditedProducts.length > 0 && (
+                    <div className="audited-sidebar">
+                        <div className="sidebar-header">
+                            <h3>Audited SKUs ({auditCount})</h3>
+                            <p className="sidebar-subtitle">Click to review/edit</p>
+                        </div>
+                        <div className="audited-list">
+                            {auditedProducts.map(product => (
+                                <div
+                                    key={product.id}
+                                    className={`audited-item ${selectedProduct?.id === product.id ? 'active' : ''}`}
+                                    onClick={() => selectProduct(product)}
+                                >
+                                    <div className="audited-item-header">
+                                        <span className="audited-sku">{product.skuCode}</span>
+                                        <span className="audited-weight">{product.auditedWeight?.toFixed(2)} kg</span>
+                                    </div>
+                                    <div className="audited-item-name">{product.productName || product.mtpSku?.name}</div>
+                                    {product.variations?.hasWeightChange && (
+                                        <div className={`audited-delta ${product.variations.totalWeightDelta > 0 ? 'negative' : 'positive'}`}>
+                                            {product.variations.totalWeightDelta > 0 ? '+' : ''}{product.variations.totalWeightDelta.toFixed(2)} kg
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
