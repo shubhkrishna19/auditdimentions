@@ -641,8 +641,9 @@ const WeightAudit = () => {
                                         <tr
                                             className={`${hasDimensionChange ? 'category-mismatch' : ''} ${isExpanded ? 'expanded-row' : ''}`}
                                             style={{ cursor: 'pointer' }}
+                                            onClick={() => toggleExpand(product.id)}
                                         >
-                                            <td className="sku-product-cell">
+                                            <td className="sku-product-cell" onClick={(e) => e.stopPropagation()}>
                                                 <a
                                                     href="#"
                                                     className="product-link"
@@ -699,7 +700,7 @@ const WeightAudit = () => {
                                                     ) : '-'}
                                                 </td>
                                             )}
-                                            <td className="status-cell-actions">
+                                            <td className="status-cell-actions" onClick={(e) => e.stopPropagation()}>
                                                 <div className="flex-center gap-2">
                                                     {/* Live Status Badge */}
                                                     <span className={`status-badge ${product.liveStatus === 'Y' || product.liveStatus === 'Live' ? 'status-success' : 'status-pending'}`} title="Zoho Live Status">
@@ -730,7 +731,7 @@ const WeightAudit = () => {
                                                     )}
                                                 </div>
                                             </td>
-                                            <td className="expand-arrow-cell" onClick={() => toggleExpand(product.id)}>
+                                            <td className="expand-arrow-cell">
                                                 <span className={`expand-icon ${isExpanded ? 'open' : ''}`}>&#9654;</span>
                                             </td>
                                         </tr>
