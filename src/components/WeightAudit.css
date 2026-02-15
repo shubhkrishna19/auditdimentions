@@ -588,14 +588,7 @@
 
 /* Expandable Row Styling */
 .expand-icon {
-    display: inline-block;
-    font-size: 12px;
-    transition: transform 0.2s;
-    color: #3498db;
-}
-
-.expand-icon.open {
-    transform: rotate(90deg);
+    display: none; /* Hidden - entire row is clickable */
 }
 
 .expanded-row {

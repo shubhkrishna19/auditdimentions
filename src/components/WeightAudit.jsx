@@ -744,7 +744,7 @@ const WeightAudit = () => {
                                                             <div className="data-box">
                                                                 <div className="data-row">
                                                                     <div className="data-label">Total Weight: <span>{product.billedTotalWeight} kg</span></div>
-                                                                    <div className="data-label">Manufacturer: <span>{product.manufacturer || '-'}</span></div>
+                                                                    <div className="data-label">Category: <span>{product.productCategory || '-'}</span></div>
                                                                 </div>
                                                                 <div className="data-row">
                                                                     <div className="data-label">Avg. Sales: <span>{product.soldsPerMonth || 0} / mo</span></div>
