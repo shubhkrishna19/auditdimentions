@@ -11,12 +11,12 @@ createRoot(document.getElementById('root')).render(
 )
 
 // Register Service Worker for PWA
+// unregister existing service worker if any
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then((registration) => {
-      console.log('SW registered:', registration);
-    }).catch((error) => {
-      console.log('SW registration failed:', error);
-    });
+  navigator.serviceWorker.getRegistrations().then(function (registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+      console.log('Service Worker unregistered');
+    }
   });
 }

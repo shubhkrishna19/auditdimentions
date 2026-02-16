@@ -136,11 +136,10 @@
 
 /* Filter Bar */
 .filter-bar {
-    display: grid;
-    grid-template-columns: 2fr 1.5fr 1.2fr 1.2fr auto auto;
+    display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 24px;
+    gap: 0;
+    padding: 12px 0;
     background: white;
     border-bottom: 1px solid #e0e6ed;
     margin: 0 24px;
@@ -152,19 +151,37 @@
 
 .filter-group {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 16px;
+}
+
+.filter-group:first-child {
+    flex: 2; /* SKU / Product column width */
+    min-width: 200px;
+}
+
+.filter-group:nth-child(2) {
+    flex: 1.5; /* Category column width */
+    min-width: 150px;
+}
+
+.filter-group:nth-child(3) {
+    flex: 1.2; /* Shipment Cat column width */
+    min-width: 130px;
 }
 
 .filter-group label {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     color: #2c5f8d;
     white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .filter-group select {
-    padding: 6px 12px;
+    padding: 6px 10px;
     border: 1px solid #b3d9ff;
     border-radius: 4px;
     font-size: 13px;
@@ -172,7 +189,7 @@
     cursor: pointer;
     transition: all 0.2s;
     color: #2c5f8d;
-    min-width: 140px;
+    width: 100%;
 }
 
 .filter-group select:hover {
@@ -197,6 +214,9 @@
     color: #e74c3c;
     transition: all 0.2s;
     margin-left: auto;
+    margin-right: 16px;
+    align-self: flex-end;
+    margin-bottom: 6px;
 }
 
 .btn-clear-filters:hover {
@@ -211,6 +231,10 @@
     background: #e8f4fd;
     padding: 4px 10px;
     border-radius: 4px;
+    align-self: flex-end;
+    margin-bottom: 6px;
+    margin-right: 16px;
+    white-space: nowrap;
 }
 
 .audit-table-container {
