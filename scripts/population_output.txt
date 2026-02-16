@@ -1,0 +1,2500 @@
+
+================================================================================
+🚀 ZOHO CRM DATABASE POPULATION SCRIPT
+================================================================================
+
+⚙️  Configuration:
+   DRY RUN: ✅ YES (Safe preview mode)
+   Batch Size: 5 records
+   Delay: 1000ms between batches
+
+================================================================================
+📥 STEP 1: LOADING DATA SOURCES
+================================================================================
+📂 Loading unified_master_data.json...
+   ✅ Loaded 615 records
+📂 Loading DimensionsMasterLatest.xlsx...
+   ✅ Loaded 319 dimension records
+📂 Loading SKU Aliases file...
+   ✅ Loaded 390 SKU alias records
+
+================================================================================
+🗺️  STEP 2: BUILDING LOOKUP MAPS
+================================================================================
+
+🔨 Building dimensions lookup map...
+   ✅ Created dimension map for 319 SKUs
+
+🔨 Building live status lookup map...
+   ✅ Created live status map for 389 SKUs
+
+================================================================================
+📦 POPULATING PARENT_MTP_SKU RECORDS
+================================================================================
+
+Processing 230 parent SKU records...
+
+
+--- Batch 1/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 2/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 3/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 4/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 5/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 6/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 7/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 8/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 9/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 10/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 11/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 12/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 13/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 14/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 15/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 16/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 17/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 18/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 19/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 20/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 21/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 22/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 23/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 24/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 25/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 26/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 27/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 28/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 29/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 30/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 31/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 32/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 33/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 34/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 35/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 36/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 37/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 38/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 39/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 40/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 41/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 42/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 43/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 44/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 45/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 46/46 ---
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+🔍 Processing: undefined
+   ⚠️ Not found in CRM
+
+================================================================================
+🎨 POPULATING PRODUCTS (CHILD) RECORDS
+================================================================================
+
+Processing 385 child product records...
+
+
+--- Batch 1/77 ---
+
+🔍 Processing: SR-CLM-TM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-WBM-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-SKD-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-SKD-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-SKD-LF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 2/77 ---
+
+🔍 Processing: TU-SKD-OF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-BKY-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-CBN-LSMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-BKMT-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-DRN-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 3/77 ---
+
+🔍 Processing: TU-FL-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-FL-FW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-FL-FL (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-FL-OF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-CLE-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 4/77 ---
+
+🔍 Processing: SR-BKN-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-KPN-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-KPN-FW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-KPN-FL (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-KPN-OF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 5/77 ---
+
+🔍 Processing: S-PTE-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-WBM-STMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-AML-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-AYL-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-RDO-M (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 6/77 ---
+
+🔍 Processing: SR-CLM-3M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-CLM-3W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-CLM-2M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-CLM-2W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-RWT-LAMI (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 7/77 ---
+
+🔍 Processing: TU-RWT-LAWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-BKY-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-WHTO-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-WHTO-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-WHTO-W (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 8/77 ---
+
+🔍 Processing: TU-HMD-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-HMD-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PMG-STMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PMG-STW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-CBR-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 9/77 ---
+
+🔍 Processing: DC-CLV-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-RWT-MWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-RWT-MWL (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-CBN-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RT-FR-M (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 10/77 ---
+
+🔍 Processing: RT-FR-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-SN-NW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-SN-NMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ATD-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RT-DR-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 11/77 ---
+
+🔍 Processing: RT-DR-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-PRG-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-4NFW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-4NMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-CRL-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 12/77 ---
+
+🔍 Processing: W-AND-3MFW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-3MMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: DC-MYN-LAMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-DSK-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-3NFW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 13/77 ---
+
+🔍 Processing: W-AND-3NMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-2MFW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-2MMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-2MFL (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: DC-MYN-STMF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 14/77 ---
+
+🔍 Processing: TU-BVN-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-KYA-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PMG-LAMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PMG-LAW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-MLM-LMF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 15/77 ---
+
+🔍 Processing: ST-MLM-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-WLB-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-WLB-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-GAU-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-GAU-W (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 16/77 ---
+
+🔍 Processing: SB-CB-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-CB-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-2NFW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-2NMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-2NFL (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 17/77 ---
+
+🔍 Processing: SR-OLY-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RG-KHS-SW-W1 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-4MFW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-4MMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-4MFL (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 18/77 ---
+
+🔍 Processing: B-RVB-QNM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-RVB-QNLF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-RVB-QNW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-RVB-QNWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-LGN-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 19/77 ---
+
+🔍 Processing: SB-LGN.P-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-MLT-QTMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-MLT-QTFW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-EFI-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-EFI-LAWF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 20/77 ---
+
+🔍 Processing: SB-AXA-W52 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-AXA-52M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-MVS-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-10NWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-AND-10NMI (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 21/77 ---
+
+🔍 Processing: CT-NO-RTM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-ATD-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-AE-W6 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-RYE-STMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-RYE-STWF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 22/77 ---
+
+🔍 Processing: CT-SH.E-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PMS-LAW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-MLM-NMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-MLM-WS (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-EFI-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 23/77 ---
+
+🔍 Processing: ST-EFI-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-EFI-STWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TP-MTA-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TS-NL-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-LO-L5 (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 24/77 ---
+
+🔍 Processing: S-LO-5M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-LO-W5 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-LO-FW5 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-SN-DMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-SN-DW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 25/77 ---
+
+🔍 Processing: TU-RYE-LAMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-RYE-LAWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-JVS-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-JVS-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PM-STW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 26/77 ---
+
+🔍 Processing: TU-PM-STMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-POL-QTFW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-POL-QTMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-MA-LAMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-KU-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 27/77 ---
+
+🔍 Processing: BT-OL-DWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-RE-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-RE-LAL (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-CRF-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-CRF-W (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 28/77 ---
+
+🔍 Processing: W-AND-12NWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-WA-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-WA-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-WA-L (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-DOV-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 29/77 ---
+
+🔍 Processing: CT-DOV-DI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-DOV-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-CC-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-CC-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-CC-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 30/77 ---
+
+🔍 Processing: S-CC-F (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-OL-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-RVB-SNM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: DT-HE-4W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PM-LAW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 31/77 ---
+
+🔍 Processing: S-BR-6M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-BR-6L (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-BR-6W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-CBN-SMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-POL-KTFW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 32/77 ---
+
+🔍 Processing: B-POL-KTMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ETY-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ETY-STMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ETY-STWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ETY-STW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 33/77 ---
+
+🔍 Processing: S-XD-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ETY-MM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PMP-LAWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PMP-LWF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RT-ALY-W (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 34/77 ---
+
+🔍 Processing: RT-ALY-LF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-TO-18W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-MT-ROF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-MT-ROW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-BR-F6W (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 35/77 ---
+
+🔍 Processing: S-BR-F6L (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-BR-F6M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-KVD-LAW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-RE-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: BT-CO-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 36/77 ---
+
+🔍 Processing: SB-CS-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-CS-LAW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KR-JSD-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-KV-RTM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-KV-RTW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 37/77 ---
+
+🔍 Processing: SB-WA-WMW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-AXA-51M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-AXA-W51 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-TK-LAMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ETY-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 38/77 ---
+
+🔍 Processing: CT-LE-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-LE-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PU-SDI-STMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-ASG-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RG-KH-SW-W10 (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 39/77 ---
+
+🔍 Processing: RG-KH-SW-WB (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PMS-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-TK-STMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-LE-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-MYN-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 40/77 ---
+
+🔍 Processing: FT-EDR.P-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: FT-EDR.P-LF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-TO-40W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ARO-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-ARO-LAW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 41/77 ---
+
+🔍 Processing: TU-SNQ-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-MOL-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-MOL-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RH-RL-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-MLT-KTMI (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 42/77 ---
+
+🔍 Processing: B-MLT-KTFW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-ETN-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-TR-RTM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PF-NAH-ROF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PF-NAH-RON (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 43/77 ---
+
+🔍 Processing: B-RVB-KNW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-RVB-KNM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-MA-STMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-JMY-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-ATL-W (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 44/77 ---
+
+🔍 Processing: S-ATL-WF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PTL-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-ETE-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-SUT-5M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-SY-M (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 45/77 ---
+
+🔍 Processing: CT-SY-L (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-SY-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-VC-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-WLD-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TS-NL-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 46/77 ---
+
+🔍 Processing: MD-TNO-LAM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RH-OT-WT (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RH-OT-WW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RT-RI-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-AO-W5 (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 47/77 ---
+
+🔍 Processing: SB-PH-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-PH-L (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-AB-W4 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RG-KH-SW-W21 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-MT-RTWF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 48/77 ---
+
+🔍 Processing: CT-MT-RTW (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-HE-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-HE-L (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-AI-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-TLY.E-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 49/77 ---
+
+🔍 Processing: S-GRB-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TS-NL-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RT-AT-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-SUT-10M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-NBK-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 50/77 ---
+
+🔍 Processing: SB-NBK.P-LF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-NBK-MI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-AXA-4M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-AXA-W4 (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-AXA-L4 (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 51/77 ---
+
+🔍 Processing: CT-OSN-RTM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PF-MIS-RTE (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PF-MIS-RTU (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-MLE-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-MPL-W (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 52/77 ---
+
+🔍 Processing: TS-FV-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-OL-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: MD-TNO-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: BT-OL-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: RT-RI-MW (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 53/77 ---
+
+🔍 Processing: KH-RMT-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-AA-WD (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-EDL-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-SUT-21M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-POL-SNWF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 54/77 ---
+
+🔍 Processing: B-POL-SNLF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-POL-SNMI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-WLR-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CT-TYU-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-MLT-3NMF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 55/77 ---
+
+🔍 Processing: W-MLT-3NM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-MLT-2NMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-MLT-2NM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-MLT-4NMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-MLT-4NM (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 56/77 ---
+
+🔍 Processing: B-RVB-D36NM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-BKN-TM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-TOC-18F (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KH-TOC-40F (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: S-RY-M (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 57/77 ---
+
+🔍 Processing: S-RY-W (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-CBN-PMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SH-DVN-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SH-YBO-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: WA-PYS-SM (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 58/77 ---
+
+🔍 Processing: WA-PYS-NM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: BT-NHE-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KC-OPT-1NF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KC-OPT-1SF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KC-SRN-M (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 59/77 ---
+
+🔍 Processing: SR-BKN-HM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-MVS-ITM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-BNO-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-CLO-345M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-CLO-3M (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 60/77 ---
+
+🔍 Processing: W-CLO-4M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-CLO-5M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: W-MLT-MMF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KC-OPT-2NF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: KC-OPT-2SF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 61/77 ---
+
+🔍 Processing: SR-MVS-IM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-MVS-TM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-MLT-D30TM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PU-SNM-F (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-BNA-M (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 62/77 ---
+
+🔍 Processing: SF-WBR-4LIE (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SF-WBR-4LIF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SF-WBR-4LIU (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-FYN-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-SKDL-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 63/77 ---
+
+🔍 Processing: SB-VNO-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SH-GTA-K (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: B-RVB-D30NM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SR-WMO-M (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PU-SUB-F (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 64/77 ---
+
+🔍 Processing: PU-SUB-OF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CH-ZLO-MEK (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: CH-PLI-MEK (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PU-SUB-STF (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PU-SUB-STO (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 65/77 ---
+
+🔍 Processing: ST-RDO-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: ST-RDO-STO (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: PU-DRV-F (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SH-DVN-STM (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-VC-MF (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 66/77 ---
+
+🔍 Processing: SB-MXL-LAMF (Child of undefined)
+   📝 Live_Status: Live (code: Y)
+   [DRY RUN] Would update Products 4301492000069868343: { Live_Status: 'Live' }
+   ✅ Updated successfully
+
+🔍 Processing: SB-MXL-LAMI (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081756189: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: SB-MXL-LAWF (Child of undefined)
+   📝 Live_Status: Live (code: Y)
+   [DRY RUN] Would update Products 4301492000081703971: { Live_Status: 'Live' }
+   ✅ Updated successfully
+
+🔍 Processing: SR-FLV-W (Child of undefined)
+   📝 Live_Status: Not Live (code: MW)
+   [DRY RUN] Would update Products 4301492000081748349: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: ST-NFN-WF (Child of undefined)
+   📝 Live_Status: Not Live (code: MW)
+   [DRY RUN] Would update Products 4301492000081755288: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 67/77 ---
+
+🔍 Processing: CT-GSE-SQF (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081745200: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: TU-KVD-STW (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081759095: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: TS-NL-AL (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081694984: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: SL-VE-PW (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081742437: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-GSE-RTW2 (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081762054: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 68/77 ---
+
+🔍 Processing: KH-LKN-MF (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081757183: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: ST-HES-L (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081744404: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: SH-CHR-K (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081754352: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: ST-GSE-LAW (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081741492: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-GSE-SQW (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081748378: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 69/77 ---
+
+🔍 Processing: CT-GSE-SQW2 (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081760077: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-GSE-SQF2 (Child of undefined)
+   📝 Live_Status: Not Live (code: DI)
+   [DRY RUN] Would update Products 4301492000081756221: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: ST-GSE-STF (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081762086: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: GH-IS-W (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081748410: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-MT-SQW (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081748442: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 70/77 ---
+
+🔍 Processing: CT-GSE-RTF2 (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081760109: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-GSE-RTF (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081751222: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: RT-T1-L (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081748476: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-TR-RTWS (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081755317: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: W-AND-11NLF (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081687983: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 71/77 ---
+
+🔍 Processing: ST-GSE-STW (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081750281: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: SB-MXL-STMI (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081755349: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: S-TW-16S4 (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081753181: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: TU-PR-FW (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081763038: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-GSE-RTW (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081745290: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 72/77 ---
+
+🔍 Processing: CT-KV-SQW (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081741546: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-ATD-SWF (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081757215: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: ST-GSE-LAF (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081751254: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: RD-AW-WT (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081744436: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: ST-GSE-WMNW (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081758189: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 73/77 ---
+
+🔍 Processing: KH-AM-B (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081741578: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: B-POL-KNW (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081761159: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: RT-T1-W (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081755381: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: S-MO-W5 (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081764044: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: ST-HES-W (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081741629: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 74/77 ---
+
+🔍 Processing: W-AND-11NWF (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081742498: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: KH-VD-FV (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081706999: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: KH-VD-CD (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081748534: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: S-SBW-S3 (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081763121: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: S-ERA.P-LF (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081760163: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 75/77 ---
+
+🔍 Processing: PF-NAH-RTN (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081753242: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: PF-NAH-RTF (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081758259: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: CT-NO-SQL (Child of undefined)
+   📝 Live_Status: Not Live (code: AR)
+   [DRY RUN] Would update Products 4301492000081747365: { Live_Status: 'Not Live' }
+   ✅ Updated successfully
+
+🔍 Processing: SB-SRA (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: SB-SDA (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 76/77 ---
+
+🔍 Processing: SB-OVO (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-HRI (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-OLA (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-PIN (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-LMI (Child of undefined)
+   ✨ Already complete, skipped
+
+⏳ Waiting 1000ms before next batch...
+
+--- Batch 77/77 ---
+
+🔍 Processing: TU-MSEP (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-AMY (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-OML (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TU-MSE (Child of undefined)
+   ✨ Already complete, skipped
+
+🔍 Processing: TS-NLM (Child of undefined)
+   ✨ Already complete, skipped
+
+================================================================================
+📊 FINAL REPORT
+================================================================================
+
+🎯 Parent_MTP_SKU Results:
+   Total: 230
+   Updated: 0
+   Skipped (already complete): 0
+   Failed: 0
+   Not Found in CRM: 230
+
+🎨 Products (Children) Results:
+   Total: 385
+   Updated: 48
+   Skipped (already complete): 337
+   Failed: 0
+   Not Found in CRM: 0
+
+✨ Overall Summary:
+   Total Records Updated: 48
+   Total Failures: 0
+   Success Rate: 100.0%
+
+✅ DRY RUN COMPLETE - No actual changes made
+   To execute for real, set CONFIG.DRY_RUN = false
+
+📄 Report saved to: population_report.json

@@ -33,8 +33,10 @@ Run the cleanup script to deduplicate all box entries across both Parent_MTP_SKU
 cd "c:\Users\shubh\Downloads\Dimentions Audit Authenticator"
 
 # Run the cleanup script
-node scripts/cleanup_duplicate_boxes.js
+node scripts/cleanup_duplicate_boxes.cjs
 ```
+
+**Note**: We use `.cjs` extension because `package.json` has `"type": "module"`. The `.cjs` extension forces Node.js to treat the file as CommonJS.
 
 ### What It Does
 

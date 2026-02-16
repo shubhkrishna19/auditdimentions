@@ -1,0 +1,21 @@
+=== DIAGNOSTIC: MCP Update Test ===
+
+Fetching SB-BNA record...
+Current boxes: 2
+  1. Box 1: 86x38x13, 16.87g
+  2. Box 1: 86x38x13, 16.87g
+
+Attempting update (remove 1 box)...
+Update response status: SUCCESS
+Update response message: record updated
+
+Waiting 3 seconds...
+Re-fetching record...
+Boxes after update: 2
+
+❌ UPDATE FAILED - Changes did not persist!
+Possible reasons:
+1. MCP server is in read-only mode
+2. Insufficient permissions
+3. API rate limiting/caching
+4. Subform updates require different syntax

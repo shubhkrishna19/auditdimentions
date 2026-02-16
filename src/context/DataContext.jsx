@@ -187,18 +187,34 @@ export const DataProvider = ({ children }) => {
             // Update local state
             dispatch({ type: ACTIONS.UPDATE_PRODUCT, payload: product });
 
-            // Queue for Auto-Save to CRM
+            // Queue for Auto-Save to CRM (for non-critical background sync)
             if (product.id) {
                 autoSave.queueSave(product.id, {
                     productType: product.productType,
                     skuCode: product.skuCode,
                     auditedWeight: product.auditedWeight || 0,
-                    auditedBoxes: product.auditedBoxes || [], // 📦 Added boxes
-                    variance: product.weightVariance || 0,
-                    billedCategory: product.weightCategoryBilled || '',
-                    auditedCategory: product.weightCategoryAudited || '',
-                    categoryMismatch: product.categoryMismatch || false
+                    auditedBoxes: product.auditedBoxes || [],
+                    variance: product.weightVariance || 0
                 });
+            }
+        },
+        saveToCRM: async (productId, auditData) => {
+            try {
+                dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+                const result = await ZohoAPI.updateProduct(productId, auditData);
+                if (result.success) {
+                    // Update local state to reflect it's been saved
+                    dispatch({
+                        type: ACTIONS.UPDATE_PRODUCT,
+                        payload: { id: productId, savedToCRM: true }
+                    });
+                }
+                return result;
+            } catch (error) {
+                console.error('Final sync failed:', error);
+                return { success: false, error: error.message };
+            } finally {
+                dispatch({ type: ACTIONS.SET_LOADING, payload: false });
             }
         },
         refreshData: async () => {

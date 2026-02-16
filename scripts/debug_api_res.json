@@ -1,0 +1,60 @@
+{
+  "p": {
+    "data": [
+      {
+        "Product_Category": "Racks & Shelves",
+        "Weight_Category_Billed": "20kg",
+        "Billed_Physical_Weight": 16.87,
+        "id": "4301492000081836052",
+        "Name": "SB-BNA"
+      },
+      {
+        "Product_Category": "Storage Cabinets",
+        "Weight_Category_Billed": "100kg",
+        "Billed_Physical_Weight": 73.6,
+        "id": "4301492000081836034",
+        "Name": "W-CLO-345"
+      }
+    ],
+    "info": {
+      "per_page": 2,
+      "next_page_token": "eb39843cdea3bcb48730309836a06ecae9b4d196c4f4fee56e679b1c3e8707cd6c409a2ce3ac153f6fde5d6b4beb7658e9e8ac2310a3c211a13c5c758cc43fc44013ea0e53406956026ffd5c80a9923b1b829784bd745be53ec113519d121759d0121a98e913ef2a1d5f6645820ac3ba86628369e4244c89bf8e0d42a46e00b6",
+      "count": 2,
+      "sort_by": "id",
+      "page": 1,
+      "previous_page_token": null,
+      "page_token_expiry": "2026-02-12T18:00:32+05:30",
+      "sort_order": "desc",
+      "more_records": true
+    }
+  },
+  "c": {
+    "data": [
+      {
+        "Product_Category": "Furniture",
+        "Weight_Category_Billed": "50kg",
+        "Product_Code": "TU-MSEP",
+        "id": "4301492000081764098",
+        "Total_Weight": 35.3
+      },
+      {
+        "Product_Category": "Furniture",
+        "Weight_Category_Billed": "5kg",
+        "Product_Code": "S-MO-W5",
+        "id": "4301492000081764044",
+        "Total_Weight": 4.5
+      }
+    ],
+    "info": {
+      "per_page": 2,
+      "next_page_token": "42b743648e3791cbcd74651e0ac9eac213e81efd0bfac0bbc0b25802e835e67905ef852727308fd89fa3c8bafee23b2c0e74a918db592eb08924225bfbe4c1793c3ca09d3e1237d7589dcfc80aebe7e89dfea42a9a53deb23b758b73f71e6288049cb821f99bf689468809b1d615795bc68385eec0240985e0fa381e7ee8d077",
+      "count": 2,
+      "sort_by": "id",
+      "page": 1,
+      "previous_page_token": null,
+      "page_token_expiry": "2026-02-12T18:00:32+05:30",
+      "sort_order": "desc",
+      "more_records": true
+    }
+  }
+}

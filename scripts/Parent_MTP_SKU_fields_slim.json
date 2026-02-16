@@ -1,0 +1,147 @@
+[
+  {
+    "label": "Record Status",
+    "api": "Record_Status__s",
+    "type": "picklist"
+  },
+  {
+    "label": "MTP SKU",
+    "api": "Name",
+    "type": "text"
+  },
+  {
+    "label": "Parent MTP SKU Owner",
+    "api": "Owner",
+    "type": "ownerlookup"
+  },
+  {
+    "label": "Last Activity Time",
+    "api": "Last_Activity_Time",
+    "type": "datetime"
+  },
+  {
+    "label": "Currency",
+    "api": "Currency",
+    "type": "picklist"
+  },
+  {
+    "label": "Exchange Rate",
+    "api": "Exchange_Rate",
+    "type": "double"
+  },
+  {
+    "label": "Tag",
+    "api": "Tag",
+    "type": "text"
+  },
+  {
+    "label": "Unsubscribed Mode",
+    "api": "Unsubscribed_Mode",
+    "type": "picklist"
+  },
+  {
+    "label": "Unsubscribed Time",
+    "api": "Unsubscribed_Time",
+    "type": "datetime"
+  },
+  {
+    "label": "Record Id",
+    "api": "id",
+    "type": "bigint"
+  },
+  {
+    "label": "Locked",
+    "api": "Locked__s",
+    "type": "boolean"
+  },
+  {
+    "label": "Weight and Audit Details",
+    "api": "MTP_Box_Dimensions",
+    "type": "subform"
+  },
+  {
+    "label": "Total Weight",
+    "api": "Total_Weight",
+    "type": "formula"
+  },
+  {
+    "label": "Ususal Price",
+    "api": "Ususal_Price",
+    "type": "currency"
+  },
+  {
+    "label": "Product MTP Name",
+    "api": "Product_MTP_Name",
+    "type": "text"
+  },
+  {
+    "label": "MRP",
+    "api": "Unit_Price",
+    "type": "currency"
+  },
+  {
+    "label": "Channel Price",
+    "api": "Channel_Price",
+    "type": "currency"
+  },
+  {
+    "label": "Product Category",
+    "api": "Product_Category",
+    "type": "picklist"
+  },
+  {
+    "label": "Installation",
+    "api": "Installation",
+    "type": "picklist"
+  },
+  {
+    "label": "Child Count",
+    "api": "Child_Count",
+    "type": "rollup_summary"
+  },
+  {
+    "label": "Installation Price",
+    "api": "Installation_Price",
+    "type": "currency"
+  },
+  {
+    "label": "ProductActive",
+    "api": "ProductActive",
+    "type": "picklist"
+  },
+  {
+    "label": "Audit History Log",
+    "api": "Audit_History_Log",
+    "type": "textarea"
+  },
+  {
+    "label": "BOM Weight",
+    "api": "BOM_Weight",
+    "type": "double"
+  },
+  {
+    "label": "Billed Physical Weight",
+    "api": "Billed_Physical_Weight",
+    "type": "double"
+  },
+  {
+    "label": "Billed Chargeable Weight",
+    "api": "Billed_Chargeable_Weight",
+    "type": "double"
+  },
+  {
+    "label": "Billed Volumetric Weight",
+    "api": "Billed_Volumetric_Weight",
+    "type": "double"
+  },
+  {
+    "label": "Processing Status",
+    "api": "Processing_Status",
+    "type": "picklist"
+  },
+  {
+    "label": "Weight Category Billed",
+    "api": "Weight_Category_Billed",
+    "type": "picklist"
+  }
+]

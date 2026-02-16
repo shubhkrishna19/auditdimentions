@@ -1,0 +1,252 @@
+[
+  {
+    "label": "Product Owner",
+    "api": "Owner",
+    "type": "ownerlookup"
+  },
+  {
+    "label": "Product Name",
+    "api": "Product_Name",
+    "type": "text"
+  },
+  {
+    "label": "Product Code",
+    "api": "Product_Code",
+    "type": "text"
+  },
+  {
+    "label": "Product Active",
+    "api": "Product_Active",
+    "type": "boolean"
+  },
+  {
+    "label": "Manufacturer",
+    "api": "Manufacturer",
+    "type": "picklist"
+  },
+  {
+    "label": "Product Category",
+    "api": "Product_Category",
+    "type": "picklist"
+  },
+  {
+    "label": "Sales Start Date",
+    "api": "Sales_Start_Date",
+    "type": "date"
+  },
+  {
+    "label": "Sales End Date",
+    "api": "Sales_End_Date",
+    "type": "date"
+  },
+  {
+    "label": "Support End Date",
+    "api": "Support_Expiry_Date",
+    "type": "date"
+  },
+  {
+    "label": "Created By",
+    "api": "Created_By",
+    "type": "ownerlookup"
+  },
+  {
+    "label": "Modified By",
+    "api": "Modified_By",
+    "type": "ownerlookup"
+  },
+  {
+    "label": "Created Time",
+    "api": "Created_Time",
+    "type": "datetime"
+  },
+  {
+    "label": "Modified Time",
+    "api": "Modified_Time",
+    "type": "datetime"
+  },
+  {
+    "label": "Unit Price",
+    "api": "Unit_Price",
+    "type": "currency"
+  },
+  {
+    "label": "Commission Rate",
+    "api": "Commission_Rate",
+    "type": "currency"
+  },
+  {
+    "label": "Usage Unit",
+    "api": "Usage_Unit",
+    "type": "picklist"
+  },
+  {
+    "label": "Qty Ordered",
+    "api": "Qty_Ordered",
+    "type": "double"
+  },
+  {
+    "label": "Quantity in Stock",
+    "api": "Qty_in_Stock",
+    "type": "double"
+  },
+  {
+    "label": "Reorder Level",
+    "api": "Reorder_Level",
+    "type": "double"
+  },
+  {
+    "label": "Handler",
+    "api": "Handler",
+    "type": "ownerlookup"
+  },
+  {
+    "label": "Quantity in Demand",
+    "api": "Qty_in_Demand",
+    "type": "double"
+  },
+  {
+    "label": "Description",
+    "api": "Description",
+    "type": "textarea"
+  },
+  {
+    "label": "Tag",
+    "api": "Tag",
+    "type": "text"
+  },
+  {
+    "label": "Record Id",
+    "api": "id",
+    "type": "bigint"
+  },
+  {
+    "label": "Inventory",
+    "api": "Inventory",
+    "type": "text"
+  },
+  {
+    "label": "Record Status",
+    "api": "Record_Status__s",
+    "type": "picklist"
+  },
+  {
+    "label": "Locked",
+    "api": "Locked__s",
+    "type": "boolean"
+  },
+  {
+    "label": "Last Activity Time",
+    "api": "Last_Activity_Time",
+    "type": "datetime"
+  },
+  {
+    "label": "Product Sub Category",
+    "api": "Product_Sub_Category",
+    "type": "picklist"
+  },
+  {
+    "label": "Color/Finish",
+    "api": "Color_Finish",
+    "type": "picklist"
+  },
+  {
+    "label": "Ususal Price",
+    "api": "Ususal_Price",
+    "type": "currency"
+  },
+  {
+    "label": "Channel Price",
+    "api": "Channel_Price",
+    "type": "currency"
+  },
+  {
+    "label": "OEM Price",
+    "api": "OEM_Price",
+    "type": "currency"
+  },
+  {
+    "label": "Deal Price",
+    "api": "Deal_Price",
+    "type": "currency"
+  },
+  {
+    "label": "Ship Mode",
+    "api": "Ship_Mode",
+    "type": "picklist"
+  },
+  {
+    "label": "Box Dimensions",
+    "api": "Bill_Dimension_Weight",
+    "type": "subform"
+  },
+  {
+    "label": "Total Weight",
+    "api": "Total_Weight",
+    "type": "formula"
+  },
+  {
+    "label": "Installation",
+    "api": "Installation_Mode",
+    "type": "picklist"
+  },
+  {
+    "label": "CRM ID",
+    "api": "CRM_ID",
+    "type": "text"
+  },
+  {
+    "label": "Live Status",
+    "api": "Live_Status",
+    "type": "picklist"
+  },
+  {
+    "label": "Product Identifiers",
+    "api": "Product_Identifiers",
+    "type": "static_subform"
+  },
+  {
+    "label": "Tax Rate",
+    "api": "Tax_Rate",
+    "type": "picklist"
+  },
+  {
+    "label": "MTP SKU",
+    "api": "MTP_SKU",
+    "type": "lookup"
+  },
+  {
+    "label": "Installation Price",
+    "api": "Installation_Price",
+    "type": "currency"
+  },
+  {
+    "label": "Weight Variance (kg)",
+    "api": "Weight_Variance_kg",
+    "type": "double"
+  },
+  {
+    "label": "Last Audited Total Weight (kg)",
+    "api": "Last_Audited_Total_Weight_kg",
+    "type": "double"
+  },
+  {
+    "label": "Weight Category (Billed)",
+    "api": "Weight_Category_Billed",
+    "type": "text"
+  },
+  {
+    "label": "Last Audit Date",
+    "api": "Last_Audit_Date",
+    "type": "date"
+  },
+  {
+    "label": "Category Mismatch",
+    "api": "Category_Mismatch",
+    "type": "boolean"
+  },
+  {
+    "label": "Weight Category Audited",
+    "api": "Weight_Category_Audited",
+    "type": "picklist"
+  }
+]

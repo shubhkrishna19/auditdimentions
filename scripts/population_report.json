@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-02-11T11:21:56.590Z",
+  "config": {
+    "DRY_RUN": true,
+    "BATCH_SIZE": 5,
+    "DELAY_BETWEEN_BATCHES": 1000,
+    "LIVE_STATUS_MAP": {
+      "Y": "Live",
+      "y": "Live",
+      "YB": "Live",
+      "YD": "Live",
+      "RL": "Not Live",
+      "NL": "Not Live",
+      "AR": "Not Live",
+      "DI": "Not Live",
+      "MW": "Not Live",
+      "YH": "Live",
+      "YHRL": "Live"
+    }
+  },
+  "parent_stats": {
+    "total": 230,
+    "updated": 0,
+    "skipped": 0,
+    "failed": 0,
+    "notFound": 230
+  },
+  "child_stats": {
+    "total": 385,
+    "updated": 48,
+    "skipped": 337,
+    "failed": 0,
+    "notFound": 0
+  },
+  "total_updated": 48,
+  "total_failed": 0
+}

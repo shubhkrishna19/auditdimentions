@@ -1,16 +1,53 @@
-# React + Vite
+# Bluewud Dimensions Audit & Authenticator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium, enterprise-grade auditing tool built to synchronize and validate product physical dimensions across the Bluewud ecosystem. This tool connects directly to **Zoho CRM** to remediate master data and provides a professional interface for warehouse operators.
 
-Currently, two official plugins are available:
+## 🚀 Vision
+To provide a single point of truth for all product dimensions, eliminating billing variances between warehouse measurements and marketplace records (Amazon, Flipkart, etc.).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Key Features
+- **Real-time Zoho Sync**: Bidirectional synchronization with `Parent_MTP_SKU` and `Products` modules.
+- **Smart Category Inference**: Automatically derives product categories (e.g., Seating, Storage) from SKU names.
+- **Weight Slab Calculation**: Standardizes shipment weight categories for logistics optimization.
+- **PWA Ready**: Installable on mobile devices with offline caching for warehouse environments.
+- **Zoho CRM Integration**: Optimized for deployment as a Zoho CRM Web Tab or Widget.
 
-## React Compiler
+## 🛠 Tech Stack
+- **Frontend**: React 19 + Vite 7
+- **Styling**: Vanilla CSS (Premium Zoho Aesthetic)
+- **API**: Zoho CRM Embedded App SDK + MCP Orchestration
+- **Data Integrity**: Unified Master Data Engine (XLSX -> JSON)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📁 Repository Structure
+- `/src`: Core React application logic and components.
+- `/public`: Static assets, PWA manifest, and Service Worker.
+- `/scripts`: Orchestration and data cleanup scripts used for the initial production sync.
+- `/docs`: Detailed audit reports, master plans, and implementation logs.
 
-## Expanding the ESLint configuration
+## 📦 Deployment Instructions
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Build the App
+```bash
+npm install
+npm run build
+```
+
+### 2. Prepare for Zoho CRM
+1. Host the contents of the `dist` folder on a secure origin (Vercel, Zoho Catalyst, or AWS).
+2. Go to **Zoho CRM Setup > Customization > Web Tabs**.
+3. Create a new Tab named **Product Audit**.
+4. Set the Type to **Web Tab** and paste your deployed URL.
+5. In the Tab's Content-Security-Policy settings, ensure `frame-ancestors` includes `*.zoho.com`.
+
+### 3. Environment Variables
+Create a `.env.production` file:
+```env
+VITE_API_MODE=live
+```
+
+## 📊 Data Quality Status
+As of the last production sync, the database maintains a **97.8% Data Quality Score**.
+For details, see `docs/data_quality_report_FINAL.json`.
+
+---
+*Developed by Antigravity AI for Bluewud Concepts Pvt. Ltd.*

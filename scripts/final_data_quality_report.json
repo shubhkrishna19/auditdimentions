@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-02-11T12:41:40.010Z",
+  "parent_analysis": {
+    "total": 0,
+    "hasWeight": 0,
+    "hasWeightCategory": 0,
+    "hasProductCategory": 0,
+    "hasLiveStatus": 0,
+    "categoryWithWeights": 0,
+    "complete": 0
+  },
+  "product_analysis": {
+    "total": 0,
+    "hasProductCategory": 0,
+    "hasLiveStatus": 0,
+    "hasMTPSKU": 0,
+    "complete": 0
+  },
+  "overall_score": null,
+  "sample_parents": [],
+  "sample_products": []
+}

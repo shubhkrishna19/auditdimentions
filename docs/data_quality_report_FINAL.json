@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-02-11T12:49:15.057Z",
+  "score": 97.8,
+  "metrics": {
+    "parents": {
+      "total": 230,
+      "hasCategory": 230,
+      "hasWeight": 204,
+      "hasWeightCategory": 222,
+      "hasLiveStatus": 230,
+      "live": 215,
+      "notLive": 15
+    },
+    "children": {
+      "total": 385,
+      "hasCategory": 385,
+      "hasWeight": 368,
+      "hasAuditWeight": 139,
+      "hasWeightCategory": 384,
+      "hasLiveStatus": 384,
+      "live": 325,
+      "notLive": 59
+    }
+  },
+  "totalRecords": 615,
+  "improvement": 97.8
+}

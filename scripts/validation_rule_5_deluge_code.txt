@@ -1,0 +1,49 @@
+// Zoho CRM Validation Rule #5: Weight_Category_Matches_Weight
+// Copy-paste this ENTIRE code into the Deluge editor
+
+map validation_rule.Weight_Category_Matches_Weight(string crmAPIRequest)
+{
+  entityMap = crmAPIRequest.toMap().get("record");
+
+  billedWeight = entityMap.get("Billed_Physical_Weight");
+  weightCategory = entityMap.get("Weight_Category_Billed");
+
+  response = Map();
+
+  if(billedWeight == null || billedWeight == 0)
+  {
+    response.put("status","success");
+    return response;
+  }
+
+  mismatch = false;
+
+  if(billedWeight < 5 && weightCategory != "<5kg")
+  {
+    mismatch = true;
+  }
+  else if(billedWeight >= 5 && billedWeight < 20 && weightCategory != "5-20kg")
+  {
+    mismatch = true;
+  }
+  else if(billedWeight >= 20 && billedWeight < 50 && weightCategory != "20-50kg")
+  {
+    mismatch = true;
+  }
+  else if(billedWeight >= 50 && weightCategory != ">50kg")
+  {
+    mismatch = true;
+  }
+
+  if(mismatch == true)
+  {
+    response.put("status","error");
+    response.put("message","Weight Category does not match weight. Weight: " + billedWeight + " kg, Category: " + weightCategory);
+  }
+  else
+  {
+    response.put("status","success");
+  }
+
+  return response;
+}

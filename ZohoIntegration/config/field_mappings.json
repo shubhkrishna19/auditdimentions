@@ -1,0 +1,205 @@
+{
+  "modules": {
+    "Parent_MTP_SKU": {
+      "displayName": "Parent MTP SKU",
+      "fields": {
+        "Name": {
+          "type": "string",
+          "label": "SKU Code",
+          "description": "Parent SKU identifier (e.g., TU-DSK)"
+        },
+        "Product_MTP_Name": {
+          "type": "string",
+          "label": "Product Name",
+          "description": "Display name for parent product"
+        },
+        "Product_Category": {
+          "type": "picklist",
+          "label": "Category",
+          "values": ["Bed", "Mattress", "Sofa", "Pillow", "Cushion", "Dining", "Storage"]
+        },
+        "Weight_Category_Billed": {
+          "type": "picklist",
+          "label": "Weight Category",
+          "values": ["0.5kg", "1kg", "2kg", "5kg", "10kg", "10kg+"]
+        },
+        "Billed_Physical_Weight": {
+          "type": "decimal",
+          "label": "Billed Weight",
+          "unit": "kg",
+          "description": "⚠️ STORED IN KG - Do NOT divide by 1000"
+        },
+        "Live_Status": {
+          "type": "picklist",
+          "label": "Live Status",
+          "values": ["Y", "YB", "YD", "YH", "RL", "NL", "AR", "DI"],
+          "mapping": {
+            "live": ["Y", "YB", "YD", "YH"],
+            "notLive": ["RL", "NL", "AR", "DI"]
+          }
+        }
+      },
+      "subforms": {
+        "MTP_Box_Dimensions": {
+          "displayName": "Box Dimensions",
+          "fields": {
+            "Box": {
+              "type": "number",
+              "label": "Box Number"
+            },
+            "Length": {
+              "type": "decimal",
+              "label": "Length",
+              "unit": "cm"
+            },
+            "Width": {
+              "type": "decimal",
+              "label": "Width",
+              "unit": "cm"
+            },
+            "Height": {
+              "type": "decimal",
+              "label": "Height",
+              "unit": "cm"
+            },
+            "Weight": {
+              "type": "decimal",
+              "label": "Weight",
+              "unit": "kg",
+              "description": "⚠️ STORED IN KG - Do NOT divide by 1000"
+            }
+          }
+        }
+      }
+    },
+    "Products": {
+      "displayName": "Products",
+      "fields": {
+        "Product_Code": {
+          "type": "string",
+          "label": "Product Code",
+          "description": "Child SKU identifier (e.g., ABC-123)"
+        },
+        "Product_Name": {
+          "type": "string",
+          "label": "Product Name",
+          "required": true
+        },
+        "MTP_SKU": {
+          "type": "lookup",
+          "label": "MTP SKU",
+          "module": "Parent_MTP_SKU",
+          "returns": {
+            "id": "Record ID",
+            "name": "Parent SKU code"
+          }
+        },
+        "Product_Category": {
+          "type": "picklist",
+          "label": "Category",
+          "values": ["Bed", "Mattress", "Sofa", "Pillow", "Cushion", "Dining", "Storage"]
+        },
+        "Weight_Category_Billed": {
+          "type": "picklist",
+          "label": "Weight Category",
+          "values": ["0.5kg", "1kg", "2kg", "5kg", "10kg", "10kg+"]
+        },
+        "Total_Weight": {
+          "type": "decimal",
+          "label": "Total Weight",
+          "unit": "kg",
+          "description": "⚠️ STORED IN KG - Do NOT divide by 1000"
+        },
+        "Last_Audited_Total_Weight_kg": {
+          "type": "decimal",
+          "label": "Last Audited Weight",
+          "unit": "kg"
+        },
+        "Live_Status": {
+          "type": "picklist",
+          "label": "Live Status",
+          "values": ["Y", "YB", "YD", "YH", "RL", "NL", "AR", "DI"]
+        }
+      },
+      "subforms": {
+        "Bill_Dimension_Weight": {
+          "displayName": "Bill Dimension Weight",
+          "fields": {
+            "BL": {
+              "type": "number",
+              "label": "Box Line"
+            },
+            "Length": {
+              "type": "decimal",
+              "label": "Length",
+              "unit": "cm"
+            },
+            "Width": {
+              "type": "decimal",
+              "label": "Width",
+              "unit": "cm"
+            },
+            "Height": {
+              "type": "decimal",
+              "label": "Height",
+              "unit": "cm"
+            },
+            "Weight": {
+              "type": "decimal",
+              "label": "Weight",
+              "unit": "kg",
+              "description": "⚠️ STORED IN KG - Do NOT divide by 1000"
+            }
+          }
+        },
+        "Product_Identifiers": {
+          "displayName": "Product Identifiers",
+          "fields": {
+            "Channel": {
+              "type": "picklist",
+              "label": "Channel",
+              "values": [
+                "Amazon ASIN",
+                "Flipkart FSN",
+                "Urban Ladder",
+                "Pepperfry",
+                "Myntra"
+              ]
+            },
+            "Identifier": {
+              "type": "string",
+              "label": "Identifier",
+              "description": "Platform-specific product ID"
+            }
+          }
+        }
+      }
+    }
+  },
+  "units": {
+    "weights": {
+      "crm": "kg",
+      "excel": "g",
+      "conversion": {
+        "gramToKg": "value / 1000",
+        "kgToGram": "value * 1000"
+      },
+      "warning": "⚠️ CRITICAL: ALL CRM weights are in KG, not grams! Do NOT divide by 1000 when reading from CRM!"
+    },
+    "dimensions": {
+      "crm": "cm",
+      "excel": "cm",
+      "conversion": {
+        "cmToM": "value / 100",
+        "mToCm": "value * 100"
+      }
+    },
+    "volume": {
+      "crm": "cm³",
+      "calculation": "Length × Width × Height",
+      "conversion": {
+        "cm3ToM3": "value / 1000000"
+      }
+    }
+  }
+}

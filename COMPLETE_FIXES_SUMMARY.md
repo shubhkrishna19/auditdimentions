@@ -71,8 +71,10 @@ Sortable columns (click headers):
 
 **Solution**:
 ```bash
-node scripts/cleanup_duplicate_boxes.js
+node scripts/cleanup_duplicate_boxes.cjs
 ```
+
+**Note**: We use `.cjs` extension because `package.json` has `"type": "module"`.
 
 **What it does**:
 - Deduplicates boxes by comparing box number + dimensions + weight
@@ -94,8 +96,10 @@ node scripts/cleanup_duplicate_boxes.js
 
 **Usage**:
 ```bash
-node scripts/populate_product_identifiers.js
+node scripts/populate_product_identifiers.cjs
 ```
+
+**Note**: We use `.cjs` extension because `package.json` has `"type": "module"`.
 
 **Data Source**:
 - Excel: `scripts/SKU Aliases, Parent & Child Master Data LATEST .xlsx`
@@ -125,11 +129,13 @@ node scripts/populate_product_identifiers.js
 cd "c:\Users\shubh\Downloads\Dimentions Audit Authenticator"
 
 # 1. Clean duplicate boxes (IMPORTANT - Run this first!)
-node scripts/cleanup_duplicate_boxes.js
+node scripts/cleanup_duplicate_boxes.cjs
 
 # 2. Populate product identifiers
-node scripts/populate_product_identifiers.js
+node scripts/populate_product_identifiers.cjs
 ```
+
+**Note**: We use `.cjs` extension because `package.json` has `"type": "module"`.
 
 ### Step 2: Verify in CRM
 

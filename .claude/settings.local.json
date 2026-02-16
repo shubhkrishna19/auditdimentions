@@ -16,7 +16,9 @@
       "mcp__claude_ai_ZohoMCP__ZohoCreator_getApplications",
       "mcp__claude_ai_ZohoMCP__ZohoCRM_Get_Modules",
       "Bash(node test_zoho_mcp_direct.js:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npm install:*)",
+      "Bash(tee:*)"
     ]
   }
 }

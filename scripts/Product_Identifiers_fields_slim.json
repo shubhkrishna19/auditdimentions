@@ -1,0 +1,27 @@
+[
+  {
+    "label": "Created Time",
+    "api": "Created_Time",
+    "type": "datetime"
+  },
+  {
+    "label": "Modified Time",
+    "api": "Modified_Time",
+    "type": "datetime"
+  },
+  {
+    "label": "Parent ID",
+    "api": "Parent_Id",
+    "type": "lookup"
+  },
+  {
+    "label": "Channel",
+    "api": "Channel",
+    "type": "picklist"
+  },
+  {
+    "label": "Identifier",
+    "api": "Identifier",
+    "type": "text"
+  }
+]
