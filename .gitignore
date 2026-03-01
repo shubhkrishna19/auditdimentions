@@ -35,3 +35,4 @@ zoho_audit_*.json
 zoho_audit_dump.json
 unified_master_data.json
 *.json_backup.json
+catalyst-config.json
