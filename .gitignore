@@ -10,29 +10,64 @@ dist-ssr
 *.local
 *.log
 ~$*
-*.xlsx.tmp
 
-# Environment files with credentials
+# Environment files — NEVER COMMIT
 .env
 .env.*
 !.env.example
+.env.local
+.env.development
+.env.production
 
-# MCP Server credentials
+# MCP credentials
 .env.mcp
 mcp-config.json
 **/zoho_credentials.json
 **/client_secret*.json
 
+# Token files
+refresh_token.txt
+token_output.txt
+*_token.txt
+token_response.json
+
 # Catalyst artifacts
 ZohoIntegrationEngine/.build/
 ZohoIntegrationEngine/client/
+.build/
 
-# Local Data & Backups
+# Local data dumps (one-off backups, not for repo)
 zoho_backups/
 zoho_backups_full/
-mcp_tools.json
 zoho_audit_*.json
 zoho_audit_dump.json
 unified_master_data.json
 *.json_backup.json
+<<<<<<< Updated upstream
 catalyst-config.json
+=======
+mcp_tools.json
+scripts/debug_api_res.json
+scripts/mcp_tools.json
+scripts/mcp_debug_mcp_response.json
+scripts/parent_fields*.json
+scripts/product_fields*.json
+scripts/identifier_fields.json
+
+# One-off data outputs in scripts/
+scripts/audit_*.txt
+scripts/population_output.txt
+scripts/final_report*.txt
+scripts/purge_audit*.txt
+scripts/child_sample*.txt
+scripts/excel_analysis.txt
+scripts/final_report.txt
+scripts/reconciliation_report.json
+scripts/sync_report.json
+scripts/deletion_list.json
+scripts/product_data_mapping.json
+scripts/zoho_audit_*.json
+
+# Excel temp files
+~$*.xlsx
+>>>>>>> Stashed changes

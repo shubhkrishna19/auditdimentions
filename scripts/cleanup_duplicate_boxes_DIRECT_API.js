@@ -92,24 +92,35 @@ async function updateRecord(module, recordId, payload) {
 }
 
 function deduplicateBoxes(boxes) {
-    if (!boxes || boxes.length === 0) return [];
+    if (!boxes || boxes.length === 0) return { unique: [], toDelete: [] };
 
     const seen = new Map();
     const unique = [];
+    const toDelete = [];
 
     for (const box of boxes) {
+        // Create a key based on dimensions and weight
+        // Note: Using Box number too might prevent consolidating "Box 1" and "Box 2" if they are identical physically but meant to be distinct?
+        // User said: "for every 3 boxes 6 are listed 2 for 4 1 for 2" -> implies exact duplicates.
+        // We generally want to deduplicate exact copies.
         const key = `${box.Box || box.BL}-${box.Length}-${box.Width}-${box.Height}-${box.Weight}`;
+
         if (!seen.has(key)) {
             seen.set(key, box);
             unique.push(box);
+        } else {
+            // This is a duplicate! Mark for deletion.
+            if (box.id) {
+                toDelete.push({ id: box.id, _delete: null });
+            }
         }
     }
 
-    return unique;
+    return { unique, toDelete };
 }
 
 async function cleanupDuplicates() {
-    console.log('🧹 Starting Duplicate Box Cleanup (DIRECT API - FIXED)...\n');
+    console.log('🧹 Starting Duplicate Box Cleanup (DIRECT API - DELETION FIX)...\n');
 
     let parentsCleaned = 0;
     let childrenCleaned = 0;
@@ -129,20 +140,22 @@ async function cleanupDuplicates() {
             const originalBoxes = parent.MTP_Box_Dimensions || [];
             if (originalBoxes.length === 0) continue;
 
-            const uniqueBoxes = deduplicateBoxes(originalBoxes);
+            const { unique, toDelete } = deduplicateBoxes(originalBoxes);
 
-            if (originalBoxes.length !== uniqueBoxes.length) {
-                const removed = originalBoxes.length - uniqueBoxes.length;
-                console.log(`   ${parent.Name}: ${originalBoxes.length} → ${uniqueBoxes.length} boxes (removed ${removed})`);
+            if (toDelete.length > 0) {
+                console.log(`   ${parent.Name}: Removing ${toDelete.length} duplicates (keeping ${unique.length})`);
 
                 try {
+                    // To delete, we send the objects with _delete: null
+                    // usage: MTP_Box_Dimensions: [{id: "...", _delete: null}, ...]
                     await updateRecord('Parent_MTP_SKU', id, {
-                        MTP_Box_Dimensions: uniqueBoxes
+                        MTP_Box_Dimensions: toDelete
                     });
                     parentsCleaned++;
-                    totalBoxesRemoved += removed;
+                    totalBoxesRemoved += toDelete.length;
+                    console.log(`      ✅ Removed ${toDelete.length} boxes`);
                 } catch (error) {
-                    console.error(`   ❌ Failed: ${error.message}`);
+                    console.error(`      ❌ Failed: ${error.response?.data?.message || error.message}`);
                 }
 
                 await new Promise(r => setTimeout(r, 300));
@@ -167,20 +180,20 @@ async function cleanupDuplicates() {
             const originalBoxes = child.Bill_Dimension_Weight || [];
             if (originalBoxes.length === 0) continue;
 
-            const uniqueBoxes = deduplicateBoxes(originalBoxes);
+            const { unique, toDelete } = deduplicateBoxes(originalBoxes);
 
-            if (originalBoxes.length !== uniqueBoxes.length) {
-                const removed = originalBoxes.length - uniqueBoxes.length;
-                console.log(`   ${child.Product_Code}: ${originalBoxes.length} → ${uniqueBoxes.length} boxes (removed ${removed})`);
+            if (toDelete.length > 0) {
+                console.log(`   ${child.Product_Code}: Removing ${toDelete.length} duplicates (keeping ${unique.length})`);
 
                 try {
                     await updateRecord('Products', id, {
-                        Bill_Dimension_Weight: uniqueBoxes
+                        Bill_Dimension_Weight: toDelete
                     });
                     childrenCleaned++;
-                    childBoxesRemoved += removed;
+                    childBoxesRemoved += toDelete.length;
+                    console.log(`      ✅ Removed ${toDelete.length} boxes`);
                 } catch (error) {
-                    console.error(`   ❌ Failed: ${error.message}`);
+                    console.error(`      ❌ Failed: ${error.response?.data?.message || error.message}`);
                 }
 
                 await new Promise(r => setTimeout(r, 300));

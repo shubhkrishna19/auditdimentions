@@ -1,8 +1,9 @@
 const https = require('https');
 
-const clientId = '1000.CGGK0M58LOXYJG9IR23UZ5G7XAZZBA';
-const clientSecret = 'f60455449d30984ca1c026a872a2395cb5100dba36';
-const code = '1000.1d7b7d56c760608797ec7de81c3b520b.4273fc6387b519240e443109996b005f';
+// ⚠️ Load these from environment — never hardcode
+const clientId = process.env.ZOHO_CLIENT_ID;
+const clientSecret = process.env.ZOHO_CLIENT_SECRET;
+const code = process.env.ZOHO_AUTH_CODE; // one-time code from Zoho OAuth consent screen
 
 const postData = `code=${code}&client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code`;
 

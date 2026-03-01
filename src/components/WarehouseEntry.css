@@ -255,9 +255,9 @@
 }
 
 .input-group input {
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: 100%;
+    flex: 0 1 100px;
+    min-width: 60px;
+    max-width: 120px;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 6px;

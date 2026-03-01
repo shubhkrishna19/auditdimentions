@@ -10,7 +10,7 @@ dotenv.config();
 const CONFIG = {
     clientId: process.env.ZOHO_CLIENT_ID,
     clientSecret: process.env.ZOHO_CLIENT_SECRET,
-    authCode: '1000.a2cc33791fb083f24f17c2f9ac4294cf.8ddea7d27161864cc6a2f346ad6e28bc',
+    authCode: process.env.ZOHO_AUTH_CODE // one-time code,
     redirectUri: 'https://www.zoho.com/crm' // Use the same redirect URI from your OAuth app
 };
 
